@@ -27,8 +27,11 @@ void add_member(int member, string name, int party_id){
     player_party.Add(member,party_id-1000000);
 }
 
-void send_message(ITelegramBotClient botClient, int chat_id,string message){
-    botClient.SendTextMessageAsync(chat_id,message,parseMode: ParseMode.MarkdownV2);
+void send_message(ITelegramBotClient botClient, int chat_id,string message, int reply= -1){
+    if(reply != -1)
+        botClient.SendTextMessageAsync(chat_id,message,parseMode: ParseMode.MarkdownV2, replyToMessageId: reply);
+    else
+        botClient.SendTextMessageAsync(chat_id,message,parseMode: ParseMode.MarkdownV2);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,26 +62,26 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
     if (messageText=="/new_adventure"){	
         add_party((int)chatId);
-        send_message(botClient,(int)chatId,$"Adventure created : {current_party-1}");
+        send_message(botClient,(int)chatId,$"Adventure created : {current_party-1}", message.MessageId);
         return;
     }
     
     if (messageText.StartsWith("/join_adventure") ){
         int party=int.Parse(messageText.Substring(16,7));
-        add_member((int)chatId ,message.From.FirstName, party);
-        send_message(botClient,(int)chatId,$"Joined to adventure {party}");
+        add_member((int)chatId ,message.From.Username, party);
+        send_message(botClient,(int)chatId,$"Joined to adventure {party}", message.MessageId);
         return;
     }
 
     if(!player_party.ContainsKey((int)chatId)){
-        send_message(botClient,(int)chatId,"You are not in any adventure, create one or join one");
+        send_message(botClient,(int)chatId,"You are not in any adventure, create one or join one", message.MessageId);
         return;
     }
 
 
     if (messageText.StartsWith("/chat") ){
         string mess=messageText.Substring(5);
-        parties[player_party[(int)chatId]].notify_members(botClient,$"Message from *{message.From.FirstName}*: {mess}");
+        parties[player_party[(int)chatId]].notify_members(botClient,$"Message from @{message.From.Username}: {mess}");
         return;
     }
     
