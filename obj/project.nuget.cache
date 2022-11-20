@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "d1u/DgVEWrqd4z/aqMnGj41BBI3pmMHJYPVKLph3mRVNtZZ9XewrB/Pa6vYdekQ375E4bIrAI5jTthiIxG2l2A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Usuario\\Documents\\Dungeons and Bugs\\Dungeons and Bugs.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Usuario\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\telegram.bot\\18.0.0\\telegram.bot.18.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
