@@ -47,6 +47,9 @@ Console.ReadLine();
 cts.Cancel();
 
 
+
+
+
 async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken){
     if (update.Message is not { } message)return;
     if (message.Text is not { } messageText)return;
@@ -56,6 +59,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
     if (messageText=="/new_adventure"){	
         add_party((int)chatId);
         send_message(botClient,(int)chatId,$"Adventure created : {current_party-1}");
+        return;
     }
     
     if (messageText.StartsWith("/join_adventure") ){
@@ -70,13 +74,9 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         parties[player_party[(int)chatId]].notify_members(botClient,mess);
         return;
     }
-
-
-    Message sentMessage = await botClient.SendTextMessageAsync(
-        chatId: chatId,
-        text: "Not implemented:\n" + messageText,
-        cancellationToken: cancellationToken);
     
+
+    send_message(botClient,(int)chatId,"Unknown command");
 }
 
 
