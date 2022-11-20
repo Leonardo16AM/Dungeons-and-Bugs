@@ -68,8 +68,18 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
     
     if (messageText.StartsWith("/join_adventure") ){
         int party=int.Parse(messageText.Substring(16,7));
+        if(parties[party-1000000].isStarted){
+            send_message(botClient,(int)chatId,"That adventure is already started, try another or create a new one");
+            return;
+        }
         add_member((int)chatId ,message.From.Username, party);
         send_message(botClient,(int)chatId,$"Joined to adventure {party}", message.MessageId);
+        return;
+    }
+
+    if(messageText=="/start_adventure"){
+        parties[player_party[(int)chatId]].isStarted = true;
+        parties[player_party[(int)chatId]].notify_members(botClient,$"Adventure Time!!! @{message.From.Username} has started the adventure");
         return;
     }
 

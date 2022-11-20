@@ -10,6 +10,7 @@ class party{
     public List<int> members;
 
     int turn;
+    public bool isStarted = false;
 
     public party(int id,int leader){
         this.id=id;
