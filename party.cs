@@ -18,16 +18,23 @@ class party{
         members=new List<int>();
         members.Add(leader);
     }
-    public void add_member(ITelegramBotClient botClient ,int member, string name){
-        members.Add(member);
-        notify_members(botClient, $"@{name} joined the adventure");
-    }
+
 
     public void notify_members(ITelegramBotClient botClient,string message){
         foreach(int member in members){
-            botClient.SendTextMessageAsync(member,message,parseMode: ParseMode.MarkdownV2);
+            Console.WriteLine($" {member} notified");
+            botClient.SendTextMessageAsync(member,message);
         }
     }
+
+    public void add_member(ITelegramBotClient botClient ,int member, string name){
+        members.Add(member);
+        Console.WriteLine($"notifieng memebers {member} {name}");
+        notify_members(botClient, $"{name} joined the adventure");
+   
+        Console.WriteLine(" memebers notified");
+    }
+
 
     public void pass_turn(){
         turn++;

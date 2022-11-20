@@ -1,0 +1,9 @@
+{
+    "name":"Berserk, la Edad Dorada",
+    "heroes":[
+        ["guts","1-Guts, el caballero negro","Historia de Guts","guts.JPG",],
+        ["grifith","2-Griffith, el alcon blanco","Historia de Griffith","grifith.JPG"],
+        ["casca","3-Casca","Historia de Casca","casca.JPG"],
+        ["jadeau","4-Jadeau","Historia de Jadeau","jadeau.JPG"]
+    ]
+}

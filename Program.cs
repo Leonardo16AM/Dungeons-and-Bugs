@@ -23,8 +23,8 @@ void add_party(int leader){
 }
 
 void add_member(int member, string name, int party_id){
-    parties[party_id-1000000].add_member(botClient, member, name);
     player_party.Add(member,party_id-1000000);
+    parties[party_id-1000000].add_member(botClient, member, name);
 }
 
 void send_message(ITelegramBotClient botClient, int chat_id,string message, int reply= -1){
@@ -73,7 +73,6 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             return;
         }
         add_member((int)chatId ,message.From.Username, party);
-        send_message(botClient,(int)chatId,$"Joined to adventure {party}", message.MessageId);
         return;
     }
 
@@ -91,7 +90,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
     if (messageText.StartsWith("/chat") ){
         string mess=messageText.Substring(5);
-        parties[player_party[(int)chatId]].notify_members(botClient,$"Message from @{message.From.Username}: {mess}");
+        parties[player_party[(int)chatId]].notify_members(botClient,$"@{message.From.Username}: {mess}");
         return;
     }
     
