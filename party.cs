@@ -17,8 +17,9 @@ class party{
         members=new List<int>();
         members.Add(leader);
     }
-    public void add_member(int member){
+    public void add_member(ITelegramBotClient botClient ,int member, string name){
         members.Add(member);
+        notify_members(botClient, $"@{name} joined the party");
     }
 
     public void notify_members(ITelegramBotClient botClient,string message){

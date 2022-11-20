@@ -22,8 +22,8 @@ void add_party(int leader){
     current_party++;
 }
 
-void add_member(int member,int party_id){
-    parties[party_id-1000000].add_member(member);
+void add_member(int member, string name, int party_id){
+    parties[party_id-1000000].add_member(botClient, member, name);
     player_party.Add(member,party_id-1000000);
 }
 
@@ -65,7 +65,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
     
     if (messageText.StartsWith("/join_adventure") ){
         int party=int.Parse(messageText.Substring(16,7));
-        add_member((int)chatId,party);
+        add_member((int)chatId ,message.From.FirstName, party);
         send_message(botClient,(int)chatId,$"Joined to adventure {party}");
         return;
     }
