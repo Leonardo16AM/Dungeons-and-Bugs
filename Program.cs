@@ -28,7 +28,7 @@ void add_member(int member, string name, int party_id){
 }
 
 void send_message(ITelegramBotClient botClient, int chat_id,string message){
-    botClient.SendTextMessageAsync(chat_id,message);
+    botClient.SendTextMessageAsync(chat_id,message,parseMode: ParseMode.MarkdownV2);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
     if (messageText.StartsWith("/chat") ){
         string mess=messageText.Substring(5);
-        parties[player_party[(int)chatId]].notify_members(botClient,$"Message from {message.From.FirstName}: {mess}");
+        parties[player_party[(int)chatId]].notify_members(botClient,$"Message from *{message.From.FirstName}*: {mess}");
         return;
     }
     

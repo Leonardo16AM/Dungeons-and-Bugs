@@ -19,12 +19,12 @@ class party{
     }
     public void add_member(ITelegramBotClient botClient ,int member, string name){
         members.Add(member);
-        notify_members(botClient, $"@{name} joined the party");
+        notify_members(botClient, $"`{name}` joined the party");
     }
 
     public void notify_members(ITelegramBotClient botClient,string message){
         foreach(int member in members){
-            botClient.SendTextMessageAsync(member,message);
+            botClient.SendTextMessageAsync(member,message,parseMode: ParseMode.MarkdownV2);
         }
     }
 
