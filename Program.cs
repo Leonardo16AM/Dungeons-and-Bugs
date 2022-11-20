@@ -16,15 +16,15 @@ List<party> parties=new List<party>();
 Dictionary<int,int>player_party=new Dictionary<int, int>();
 int current_party=1000000;
 
-void add_party(int leader){
-    parties.Add(new party(current_party,leader));
+void add_party(int leader,string leader_name, string leader_user){
+    parties.Add(new party(current_party,leader,leader_name,leader_user));
     player_party.Add(leader,current_party-1000000);
     current_party++;
 }
 
-void add_member(int member, string name, int party_id){
+void add_member(int member, string name,string user, int party_id){
     player_party.Add(member,party_id-1000000);
-    parties[party_id-1000000].add_member(botClient, member, name);
+    parties[party_id-1000000].add_member(botClient, member, name, user);
 }
 
 void send_message(ITelegramBotClient botClient, int chat_id,string message, int reply= -1){
@@ -61,7 +61,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
     Console.WriteLine($"{chatId}({message.From.FirstName}): {messageText}");
 
     if (messageText=="/new_adventure"){	
-        add_party((int)chatId);
+        add_party((int)chatId,message.From.FirstName,message.From.Username);
         send_message(botClient,(int)chatId,$"Adventure created : {current_party-1}", message.MessageId);
         return;
     }
@@ -72,7 +72,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             send_message(botClient,(int)chatId,"That adventure is already started, try another or create a new one");
             return;
         }
-        add_member((int)chatId ,message.From.Username, party);
+        add_member((int)chatId ,message.From.Username,message.From.FirstName, party);
         return;
     }
 
