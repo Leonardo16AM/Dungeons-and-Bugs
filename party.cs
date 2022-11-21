@@ -11,10 +11,12 @@ class party{
 
     int turn;
     public bool isStarted = false;
+    public adventure adv;
 
-    public party(int id,int leader,string leader_name,string leader_user){
+    public party(int id,string adv_name,int leader,string leader_name,string leader_user){
         this.id=id;
         this.leader=leader;
+        adv=new adventure(adv_name);
         members=new List<player>();
         members.Add(new player(leader,leader_name,leader_user));
     }
@@ -23,7 +25,7 @@ class party{
     public void notify_members(ITelegramBotClient botClient,string message){
         foreach(player member in members){
             Console.WriteLine($" {member} notified");
-            botClient.SendTextMessageAsync(member.chat_id,message);
+            botClient.SendTextMessageAsync(member.chat_id,message,parseMode: ParseMode.MarkdownV2);
         }
     }
 

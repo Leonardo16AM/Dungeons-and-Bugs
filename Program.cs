@@ -16,8 +16,8 @@ List<party> parties=new List<party>();
 Dictionary<int,int>player_party=new Dictionary<int, int>();
 int current_party=1000000;
 
-void add_party(int leader,string leader_name, string leader_user){
-    parties.Add(new party(current_party,leader,leader_name,leader_user));
+void add_party(int leader,string adv_name,string leader_name, string leader_user){
+    parties.Add(new party(current_party,adv_name,leader,leader_name,leader_user));
     player_party.Add(leader,current_party-1000000);
     current_party++;
 }
@@ -54,48 +54,68 @@ cts.Cancel();
 
 
 async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken){
-    if (update.Message is not { } message)return;
-    if (message.Text is not { } messageText)return;
-    var chatId = message.Chat.Id;
+    try{
+        if (update.Message is not { } message)return;
+        if (message.Text is not { } messageText)return;
+        var chatId = message.Chat.Id;
 
-    Console.WriteLine($"{chatId}({message.From.FirstName}): {messageText}");
+        Console.WriteLine($"{chatId}({message.From.FirstName}): {messageText}");
 
-    if (messageText=="/new_adventure"){	
-        add_party((int)chatId,message.From.FirstName,message.From.Username);
-        send_message(botClient,(int)chatId,$"Adventure created : {current_party-1}", message.MessageId);
-        return;
-    }
-    
-    if (messageText.StartsWith("/join_adventure") ){
-        int party=int.Parse(messageText.Substring(16,7));
-        if(parties[party-1000000].isStarted){
-            send_message(botClient,(int)chatId,"That adventure is already started, try another or create a new one");
+        if (messageText.StartsWith("/new_adventure")){	
+            string adv_name=messageText.Substring(15);
+            add_party((int)chatId,adv_name,message.From.FirstName,message.From.Username);
+            send_message(botClient,(int)chatId,$"Adventure created : {current_party-1}", message.MessageId);
             return;
         }
-        add_member((int)chatId ,message.From.Username,message.From.FirstName, party);
-        return;
-    }
+        
+        if (messageText.StartsWith("/join_adventure") ){
+            int party=int.Parse(messageText.Substring(16,7));
 
-    if(messageText=="/start_adventure"){
-        parties[player_party[(int)chatId]].isStarted = true;
-        parties[player_party[(int)chatId]].notify_members(botClient,$"Adventure Time!!! @{message.From.Username} has started the adventure");
-        return;
-    }
+            if(player_party.ContainsKey((int)chatId) && player_party[(int)chatId]==(int)party ){
+                send_message(botClient,(int)chatId,"You are already in this adventure");
+                return;
+            }
+            if(parties[party-1000000].isStarted){
+                send_message(botClient,(int)chatId,"That adventure is already started, try another or create a new one");
+                return;
+            }
 
-    if(!player_party.ContainsKey((int)chatId)){
-        send_message(botClient,(int)chatId,"You are not in any adventure, create one or join one", message.MessageId);
-        return;
-    }
+            add_member((int)chatId ,message.From.Username,message.From.FirstName, party);
+            return;
+        }
+
+        if(messageText=="/start_adventure"){
+            if( !player_party.ContainsKey((int)chatId) ){
+                send_message(botClient,(int)chatId,"You have to host an adventure first, type new_adventure to host it", (int)message.MessageId);
+                return;
+            }
+            parties[player_party[(int)chatId]].isStarted = true;
+            parties[player_party[(int)chatId]].notify_members(botClient,$"Adventure Time!!! @{message.From.Username} has started the adventure");
+            return;
+        }
+
+        if(!player_party.ContainsKey((int)chatId)){
+            send_message(botClient,(int)chatId,"You are not in any adventure, create one or join one", message.MessageId);
+            return;
+        }
 
 
-    if (messageText.StartsWith("/chat") ){
-        string mess=messageText.Substring(5);
-        parties[player_party[(int)chatId]].notify_members(botClient,$"@{message.From.Username}: {mess}");
-        return;
-    }
+        if (messageText.StartsWith("/chat") ){
+            string mess=messageText.Substring(5);
+            parties[player_party[(int)chatId]].notify_members(botClient,$"@{message.From.Username}: {mess}");
+            return;
+        }
+        
+        send_message(botClient,(int)chatId,"Unknown command");
     
+    }catch (Exception e){
 
-    send_message(botClient,(int)chatId,"Unknown command");
+        Console.WriteLine("{0} Exception caught.", e);
+        if (update.Message is not { } message)return;
+        if (message.Text is not { } messageText)return;
+        var chatId = message.Chat.Id;
+        send_message(botClient,(int)chatId,"Bad ussage or error");
+    }
 }
 
 
