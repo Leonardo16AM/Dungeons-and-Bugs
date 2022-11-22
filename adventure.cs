@@ -8,11 +8,10 @@ class hero{
 
 
 class adventure{
-    public string name,full_name;
+    public dynamic file;
 
     public adventure(string name){
-        // string json = File.ReadAllText($"adventures/{name}");
-        // dynamic file = JsonConvert.DeserializeObject(json);
-        // full_name=file.name;
+        string json = File.ReadAllText($"adventures/{name}/berserk.json");
+        dynamic file = JsonConvert.DeserializeObject(json);
     }
 }

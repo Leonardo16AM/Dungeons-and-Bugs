@@ -4,7 +4,7 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-class party{
+class party:adventure{
     public int id;
     public int leader;
     public List<player> members;
@@ -13,7 +13,7 @@ class party{
     public bool isStarted = false;
     public adventure adv;
 
-    public party(int id,string adv_name,int leader,string leader_name,string leader_user){
+    public party(int id,string adv_name,int leader,string leader_name,string leader_user):base(adv_name){
         this.id=id;
         this.leader=leader;
         adv=new adventure(adv_name);
@@ -21,20 +21,24 @@ class party{
         members.Add(new player(leader,leader_name,leader_user));
     }
 
+    void send_message(ITelegramBotClient botClient, int chat_id,string message, int reply= -1){
+        if(reply != -1)
+            botClient.SendTextMessageAsync(chat_id,message,parseMode: ParseMode.MarkdownV2, replyToMessageId: reply);
+        else
+            botClient.SendTextMessageAsync(chat_id,message,parseMode: ParseMode.MarkdownV2);
+    }
 
-    public void notify_members(ITelegramBotClient botClient,string message){
+
+    public void notify_members(ITelegramBotClient botClient ,string message){
         foreach(player member in members){
-            Console.WriteLine($" {member} notified");
-            botClient.SendTextMessageAsync(member.chat_id,message,parseMode: ParseMode.MarkdownV2);
+            send_message(botClient,member.chat_id,message);
         }
     }
 
     public void add_member(ITelegramBotClient botClient ,int member, string name,string user){
         members.Add(new player(member,name,user));
-        Console.WriteLine($"notifieng memebers {member} {name}");
-        notify_members(botClient, $"{name} joined the adventure");
-   
-        Console.WriteLine(" memebers notified");
+        string message=$"@{user} joined the adventure";
+        notify_members(botClient, message);
     }
 
 
