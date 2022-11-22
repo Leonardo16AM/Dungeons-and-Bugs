@@ -89,8 +89,12 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                 send_message(botClient,(int)chatId,"You have to host an adventure first, type new_adventure to host it", (int)message.MessageId);
                 return;
             }
-            parties[player_party[(int)chatId]].isStarted = true;
-            parties[player_party[(int)chatId]].notify_members(botClient,$"Adventure Time!!! @{message.From.Username} has started the adventure");
+            parties[player_party[(int)chatId]].start(botClient);
+            return;
+        }
+
+        if(messageText.StartsWith("/choose_hero")){
+            parties[player_party[(int)chatId]].choose_hero(botClient,(int)chatId,int.Parse(messageText.Substring(13)) );
             return;
         }
 

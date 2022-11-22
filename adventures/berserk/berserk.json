@@ -1,9 +1,9 @@
 {
     "name":"Berserk, la Edad Dorada",
     "heroes":[
-        ["guts","Guts","Historia de Guts","guts.JPG"],
-        ["grifith","Griffith","Historia de Griffith","grifith.JPG"],
-        ["casca","Casca","Historia de Casca","casca.JPG"],
-        ["jadeau","Jadeau","Historia de Jadeau","jadeau.JPG"]
+        ["guts","Guts",100,100,70,20,"Guts es el mercenario mas temido de tood Midland, algunos lo conocen como el caballero negro, cuenta la leyenda que una vez mato a 100 hombres el solo ... En sus manos lleva algo demasiado grande para ser una espada, parecido a un gran pedazo de hierro","guts.JPG"],
+        ["grifith","Griffith",100,70,100,40,"Griffith pareciera de la realeza, pero realmente es solo un plebello. Pero no uno cualquiera, su  sed de poder lo ha llevado a ser el lider de la banda del alcon ... y lo llevara a mucho mas","griffith.JPG"],
+        ["casca","Casca",100,60,80,10,"La fiel casca es la unica mujer de la banda del alcon, pero no nos dejemos engañar porque es tambien uno de sus mas mortferos miembros","casca.JPG"],
+        ["jadeau","Jadeau",100,70,70,15,"Jadeau parecierano tan poderoso como el resto, pero posee una agilidad impresionante, es capaz de lanzar cuchillos con una precision milimetrica, no quisieras interponerte a el","jadeau.JPG"]
     ]
 }
