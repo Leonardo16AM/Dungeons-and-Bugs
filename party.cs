@@ -44,7 +44,7 @@ class party:adventure{
         members.Add(new player(member,name,user));
         string message=$"@{user} joined the adventure";
         notify_members(botClient, message,new long[0]);
-        if(members.Length==heroSelection.Length)
+        if(members.Count()==heroSelection.Length)
             start(botClient);
     }
 
