@@ -80,7 +80,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                 return;
             }
 
-            add_member((int)chatId ,message.From.Username,message.From.FirstName, party);
+            add_member((int)chatId ,message.From.FirstName,message.From.Username, party);
             return;
         }
 
@@ -106,7 +106,8 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
         if (messageText.StartsWith("/chat") ){
             string mess=messageText.Substring(5);
-            parties[player_party[(int)chatId]].notify_members(botClient,$"@{message.From.Username}: {mess}");
+            if(mess=="") return;
+            parties[player_party[(int)chatId]].notify_members(botClient,$"@{message.From.Username}: {mess}", new long[] {chatId});
             return;
         }
         
