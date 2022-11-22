@@ -16,15 +16,15 @@ List<party> parties=new List<party>();
 Dictionary<int,int>player_party=new Dictionary<int, int>();
 int current_party=1000000;
 
-void add_party(int leader,string adv_name,string leader_name, string leader_user){
-    parties.Add(new party(current_party,adv_name,leader,leader_name,leader_user));
+void add_party(ITelegramBotClient botClient,int leader,string adv_name,string leader_name, string leader_user){
+    parties.Add(new party(botClient,current_party,adv_name,leader,leader_name,leader_user));
     player_party.Add(leader,current_party-1000000);
     current_party++;
 }
 
 void add_member(int member, string name,string user, int party_id){
     player_party.Add(member,party_id-1000000);
-    parties[party_id-1000000].add_member(botClient, member, name, user);
+    parties[party_id-1000000].add_member( member, name, user);
 }
 
 void send_message(ITelegramBotClient botClient, int chat_id,string message, int reply= -1){
@@ -45,7 +45,8 @@ botClient.StartReceiving(
 );
 
 var me = await botClient.GetMeAsync();
-Console.WriteLine($"Start listening for @{me.Username}");
+Console.WriteLine($"Server started correctly");
+tlg.notify_admins(botClient,"Server started correctly");
 Console.ReadLine();
 cts.Cancel();
 
@@ -63,7 +64,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
         if (messageText.StartsWith("/new_adventure")){	
             string adv_name=messageText.Substring(15);
-            add_party((int)chatId,adv_name,message.From.FirstName,message.From.Username);
+            add_party(botClient,(int)chatId,adv_name,message.From.FirstName,message.From.Username);
             send_message(botClient,(int)chatId,$"Adventure created : {current_party-1}", message.MessageId);
             return;
         }
@@ -89,12 +90,12 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                 send_message(botClient,(int)chatId,"You have to host an adventure first, type new_adventure to host it", (int)message.MessageId);
                 return;
             }
-            parties[player_party[(int)chatId]].start(botClient);
+            parties[player_party[(int)chatId]].start();
             return;
         }
 
         if(messageText.StartsWith("/choose_hero")){
-            parties[player_party[(int)chatId]].choose_hero(botClient,(int)chatId,int.Parse(messageText.Substring(13)) );
+            parties[player_party[(int)chatId]].choose_hero((int)chatId,int.Parse(messageText.Substring(13)) );
             return;
         }
 
@@ -107,7 +108,13 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         if (messageText.StartsWith("/chat") ){
             string mess=messageText.Substring(5);
             if(mess=="") return;
-            parties[player_party[(int)chatId]].notify_members(botClient,$"@{message.From.Username}: {mess}", new long[] {chatId});
+            parties[player_party[(int)chatId]].notify_members($"@{message.From.Username}: {mess}", new long[] {chatId});
+            return;
+        }
+        
+        if (messageText.StartsWith("/action") ){
+            parties[player_party[(int)chatId]].action();
+            parties[player_party[(int)chatId]].end_turn();
             return;
         }
         
@@ -115,11 +122,11 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
     
     }catch (Exception e){
 
-        Console.WriteLine("{0} Exception caught.", e);
+        Console.WriteLine("{0}Exception caught.", e);
         if (update.Message is not { } message)return;
         if (message.Text is not { } messageText)return;
         var chatId = message.Chat.Id;
-        send_message(botClient,(int)chatId,"Bad ussage or error");
+        send_message(botClient,(int)chatId,"Bad command ussage or error");
     }
 }
 

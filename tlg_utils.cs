@@ -28,4 +28,8 @@ public static class tlg{
                 parseMode: ParseMode.Html);
     }
 
+    public static void notify_admins(ITelegramBotClient botClient,string message){
+        send_message(botClient, 789850916,message);
+        send_message(botClient, 639646249,message);
+    }
 }
