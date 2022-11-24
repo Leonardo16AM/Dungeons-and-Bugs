@@ -2,7 +2,7 @@
     "name":"Berserk, la Edad Dorada",
     "heroes":[
         ["guts","Guts",100,100,70,20,"Guts es el mercenario mas temido de todo Midland, algunos lo conocen como el caballero negro, cuenta la leyenda que una vez mato a 100 hombres el solo ... En sus manos lleva algo demasiado grande para ser una espada, parecido a un gran pedazo de hierro","https://i.imgur.com/D8TIxdK.jpg"],
-        ["grifith","Griffith",100,70,100,40,"Griffith pareciera de la realeza, pero realmente es solo un plebello. Pero no uno cualquiera, su  sed de poder lo ha llevado a ser el lider de la banda del halcon ... y lo llevara a mucho mas","https://i.imgur.com/vLkayOk.jpg"],
+        ["griffith","Griffith",100,70,100,40,"Griffith pareciera de la realeza, pero realmente es solo un plebello. Pero no uno cualquiera, su  sed de poder lo ha llevado a ser el lider de la banda del halcon ... y lo llevara a mucho mas","https://i.imgur.com/vLkayOk.jpg"],
         ["casca","Casca",100,60,80,10,"La fiel casca es la unica mujer de la banda del halcon, pero no nos dejemos engañar porque es tambien uno de sus mas mortferos miembros","https://i.imgur.com/0NOmlhY.jpg"],
         ["jadeau","Jadeau",100,70,70,15,"Jadeau parecierano tan poderoso como el resto, pero posee una agilidad impresionante, es capaz de lanzar cuchillos con una precision milimetrica, no quisieras interponerte a el","https://i.imgur.com/CCmuMoq.jpg"]
     ],
@@ -13,20 +13,20 @@
         {"beg_pic":"https://i.imgur.com/RjDVsyZ.jpg"},
         {
             "guts":[
-                "message('Enviar mensaje a guts1');",
-                "message('Enviar mensaje a guts2');"
+                "Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo",
+                "A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos"
             ],
             "casca":[
-                "message('Enviar mensaje a casca1');",
-                "message('Enviar mensaje a casca2');"
+                "No puedes dejar que Zodd mate a Grifith",
+                "Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro"
             ],
             "griffith":[
-                "message('Enviar mensaje a griffith1');",
-                "message('Enviar mensaje a griffith2');"
+                "Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase",
+                "No puedes morir grifith, un futuro brillante te espera"
             ],
             "jadeau":[
-                "message('Enviar mensaje a jadeau1');",
-                "message('Enviar mensaje a jadeau2');"
+                "No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan",
+                "Debes proteger a tus amigos Jadeau"
             ]
         },
         {"end_story":"Zodd yace tirado en el piso, parece haber sido derrotado, pero ... un segundo ... se sigue moviendo."},
@@ -38,20 +38,20 @@
         {"beg_pic":"https://i.imgur.com/YWLYAfX.jpg"},
         {
             "guts":[
-                "message('Enviar mensaje a guts1');",
-                "message('Enviar mensaje a guts2');"
+                "Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo",
+                "A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos"
             ],
             "casca":[
-                "message('Enviar mensaje a casca1');",
-                "message('Enviar mensaje a casca2');"
+                "No puedes dejar que Zodd mate a Grifith",
+                "Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro"
             ],
             "griffith":[
-                "message('Enviar mensaje a griffith1');",
-                "message('Enviar mensaje a griffith2');"
+                "Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase",
+                "No puedes morir grifith, un futuro brillante te espera"
             ],
             "jadeau":[
-                "message('Enviar mensaje a jadeau1');",
-                "message('Enviar mensaje a jadeau2');"
+                "No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan",
+                "Debes proteger a tus amigos Jadeau"
             ]
         },        
         {"end_story":"Luego de un golpe rotundo, Zodd ha divisado el collar que lleva en el cuello Grifith, y exclama: No puede ser!  \n En ello un par de alas salen de su cuerpio y destroza el techo y se va volando, pero no sin antes advertirle a Guts: Si de verdad te consideras su amigo, estate dispuesto a sufrir la muerte mas dolorosa posible, porque cuando sus sueños se vean pisoteados ocurrirá el eclipse."},

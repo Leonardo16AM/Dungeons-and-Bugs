@@ -110,6 +110,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             if(mess=="") return;
             parties[player_party[(int)chatId]].notify_members($"@{message.From.Username}: {mess}", new long[] {chatId});
             return;
+            
         }
         
         if (messageText.StartsWith("/action") ){
