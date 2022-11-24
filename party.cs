@@ -87,6 +87,7 @@ class party:adventure{
                 string message=$"@{member.user} ha elegido a {file.heroes[hero_id][1]}:\n {file.heroes[hero_id][6]}\n Life: {member.life}\n Strength: {member.strength}\n Agility: {member.agility}\n Mana: {member.mana}";
                 string picture=file.heroes[hero_id][7];
                 heroSelection[hero_id]=true;
+                Thread.Sleep(500);
                 notify_members_with_picture( message,picture);
                 break;
             }
@@ -102,12 +103,9 @@ class party:adventure{
 
 
     public void print_turn(){ 
-        if(villain_life<=0){
-            end_stage();   
-            return;
-        }
         string message="Turno de: @";
         message+=members[turn].user;
+        Thread.Sleep(300);
         notify_members(message,new long[0]);
     }
 
@@ -120,9 +118,10 @@ class party:adventure{
         turn++;
         if(turn==members.Count())
             turn=0;
-            
-        Thread.Sleep(300);
-        print_turn();
+        
+        if(villain_life<=0){
+            end_stage();   
+        }
     }
 
 
@@ -139,7 +138,6 @@ class party:adventure{
 
     public void end_stage(){
         Thread.Sleep(1000);
-        Console.WriteLine("End stage");
         if(file.story[stage][5].end_pic=="null")
             notify_members((string)file.story[stage][4].end_story,new long[0]);
         else
