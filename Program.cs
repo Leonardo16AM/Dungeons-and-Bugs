@@ -118,6 +118,11 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             parties[player_party[(int)chatId]].end_turn();
             return;
         }
+
+        if (messageText.StartsWith("/variables") ){
+            parties[player_party[(int)chatId]].print_vars();
+            return;
+        }
         
         send_message(botClient,(int)chatId,"Unknown command");
     

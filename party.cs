@@ -55,6 +55,41 @@ class party:adventure{
             start();
     }
 
+    public void print_vars(){
+        Dictionary<string,int>vars=context();
+        string vs="Variables: \n";
+        foreach(var prop in vars){
+            vs+=$"{prop.Key}: {prop.Value} \n";
+        }
+        notify_members(vs,new long[0]);
+    }
+
+
+    public Dictionary<string,int> context(){
+        Dictionary<string,int>ret=new Dictionary<string,int>();
+        foreach(player p in members){
+            Dictionary<string,int>player_dict=p.context();
+            foreach(var prop in player_dict){
+                ret.Add(prop.Key,prop.Value);
+            }
+        }
+        return ret;
+    }
+
+    public void from_context(Dictionary<string,int>cont){
+        char[] delims={'.'};
+        foreach(var s in cont){
+            string[] tokens=s.Key.Split(delims);
+            for(int i=0;i<members.Count();i++){
+                if( tokens[0]==members[i].h_name ){
+                    members[i].upd_param(tokens[1],s.Value);
+                    break;
+                }
+            }
+        }
+    }
+
+
 
     public void start(){
         isStarted=true;
