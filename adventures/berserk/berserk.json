@@ -13,20 +13,20 @@
         {"beg_pic":"https://i.imgur.com/RjDVsyZ.jpg"},
         {
             "guts":[
-                "Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo",
-                "A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos"
+                "notify 'Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo';",
+                "notify 'A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos';"
             ],
             "casca":[
-                "No puedes dejar que Zodd mate a Grifith",
-                "Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro"
+                "notify 'No puedes dejar que Zodd mate a Grifith';",
+                "notify 'Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro';"
             ],
             "griffith":[
-                "Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase",
-                "No puedes morir grifith, un futuro brillante te espera"
+                "notify 'Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase';",
+                "notify 'No puedes morir grifith, un futuro brillante te espera';"
             ],
             "jadeau":[
-                "No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan",
-                "Debes proteger a tus amigos Jadeau"
+                "notify 'No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan';",
+                "notify 'Debes proteger a tus amigos Jadeau';"
             ]
         },
         {"end_story":"Zodd yace tirado en el piso, parece haber sido derrotado, pero ... un segundo ... se sigue moviendo."},
@@ -38,20 +38,20 @@
         {"beg_pic":"https://i.imgur.com/YWLYAfX.jpg"},
         {
             "guts":[
-                "Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo",
-                "A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos"
+                "notify 'Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo';",
+                "notify 'A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos';"
             ],
             "casca":[
-                "No puedes dejar que Zodd mate a Grifith",
-                "Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro"
+                "notify 'No puedes dejar que Zodd mate a Grifith';",
+                "notify 'Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro';"
             ],
             "griffith":[
-                "Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase",
-                "No puedes morir grifith, un futuro brillante te espera"
+                "notify 'Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase';",
+                "notify 'No puedes morir grifith, un futuro brillante te espera';"
             ],
             "jadeau":[
-                "No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan",
-                "Debes proteger a tus amigos Jadeau"
+                "notify 'No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan';",
+                "notify 'Debes proteger a tus amigos Jadeau';"
             ]
         },        
         {"end_story":"Luego de un golpe rotundo, Zodd ha divisado el collar que lleva en el cuello Grifith, y exclama: No puede ser!  \n En ello un par de alas salen de su cuerpio y destroza el techo y se va volando, pero no sin antes advertirle a Guts: Si de verdad te consideras su amigo, estate dispuesto a sufrir la muerte mas dolorosa posible, porque cuando sus sueños se vean pisoteados ocurrirá el eclipse."},
