@@ -55,13 +55,13 @@ class party:adventure{
             start();
     }
 
-    public void print_vars(){
+    public void print_vars(int chat_id){
         Dictionary<string,int>vars=context();
         string vs="Variables: \n";
         foreach(var prop in vars){
             vs+=$"{prop.Key}: {prop.Value} \n";
         }
-        notify_members(vs,new long[0]);
+        tlg.send_message(botClient,chat_id,vs);
     }
 
 

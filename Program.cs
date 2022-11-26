@@ -120,7 +120,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         }
 
         if (messageText.StartsWith("/variables") ){
-            parties[player_party[(int)chatId]].print_vars();
+            parties[player_party[(int)chatId]].print_vars((int)chatId);
             return;
         }
         
