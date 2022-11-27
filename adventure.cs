@@ -11,4 +11,10 @@ class adventure{
         json = File.ReadAllText($"adventures/{name}/berserk.json");
         file = JsonConvert.DeserializeObject(json);
     }
+
+    public int count_dynamic(dynamic obj){
+        int cnt=0;
+        foreach(var i in obj){cnt++;}
+        return cnt;
+    }
 }

@@ -90,7 +90,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                 send_message(botClient,(int)chatId,"You have to host an adventure first, type new_adventure to host it", (int)message.MessageId);
                 return;
             }
-            parties[player_party[(int)chatId]].start();
+            parties[player_party[(int)chatId]].start_adventure();
             return;
         }
 

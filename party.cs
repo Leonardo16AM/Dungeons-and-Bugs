@@ -7,7 +7,7 @@ class party:adventure{
     public int id,leader,turn=0,chosen_heroes=0;
     public List<player> members;
     bool[] heroSelection;
-    public bool isStarted = false;
+    public bool isStarted = false, finished =false;
     ITelegramBotClient botClient;
 
     int stage=0;
@@ -20,10 +20,7 @@ class party:adventure{
         this.botClient=botClient;
         this.leader=leader;
         members=new List<player>();
-        int n = 0;
-        foreach(var hero in file.heroes)
-            n++;
-        heroSelection = new bool[n];
+        heroSelection = new bool[count_dynamic(file.heroes)];
         members.Add(new player(leader,leader_name,leader_user));
     }
 
@@ -53,7 +50,7 @@ class party:adventure{
         string message=$"@{user} joined the adventure";
         notify_members( message,new long[0]);
         if(members.Count()==heroSelection.Length)
-            start();
+            start_adventure();
     }
 
     public void print_vars(int chat_id){
@@ -93,7 +90,7 @@ class party:adventure{
 
 
 
-    public void start(){
+    public void start_adventure(){
         isStarted=true;
         string message="La aventura ha comenzado!";
         notify_members( message, new long[0]);
@@ -143,7 +140,7 @@ class party:adventure{
 
 
     public void encounter(player curr){
-        int enc=rnd.Next(0, 2);
+        int enc=rnd.Next(0, count_dynamic(file.story[stage][3][curr.h_ref]));
         string encount=(string)file.story[stage][3][curr.h_ref][enc];
         Thread.Sleep(300);
         notify_members(encount,new long[0]);
@@ -170,7 +167,7 @@ class party:adventure{
         if(vill.life<=0){
             end_stage();   
         }
-        print_turn();
+        if(!finished)print_turn();
     }
 
 
@@ -185,6 +182,14 @@ class party:adventure{
         if(beg)print_turn();
     }
 
+
+    public void end_game(){
+        Thread.Sleep(500);
+        notify_members("El juego ha terminado",new long[0]);
+        finished=true;
+    }
+
+
     public void end_stage(){
         Thread.Sleep(1000);
         if(file.story[stage][5].end_pic=="null")
@@ -192,6 +197,10 @@ class party:adventure{
         else
             notify_members_with_picture((string)file.story[stage][4].end_story,(string)file.story[stage][5].end_pic); 
         stage++;
+        if(stage==count_dynamic(file.story)){
+            end_game();
+            return;
+        }
         start_stage();
     }
 
