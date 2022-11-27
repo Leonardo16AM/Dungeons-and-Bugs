@@ -11,10 +11,11 @@ class party:adventure{
     ITelegramBotClient botClient;
 
     int stage=0;
-    int villain_life=0;
+    villain  vill=new villain();
     Random rnd = new Random();
 
     public party(ITelegramBotClient botClient,int id,string adv_name,int leader,string leader_name,string leader_user):base(adv_name){
+        vill.c_name="Villain";
         this.id=id;
         this.botClient=botClient;
         this.leader=leader;
@@ -58,6 +59,7 @@ class party:adventure{
     public void print_vars(int chat_id){
         Dictionary<string,int>vars=context();
         string vs="Variables: \n";
+        vs+=$"{vill.c_name}.life: {vill.life} \n";
         foreach(var prop in vars){
             vs+=$"{prop.Key}: {prop.Value} \n";
         }
@@ -81,7 +83,7 @@ class party:adventure{
         foreach(var s in cont){
             string[] tokens=s.Key.Split(delims);
             for(int i=0;i<members.Count();i++){
-                if( tokens[0]==members[i].h_name ){
+                if( tokens[0]==members[i].c_name ){
                     members[i].upd_param(tokens[1],s.Value);
                     break;
                 }
@@ -115,14 +117,14 @@ class party:adventure{
             if(member.chat_id==chat_id){
                 chosen_heroes++;
                 member.h_ref=file.heroes[hero_id][0];
-                member.h_name=file.heroes[hero_id][1];
+                member.c_name=file.heroes[hero_id][1];
                 member.h_hist=file.heroes[hero_id][6];
 
                 member.life=file.heroes[hero_id][2];
                 member.strength=file.heroes[hero_id][3];
                 member.agility=file.heroes[hero_id][4];
                 member.mana=file.heroes[hero_id][5];
-                string message=$"@{member.user} ha elegido a {member.h_name}:\n {member.h_hist}\n Life: {member.life}\n Strength: {member.strength}\n Agility: {member.agility}\n Mana: {member.mana}";
+                string message=$"@{member.user} ha elegido a {member.c_name}:\n {member.h_hist}\n Life: {member.life}\n Strength: {member.strength}\n Agility: {member.agility}\n Mana: {member.mana}";
                 string picture=file.heroes[hero_id][7];
                 heroSelection[hero_id]=true;
                 notify_members_with_picture( message,picture);
@@ -156,7 +158,7 @@ class party:adventure{
     }
 
     public void action(){
-        villain_life-=100;
+        vill.life-=100;
         notify_members("Se le han hecho 100 puntos de daño al enemigo",new long[0]);
     }
 
@@ -165,7 +167,7 @@ class party:adventure{
         if(turn==members.Count())
             turn=0;
         
-        if(villain_life<=0){
+        if(vill.life<=0){
             end_stage();   
         }
         print_turn();
@@ -175,11 +177,11 @@ class party:adventure{
 
     public void start_stage(bool beg=false){
         Thread.Sleep(1000);
-        villain_life=(int)file.story[stage][0].life;
+        vill.life=(int)file.story[stage][0].life;
         if(file.story[stage][2].beg_pic=="null")
             notify_members(file.story[stage][1].beg_story,new long[0]);
         else
-            notify_members_with_picture((string)file.story[stage][1].beg_story+$"\n Life: {villain_life}",(string)file.story[stage][2].beg_pic); 
+            notify_members_with_picture((string)file.story[stage][1].beg_story+$"\n Life: {vill.life}",(string)file.story[stage][2].beg_pic); 
         if(beg)print_turn();
     }
 

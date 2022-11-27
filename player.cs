@@ -1,30 +1,35 @@
-
-class hero{
-
-    public string h_name,h_ref,h_hist;
-    public int h_id;
+class character{
     public int life,strength,agility,mana;
-    Dictionary<string,int>others=new Dictionary<string,int>();
+    public Dictionary<string,int>others=new Dictionary<string,int>();
+    public string c_name;
 
     public Dictionary<string,int> context(){
         Dictionary<string,int>ret=new Dictionary<string,int>();
-        ret.Add($"{h_name}.life",life);
-        ret.Add($"{h_name}.strength",strength);
-        ret.Add($"{h_name}.agility",agility);
-        ret.Add($"{h_name}.mana",mana);
+        ret.Add($"{c_name}.life",life);
+        ret.Add($"{c_name}.strength",strength);
+        ret.Add($"{c_name}.agility",agility);
+        ret.Add($"{c_name}.mana",mana);
         foreach(var prop in others){
-            ret.Add($"{h_name}.{prop.Key}",prop.Value);
+            ret.Add($"{c_name}.{prop.Key}",prop.Value);
         }
         return ret;
     }
 
-    public void upd_param( string s ,int i){
-        if(s=="life")life=i;
-        if(s=="strength")strength=i;
-        if(s=="agility")agility=i;
-        if(s=="mana")mana=i;
+    public void upd_param( string s ,int val){
+        if(s=="life")life=val;
+        if(s=="strength")strength=val;
+        if(s=="agility")agility=val;
+        if(s=="mana")mana=val;
     }
+}
 
+class villain:character{}
+
+class hero:character{
+
+    public string h_ref,h_hist;
+    public int h_id;
+    Dictionary<string,string>actions=new Dictionary<string, string>();
 }
 
 
