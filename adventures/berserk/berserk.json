@@ -1,5 +1,6 @@
 {
     "name":"Berserk, la Edad Dorada",
+    "token": "berserk",
     "heroes":[
         {
             "token": "guts",

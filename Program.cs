@@ -14,6 +14,7 @@ var receiverOptions = new ReceiverOptions{
 
 List<party> parties=new List<party>();
 Dictionary<int,int>player_party=new Dictionary<int, int>();
+DataAdventure.loadData();
 int current_party=1000000;
 
 void add_party(ITelegramBotClient botClient,int leader,string adv_name,string leader_name, string leader_user){
@@ -112,7 +113,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             return;
             
         }
-        
+
         if (messageText.StartsWith("/action") ){
             parties[player_party[(int)chatId]].action();
             parties[player_party[(int)chatId]].end_turn();
