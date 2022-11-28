@@ -98,7 +98,7 @@ class party:adventure{
         int cont=0;        
         foreach(var hero in file.heroes){
             cont++;
-            message+=cont.ToString()+" - "+hero[1]+"\n";
+            message+=cont.ToString()+" - "+hero.name+"\n";
         }
         message+="Para elegir un heroe escriba:\n /choose_hero [numero]";
         notify_members( message, new long[0]);
@@ -113,16 +113,16 @@ class party:adventure{
         foreach(player member in members){
             if(member.chat_id==chat_id){
                 chosen_heroes++;
-                member.h_ref=file.heroes[hero_id][0];
-                member.c_name=file.heroes[hero_id][1];
-                member.h_hist=file.heroes[hero_id][6];
+                member.h_ref=file.heroes[hero_id].token;
+                member.c_name=file.heroes[hero_id].name;
+                member.h_hist=file.heroes[hero_id].desc;
 
-                member.life=file.heroes[hero_id][2];
-                member.strength=file.heroes[hero_id][3];
-                member.agility=file.heroes[hero_id][4];
-                member.mana=file.heroes[hero_id][5];
+                member.life=file.heroes[hero_id].life;
+                member.strength=file.heroes[hero_id].strength;
+                member.agility=file.heroes[hero_id].agility;
+                member.mana=file.heroes[hero_id].mana;
                 string message=$"@{member.user} ha elegido a {member.c_name}:\n {member.h_hist}\n Life: {member.life}\n Strength: {member.strength}\n Agility: {member.agility}\n Mana: {member.mana}";
-                string picture=file.heroes[hero_id][7];
+                string picture=file.heroes[hero_id].img;
                 heroSelection[hero_id]=true;
                 notify_members_with_picture( message,picture);
                 Thread.Sleep(1000);
@@ -140,8 +140,8 @@ class party:adventure{
 
 
     public void encounter(player curr){
-        int enc=rnd.Next(0, count_dynamic(file.story[stage][3][curr.h_ref]));
-        string encount=(string)file.story[stage][3][curr.h_ref][enc];
+        int enc=rnd.Next(0, count_dynamic(file.story[stage].events[curr.h_ref]));
+        string encount=(string)file.story[stage].events[curr.h_ref][enc];
         Thread.Sleep(300);
         notify_members(encount,new long[0]);
     }
@@ -174,11 +174,11 @@ class party:adventure{
 
     public void start_stage(bool beg=false){
         Thread.Sleep(1000);
-        vill.life=(int)file.story[stage][0].life;
-        if(file.story[stage][2].beg_pic=="null")
-            notify_members(file.story[stage][1].beg_story,new long[0]);
+        vill.life=(int)file.story[stage].villain.life;
+        if(file.story[stage].beg_pic=="null")
+            notify_members(file.story[stage].beg_story,new long[0]);
         else
-            notify_members_with_picture((string)file.story[stage][1].beg_story+$"\n Life: {vill.life}",(string)file.story[stage][2].beg_pic); 
+            notify_members_with_picture((string)file.story[stage].beg_story+$"\n Life: {vill.life}",(string)file.story[stage].beg_pic); 
         if(beg)print_turn();
     }
 
@@ -192,10 +192,10 @@ class party:adventure{
 
     public void end_stage(){
         Thread.Sleep(1000);
-        if(file.story[stage][5].end_pic=="null")
-            notify_members((string)file.story[stage][4].end_story,new long[0]);
+        if(file.story[stage].end_pic=="null")
+            notify_members((string)file.story[stage].end_story,new long[0]);
         else
-            notify_members_with_picture((string)file.story[stage][4].end_story,(string)file.story[stage][5].end_pic); 
+            notify_members_with_picture((string)file.story[stage].end_story,(string)file.story[stage].end_pic); 
         stage++;
         if(stage==count_dynamic(file.story)){
             end_game();

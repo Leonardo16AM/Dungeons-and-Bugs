@@ -1,73 +1,103 @@
 {
     "name":"Berserk, la Edad Dorada",
     "heroes":[
-        ["guts","Guts",100,100,70,20,
-        "Guts es el mercenario mas temido de todo Midland, algunos lo conocen como el caballero negro, cuenta la leyenda que una vez mato a 100 hombres el solo ... En sus manos lleva algo demasiado grande para ser una espada, parecido a un gran pedazo de hierro",
-        "https://i.imgur.com/D8TIxdK.jpg",
-        ["","",""]],
-        ["griffith","Griffith",100,70,100,40,
-        "Griffith pareciera de la realeza, pero realmente es solo un plebello. Pero no uno cualquiera, su  sed de poder lo ha llevado a ser el lider de la banda del halcon ... y lo llevara a mucho mas",
-        "https://i.imgur.com/vLkayOk.jpg",
-        ["","",""]],
-        ["casca","Casca",100,60,80,10,
-        "La fiel casca es la unica mujer de la banda del halcon, pero no nos dejemos engañar porque es tambien uno de sus mas mortferos miembros",
-        "https://i.imgur.com/0NOmlhY.jpg",
-        ["","",""]],
-        ["jadeau","Jadeau",100,70,70,15,
-        "Jadeau parecierano tan poderoso como el resto, pero posee una agilidad impresionante, es capaz de lanzar cuchillos con una precision milimetrica, no quisieras interponerte a el",
-        "https://i.imgur.com/CCmuMoq.jpg",
-        ["","",""]]
+        {
+            "token": "guts",
+            "name": "Guts",
+            "life": 100,
+            "strength": 100,
+            "agility": 70,
+            "mana": 20,
+            "desc": "Guts es el mercenario mas temido de todo Midland, algunos lo conocen como el caballero negro, cuenta la leyenda que una vez mato a 100 hombres el solo ... En sus manos lleva algo demasiado grande para ser una espada, parecido a un gran pedazo de hierro",
+            "img": "https://i.imgur.com/D8TIxdK.jpg",
+            "power": ["","",""]
+        },
+        {
+            "token": "griffith",
+            "name": "Griffith",
+            "life": 100,
+            "strength": 70,
+            "agility": 100,
+            "mana": 40,
+            "desc": "Griffith pareciera de la realeza, pero realmente es solo un plebello. Pero no uno cualquiera, su  sed de poder lo ha llevado a ser el lider de la banda del halcon ... y lo llevara a mucho mas",
+            "img": "https://i.imgur.com/vLkayOk.jpg",
+            "power": ["","",""]
+        },
+        {
+            "token": "casca",
+            "name": "Casca",
+            "life": 100,
+            "strength": 60,
+            "agility": 80,
+            "mana": 10,
+            "desc": "La fiel casca es la unica mujer de la banda del halcon, pero no nos dejemos engañar porque es tambien uno de sus mas mortferos miembros",
+            "img": "https://i.imgur.com/0NOmlhY.jpg",
+            "power":["","",""]
+        },
+        {
+            "token": "jadeau",
+            "name": "Jadeau",
+            "life": 100,
+            "strength": 70,
+            "agility": 70,
+            "mana": 15,
+            "desc": "Jadeau parecierano tan poderoso como el resto, pero posee una agilidad impresionante, es capaz de lanzar cuchillos con una precision milimetrica, no quisieras interponerte a el",
+            "img": "https://i.imgur.com/CCmuMoq.jpg",
+            "power": ["","",""]
+        }
     ],
     "story":[
-        [
-        {"life":200,"strength":150,"agility":50,"mana":100},
-        {"beg_story":"La banda del halcon se ha encontrado en las mazmorras de un castillo a alguien que parece ser Zodd el inmortal, quien cuentan las leyendas que ha matado a batallones completos, debeis luchar y derrotarlo, vuestra vida depende de ello!"},
-        {"beg_pic":"https://i.imgur.com/RjDVsyZ.jpg"},
         {
-            "guts":[
-                "notify 'Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo';",
-                "notify 'A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos';"
-            ],
-            "casca":[
-                "notify 'No puedes dejar que Zodd mate a Grifith';",
-                "notify 'Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro';"
-            ],
-            "griffith":[
-                "notify 'Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase';",
-                "notify 'No puedes morir grifith, un futuro brillante te espera';"
-            ],
-            "jadeau":[
-                "notify 'No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan';",
-                "notify 'Debes proteger a tus amigos Jadeau';"
-            ]
+            "villain": {"life":200,"strength":150,"agility":50,"mana":100},
+            "beg_story":"La banda del halcon se ha encontrado en las mazmorras de un castillo a alguien que parece ser Zodd el inmortal, quien cuentan las leyendas que ha matado a batallones completos, debeis luchar y derrotarlo, vuestra vida depende de ello!",
+            "beg_pic":"https://i.imgur.com/RjDVsyZ.jpg",
+            "events" :{
+                "guts":[
+                    "notify 'Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo';",
+                    "notify 'A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos';"
+                ],
+                "casca":[
+                    "notify 'No puedes dejar que Zodd mate a Grifith';",
+                    "notify 'Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro';"
+                ],
+                "griffith":[
+                    "notify 'Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase';",
+                    "notify 'No puedes morir grifith, un futuro brillante te espera';"
+                ],
+                "jadeau":[
+                    "notify 'No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan';",
+                    "notify 'Debes proteger a tus amigos Jadeau';"
+                ]
+            },
+            "end_story":"Zodd yace tirado en el piso, parece haber sido derrotado, pero ... un segundo ... se sigue moviendo.",
+            "end_pic":"null"
         },
-        {"end_story":"Zodd yace tirado en el piso, parece haber sido derrotado, pero ... un segundo ... se sigue moviendo."},
-        {"end_pic":"null"}
-        ],
-        [
-        {"life":300,"strength":200,"agility":30,"mana":50},
-        {"beg_story":"Zood se levanta y su cuerpo comienza a crecer, se hace mas peludo, y de su cabeza empiezan a salir cuernos gigantes, no parece ser humano, parece ... un demonio ... Derrotadlo!"},
-        {"beg_pic":"https://i.imgur.com/YWLYAfX.jpg"},
         {
-            "guts":[
-                "notify 'Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo';",
-                "notify 'A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos';"
-            ],
-            "casca":[
-                "notify 'No puedes dejar que Zodd mate a Grifith';",
-                "notify 'Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro';"
-            ],
-            "griffith":[
-                "notify 'Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase';",
-                "notify 'No puedes morir grifith, un futuro brillante te espera';"
-            ],
-            "jadeau":[
-                "notify 'No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan';",
-                "notify 'Debes proteger a tus amigos Jadeau';"
-            ]
-        },        
-        {"end_story":"Luego de un golpe rotundo, Zodd ha divisado el collar que lleva en el cuello Grifith, y exclama: No puede ser!  \n En ello un par de alas salen de su cuerpio y destroza el techo y se va volando, pero no sin antes advertirle a Guts: Si de verdad te consideras su amigo, estate dispuesto a sufrir la muerte mas dolorosa posible, porque cuando sus sueños se vean pisoteados ocurrirá el eclipse."},
-        {"end_pic":"https://i.imgur.com/SQlcxw7.png"}
-        ]
+            "villain": {"life":300,"strength":200,"agility":30,"mana":50},
+            "beg_story":"Zood se levanta y su cuerpo comienza a crecer, se hace mas peludo, y de su cabeza empiezan a salir cuernos gigantes, no parece ser humano, parece ... un demonio ... Derrotadlo!",
+            "beg_pic":"https://i.imgur.com/YWLYAfX.jpg",
+            "events": {
+                "guts":[
+                    "notify 'Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo';",
+                    "notify 'A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos';"
+                ],
+                "casca":[
+                    "notify 'No puedes dejar que Zodd mate a Grifith';",
+                    "notify 'Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro';"
+                ],
+                "griffith":[
+                    "notify 'Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase';",
+                    "notify 'No puedes morir grifith, un futuro brillante te espera';"
+                ],
+                "jadeau":[
+                    "notify 'No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan';",
+                    "notify 'Debes proteger a tus amigos Jadeau';"
+                ]
+            },        
+            "end_story":"Luego de un golpe rotundo, Zodd ha divisado el collar que lleva en el cuello Grifith, y exclama: No puede ser!  \n En ello un par de alas salen de su cuerpio y destroza el techo y se va volando, pero no sin antes advertirle a Guts: Si de verdad te consideras su amigo, estate dispuesto a sufrir la muerte mas dolorosa posible, porque cuando sus sueños se vean pisoteados ocurrirá el eclipse.",
+            "end_pic":"https://i.imgur.com/SQlcxw7.png"
+        }
+        
+        
     ]
 }
