@@ -63,6 +63,11 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
         Console.WriteLine($"{chatId}({message.From.FirstName}): {messageText}");
 
+        if(messageText=="/available_adventures"){
+            DataAdventure.printAllAdventures(botClient, chatId, message.MessageId);
+            return;
+        }
+
         if (messageText.StartsWith("/new_adventure")){	
             string adv_name=messageText.Substring(15);
             add_party(botClient,(int)chatId,adv_name,message.From.FirstName,message.From.Username);
@@ -103,8 +108,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         if(!player_party.ContainsKey((int)chatId)){
             send_message(botClient,(int)chatId,"You are not in any adventure, create one or join one", message.MessageId);
             return;
-        }
-
+        }        
 
         if (messageText.StartsWith("/chat") ){
             string mess=messageText.Substring(5);
