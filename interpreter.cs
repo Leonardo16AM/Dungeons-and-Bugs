@@ -97,7 +97,7 @@ class parser{
                 advance();
                 return new token("SCOL",";");
             }
-
+            
             error();
         }
         return new token("EOF","#");
@@ -105,16 +105,21 @@ class parser{
 }
 
 class interpreter{
+    Dictionary<string,int>context;
     parser lex;
     token current_token;
     string code;
     ITelegramBotClient botClient;
 
-    public interpreter(ITelegramBotClient botClient,string s){
+    public interpreter(ITelegramBotClient botClient,string s,Dictionary<string,int>cont=null){
+        this.botClient=botClient;
         code=s;
+        context=new Dictionary<string, int>();
+        if(cont!=null)context=cont;
         lex=new parser(code);
         current_token=lex.get_next_token();
     }
+
     public void error(){
         throw new Exception("Invalid syntax");
     }
@@ -145,6 +150,7 @@ class interpreter{
         return result;
     }
     public int expr(){
+        Console.WriteLine(context["Guts.life"]);
         int result = term();
         while(current_token.type=="PLUS" || current_token.type=="MINUS"){
             token token = current_token;
