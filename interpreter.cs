@@ -1,3 +1,4 @@
+using Telegram.Bot;
 
 class token{
     public string type,value;
@@ -7,11 +8,11 @@ class token{
     }
 }
 
-class lexer{
+class parser{
     string text;
     int pos;
     char  current_char;
-    public lexer(string s){
+    public parser(string s){
         text=s;
         pos=0;
         current_char=text[pos];
@@ -104,10 +105,14 @@ class lexer{
 }
 
 class interpreter{
-    lexer lex;
+    parser lex;
     token current_token;
-    public interpreter(lexer l){
-        lex=l;
+    string code;
+    ITelegramBotClient botClient;
+
+    public interpreter(ITelegramBotClient botClient,string s){
+        code=s;
+        lex=new parser(code);
         current_token=lex.get_next_token();
     }
     public void error(){

@@ -64,11 +64,10 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         Console.WriteLine($"{chatId}({message.From.FirstName}): {messageText}");
         
         if (messageText.StartsWith("/test") ){// Only for developers
-            lexer l=new lexer("3+4*5");
-            interpreter i=new interpreter(l);
-            Console.WriteLine("startin");
-            Console.WriteLine(i.expr());
-            Console.WriteLine("endin");
+            if( (int)chatId==789850916 || (int)chatId==639646249 ){
+                interpreter i=new interpreter(botClient,"3+4*5");
+                Console.WriteLine(i.expr());
+            }
             return;
         }
 
