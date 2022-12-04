@@ -32,6 +32,24 @@ class parser{
             advance();
     }
 
+    public bool same_token(string s){
+        int wr=0;
+        bool can=true;
+        while(wr<s.Count()){
+            if(current_char!=s[wr]){can=false;break;}
+            advance();
+            wr++;
+        }
+        if(!can){
+            while(wr!=0){
+                wr--;
+                pos--;
+            }
+            current_char=text[pos];
+        }
+        return can;
+    }
+
     public int integer(){
         string result="";
         while(current_char!='#' && current_char>='0' && current_char<='9'){
@@ -43,6 +61,7 @@ class parser{
 
     public string strin(){
         string result="";
+        advance();
         while(current_char!='"' && current_char!='#'){
             result+=current_char;
             advance();
@@ -97,7 +116,11 @@ class parser{
                 advance();
                 return new token("SCOL",";");
             }
-            
+            if(same_token("notify")){
+                return new token("NOTI","notify");
+            }
+            Console.WriteLine(pos);
+            Console.WriteLine(current_char);
             error();
         }
         return new token("EOF","#");
@@ -174,5 +197,39 @@ class interpreter{
         }
         return result;
     }
+
+    public void line(){
+        token token = current_token;
+        Console.WriteLine(current_token.type+" "+current_token.value);
+        if(token.type=="NOTI"){
+            eat("NOTI");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("LPAREN");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("STRING");
+            Console.WriteLine(current_token.value+" "+current_token.value);
+            eat("RPAREN");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("SCOL");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+        }      
+    }
+
+    public void cacho(){
+        while(current_token.type!="}" && current_token.type!="EOF" ){
+            token token = current_token;
+            if(token.type=="IF"){
+                eat("IF");
+                continue;
+            }
+            if(token.type=="WHILE"){
+                eat("WHILE");
+                continue;
+            }
+            line();
+        }
+    }
+
+
 }
 
