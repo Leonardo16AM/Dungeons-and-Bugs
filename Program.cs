@@ -62,6 +62,15 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         var chatId = message.Chat.Id;
 
         Console.WriteLine($"{chatId}({message.From.FirstName}): {messageText}");
+        
+        if (messageText.StartsWith("/test") ){// Only for developers
+            lexer l=new lexer("3+4*5");
+            interpreter i=new interpreter(l);
+            Console.WriteLine("startin");
+            Console.WriteLine(i.expr());
+            Console.WriteLine("endin");
+            return;
+        }
 
         if(messageText=="/available_adventures"){
             DataAdventure.printAllAdventures(botClient, chatId, message.MessageId);
@@ -128,7 +137,6 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             parties[player_party[(int)chatId]].print_vars((int)chatId);
             return;
         }
-        
         send_message(botClient,(int)chatId,"Unknown command");
     
     }catch (Exception e){
