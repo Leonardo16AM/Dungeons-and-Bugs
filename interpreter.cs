@@ -131,8 +131,18 @@ class interpreter{
     }
     public int factor(){
         token token = current_token;
-        eat("INTEGER");
-        return int.Parse(token.value);
+        
+        if(token.type == "INTEGER"){
+            eat("INTEGER");
+            return int.Parse(token.value);
+        }
+        if(token.type == "LPAREN"){
+            eat("LPAREN");
+            int result = expr();
+            eat("RPAREN");
+            return result;
+        }
+        return 0;
     }
     public int term(){
         int result = factor();
@@ -150,7 +160,6 @@ class interpreter{
         return result;
     }
     public int expr(){
-        Console.WriteLine(context["Guts.life"]);
         int result = term();
         while(current_token.type=="PLUS" || current_token.type=="MINUS"){
             token token = current_token;
