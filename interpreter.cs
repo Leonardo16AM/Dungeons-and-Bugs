@@ -1,145 +1,24 @@
 using Telegram.Bot;
 
-class token{
-    public string type,value;
-    public token(string ty,string val){
-        type = ty;
-        value = val;
-    }
-}
-
-class parser{
-    string text;
-    int pos;
-    char  current_char;
-    public parser(string s){
-        text=s;
-        pos=0;
-        current_char=text[pos];
-    }
-    public void error(){
-        throw new Exception("Invalid character");
-    }
-    public void advance(){
-        pos++;
-        if(pos>text.Length-1)
-            current_char='#';
-        else
-            current_char=text[pos];
-    }
-    public void skip(){
-        while(current_char!='#' && (current_char==' ' || current_char=='\t' || current_char=='\n' || current_char=='\r') )
-            advance();
-    }
-
-    public bool same_token(string s){
-        int wr=0;
-        bool can=true;
-        while(wr<s.Count()){
-            if(current_char!=s[wr]){can=false;break;}
-            advance();
-            wr++;
-        }
-        if(!can){
-            while(wr!=0){
-                wr--;
-                pos--;
-            }
-            current_char=text[pos];
-        }
-        return can;
-    }
-
-    public int integer(){
-        string result="";
-        while(current_char!='#' && current_char>='0' && current_char<='9'){
-            result+=current_char;
-            advance();
-        }
-        return int.Parse(result);
-    }
-
-    public string strin(){
-        string result="";
-        advance();
-        while(current_char!='"' && current_char!='#'){
-            result+=current_char;
-            advance();
-        }
-        advance();
-        return result;
-    }
-
-    public token get_next_token(){
-        while(current_char!='#'){
-            if(current_char==' ' || current_char=='\t' || current_char=='\n' || current_char=='\r')
-                skip();
-            if(current_char>='0' && current_char<='9')
-                return new token("INTEGER",integer().ToString());
-            
-            if(current_char=='"')
-                return new token("STRING",strin());
-
-            if(current_char=='+'){
-                advance();
-                return new token("PLUS","+");
-            }
-            if(current_char=='-'){
-                advance();
-                return new token("MINUS","-");
-            }
-            if(current_char=='*'){
-                advance();
-                return new token("MUL","*");
-            }
-            if(current_char=='/'){
-                advance();
-                return new token("DIV","/");
-            }
-            if(current_char=='('){
-                advance();
-                return new token("LPAREN","(");
-            }
-            if(current_char==')'){
-                advance();
-                return new token("RPAREN",")");
-            }
-            if(current_char=='{'){
-                advance();
-                return new token("LKEY","{");
-            }
-            if(current_char=='}'){
-                advance();
-                return new token("RKEY","}");
-            }
-            if(current_char==';'){
-                advance();
-                return new token("SCOL",";");
-            }
-            if(same_token("notify")){
-                return new token("NOTI","notify");
-            }
-            Console.WriteLine(pos);
-            Console.WriteLine(current_char);
-            error();
-        }
-        return new token("EOF","#");
-    }
-}
-
 class interpreter{
     Dictionary<string,int>context;
-    parser lex;
+    lexer lex;
     token current_token;
     string code;
     ITelegramBotClient botClient;
 
-    public interpreter(ITelegramBotClient botClient,string s,Dictionary<string,int>cont=null){
+    public interpreter(ITelegramBotClient botClient,string s,Dictionary<string,int>cont){
         this.botClient=botClient;
         code=s;
         context=new Dictionary<string, int>();
-        if(cont!=null)context=cont;
-        lex=new parser(code);
+
+        List<string>vars=new List<string>();
+        foreach(var item in cont){
+            context.Add(item.Key,item.Value);
+            vars.Add(item.Key);
+        }
+        lex=new lexer(code,vars);
+    
         current_token=lex.get_next_token();
     }
 
@@ -207,12 +86,34 @@ class interpreter{
             eat("LPAREN");
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("STRING");
-            Console.WriteLine(current_token.value+" "+current_token.value);
+            Console.WriteLine(current_token.type+" "+current_token.value);
             eat("RPAREN");
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("SCOL");
-            Console.WriteLine(current_token.type+" "+current_token.value);
         }      
+        if(token.type=="STR"){
+            eat("STR");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("VAR");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("EQ");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("STRING");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("SCOL");
+        }          
+        
+        if(token.type=="INT"){
+            eat("INT");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("VAR");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("EQ");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("INTEGER");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("SCOL");
+        }       
     }
 
     public void cacho(){
