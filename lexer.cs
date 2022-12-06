@@ -7,8 +7,8 @@ class token{
 }
 
 class lexer{
-    List<string>token_names=new List<string>(){"PLUS","MINUS","MUL","DIV","EQ","LPAREN","RPAREN","LKEY","RKEY","SCOL"};
-    List<char>token_char=new List<char>(){'+','-','*','/','=','(',')','{','}',';'};
+    List<string>token_names=new List<string>(){"PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY","RKEY","SCOL","AND","OR","GT","LT","GET","LET","DIF","EQ","NOTI"};
+    List<string>token_string=new List<string>(){"+","-","*","/","=","(",")","{","}",";","&","|",">","<",">=","<=","!=","==","notify "};
 
     string text,last_token;
     int pos;
@@ -114,16 +114,10 @@ class lexer{
             if(current_char=='"')
                 return new token("STRING",strin());
 
-
             for(int i=0;i<token_names.Count();i++){
-                if(token_char[i]==current_char){
-                    advance();
-                    return new token(token_names[i],token_char[i].ToString());
+                if(same_token(token_string[i])){
+                    return new token(token_names[i],token_string[i].ToString());
                 }
-            }
-
-            if(same_token("notify")){
-                return new token("NOTI","notify");
             }
             if(same_token("str")){
                 last_token="str";

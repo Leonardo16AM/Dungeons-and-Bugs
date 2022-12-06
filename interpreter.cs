@@ -80,7 +80,8 @@ class interpreter{
     public void line(){
         token token = current_token;
         Console.WriteLine(current_token.type+" "+current_token.value);
-        if(token.type=="NOTI"){
+        
+        if(token.type=="NOTI"){//Notification
             eat("NOTI");
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("LPAREN");
@@ -91,24 +92,24 @@ class interpreter{
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("SCOL");
         }      
-        if(token.type=="STR"){
+        if(token.type=="STR"){//String declaration
             eat("STR");
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("VAR");
             Console.WriteLine(current_token.type+" "+current_token.value);
-            eat("EQ");
+            eat("ASG");
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("STRING");
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("SCOL");
         }          
         
-        if(token.type=="INT"){
+        if(token.type=="INT"){//Integer declaration
             eat("INT");
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("VAR");
             Console.WriteLine(current_token.type+" "+current_token.value);
-            eat("EQ");
+            eat("ASG");
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("INTEGER");
             Console.WriteLine(current_token.type+" "+current_token.value);
