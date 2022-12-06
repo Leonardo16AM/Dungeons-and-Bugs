@@ -1,14 +1,15 @@
 using Telegram.Bot;
 
 class interpreter{
-    Dictionary<string,int>context;
+    public Dictionary<string,int>context;
     lexer lex;
     token current_token;
     string code;
     ITelegramBotClient botClient;
-
-    public interpreter(ITelegramBotClient botClient,string s,Dictionary<string,int>cont){
+    List<int>chat_ids;
+    public interpreter(ITelegramBotClient botClient,string s,Dictionary<string,int>cont,List<int>chat_ids){
         this.botClient=botClient;
+        this.chat_ids=chat_ids;
         code=s;
         context=new Dictionary<string, int>();
 
@@ -20,6 +21,12 @@ class interpreter{
         lex=new lexer(code,vars);
     
         current_token=lex.get_next_token();
+    }
+
+    public void notify_members(string message){
+        foreach(int chat_id in chat_ids){
+            tlg.send_message(botClient,chat_id,message);
+        }
     }
 
     public void error(){
@@ -86,6 +93,7 @@ class interpreter{
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("LPAREN");
             Console.WriteLine(current_token.type+" "+current_token.value);
+            notify_members(current_token.value);
             eat("STRING");
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("RPAREN");
@@ -117,7 +125,7 @@ class interpreter{
         }       
     }
 
-    public void cacho(){
+    public void run(){
         while(current_token.type!="}" && current_token.type!="EOF" ){
             token token = current_token;
             if(token.type=="IF"){
@@ -131,7 +139,6 @@ class interpreter{
             line();
         }
     }
-
 
 }
 

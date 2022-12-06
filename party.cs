@@ -40,12 +40,25 @@ class party:adventure{
             tlg.send_message(botClient,member.chat_id,message);
         }
     }
+
+
+    public List<int>chat_ids(){
+        // Returns a list of chat_ids of all members of the party
+        List<int>ids=new List<int>();
+        foreach(player member in members){
+            ids.Add(member.chat_id);
+        }
+        return ids;
+    }
+
     public void notify_members_with_picture(string message,string picture){
+        // Sends a message with a picture to all members of the party
         foreach(player member in members){
             tlg.send_picture(botClient,message,member.chat_id,picture);
         }
     }
     public void add_member(int member, string name,string user){
+        // Adds a member to the party
         members.Add(new player(member,name,user));
         string message=$"@{user} joined the adventure";
         notify_members( message,new long[0]);
@@ -54,6 +67,7 @@ class party:adventure{
     }
 
     public void print_vars(int chat_id){
+        // Prints all variables of the party to the chat_id
         Dictionary<string,int>vars=context();
         string vs="Variables: \n";
         vs+=$"{vill.c_name}.life: {vill.life} \n";
@@ -65,6 +79,7 @@ class party:adventure{
 
 
     public Dictionary<string,int> context(){
+        // Returns a dictionary of all variables of the party
         Dictionary<string,int>ret=new Dictionary<string,int>();
         foreach(player p in members){
             Dictionary<string,int>player_dict=p.context();
@@ -76,6 +91,7 @@ class party:adventure{
     }
 
     public void from_context(Dictionary<string,int>cont){
+        // Sets the variables of the party from a dictionary
         char[] delims={'.'};
         foreach(var s in cont){
             string[] tokens=s.Key.Split(delims);
@@ -91,6 +107,7 @@ class party:adventure{
 
 
     public void start_adventure(){
+        // Starts the adventure
         isStarted=true;
         string message="La aventura ha comenzado!";
         notify_members( message, new long[0]);
@@ -105,6 +122,7 @@ class party:adventure{
     }
 
     public void choose_hero( int chat_id, int hero_id){
+        // Chooses a hero for a player
         hero_id--;
         if(heroSelection[hero_id]){
             tlg.send_message(botClient,chat_id,"Ese heroe ya ha sido seleccionado, pruebe con otro.");
@@ -143,7 +161,9 @@ class party:adventure{
         int enc=rnd.Next(0, count_dynamic(file.story[stage].events[curr.h_ref]));
         string encount=(string)file.story[stage].events[curr.h_ref][enc];
         Thread.Sleep(300);
-        notify_members(encount,new long[0]);
+        interpreter interp=new interpreter(botClient,encount,context(),chat_ids() );
+        interp.run();
+        from_context(interp.context); 
     }
 
     public void print_turn(){ 
