@@ -49,13 +49,13 @@
     ],
     "story":[
         {
-            "villain": {"life":200,"strength":150,"agility":50,"mana":100},
+            "villain": {"life":400,"strength":150,"agility":50,"mana":100},
             "beg_story":"La banda del halcon se ha encontrado en las mazmorras de un castillo a alguien que parece ser Zodd el inmortal, quien cuentan las leyendas que ha matado a batallones completos, debeis luchar y derrotarlo, vuestra vida depende de ello!",
             "beg_pic":"https://i.imgur.com/RjDVsyZ.jpg",
             "events" :{
                 "guts":[
                     "notify(\"Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo\");",
-                    "notify(\"A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos\");"
+                    "Guts.life=Guts.life-75;notify(\"💥 Zodd ha golpeado tan fuerte a Guts que le ha hecho 75 puntos de daño!\");"
                 ],
                 "casca":[
                     "notify(\"No puedes dejar que Zodd mate a Grifith\");",
@@ -74,12 +74,12 @@
             "end_pic":"null"
         },
         {
-            "villain": {"life":300,"strength":200,"agility":30,"mana":50},
+            "villain": {"life":500,"strength":200,"agility":30,"mana":50},
             "beg_story":"Zood se levanta y su cuerpo comienza a crecer, se hace mas peludo, y de su cabeza empiezan a salir cuernos gigantes, no parece ser humano, parece ... un demonio ... Derrotadlo!",
             "beg_pic":"https://i.imgur.com/YWLYAfX.jpg",
             "events": {
                 "guts":[
-                    "notify(\"Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo\");",
+                    "Guts.life=Guts.life-55;notify(\"💥De un solo gole te le ha quitado hecho 55 de daño a Guts\");",
                     "notify(\"A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos\");"
                 ],
                 "casca":[

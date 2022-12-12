@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 
 class party:adventure{
-    public int id,leader,turn=0,chosen_heroes=0;
+    public int id,leader,turn=0,chosen_heroes=0,deads=0;
     public List<player> members;
     bool[] heroSelection;
     public bool isStarted = false, finished =false;
@@ -81,6 +81,7 @@ class party:adventure{
     public Dictionary<string,int> context(){
         // Returns a dictionary of all variables of the party
         Dictionary<string,int>ret=new Dictionary<string,int>();
+        ret.Add("deads",deads);
         foreach(player p in members){
             Dictionary<string,int>player_dict=p.context();
             foreach(var prop in player_dict){
@@ -102,6 +103,7 @@ class party:adventure{
                 }
             }
         }
+        deads=cont["deads"];
     }
 
 
@@ -167,11 +169,18 @@ class party:adventure{
     }
 
     public void print_turn(){ 
-        string message="Turno de: @";
-        message+=members[turn].user;
-        Thread.Sleep(300);
-        notify_members(message,new long[0]);
-        encounter(members[turn]);
+        if(members[turn].life>0){
+            string message="Turno de: @";
+            message+=members[turn].user;
+            Thread.Sleep(300);
+            notify_members(message,new long[0]);
+            encounter(members[turn]);
+            if(members[turn].life<0){
+                notify_members($"🪦 {members[turn].c_name} ha muerto!",new long[0]);        
+                deads++;
+                end_turn();
+            }
+        }else{end_turn();}
     }
 
     public void action(){
