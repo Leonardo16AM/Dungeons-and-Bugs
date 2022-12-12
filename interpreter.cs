@@ -45,6 +45,11 @@ class interpreter{
             eat("INTEGER");
             return int.Parse(token.value);
         }
+        if(token.type == "VAR"){
+            string vname=token.value;
+            eat("VAR");
+            return context[vname];
+        }
         if(token.type == "LPAREN"){
             eat("LPAREN");
             int result = expr();
@@ -84,6 +89,38 @@ class interpreter{
         return result;
     }
 
+
+    public string str_term(){
+        string result="";
+        if(current_token.type=="STRING"){
+            result=current_token.value;
+            eat("STRING");
+        }
+        if(current_token.type=="INTEGER"){    
+           result=current_token.value.ToString();
+           eat("INTEGER");
+        }
+        
+        if(current_token.type=="VAR"){
+           result+=context[current_token.value].ToString();
+           eat("VAR");
+        }
+        return result;
+    }
+    
+    public string str_expr(){
+        string result=str_term();
+        while(current_token.type!="SCOL" && current_token.type!= "RPAREN"){
+            token token = current_token;
+            if(token.type=="PLUS"){
+                eat("PLUS");
+                result+=str_term();
+            }
+        }
+        Console.WriteLine(result);
+        return result;
+    }
+
     public void line(){
         token token = current_token;
         Console.WriteLine(current_token.type+" "+current_token.value);
@@ -93,33 +130,39 @@ class interpreter{
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("LPAREN");
             Console.WriteLine(current_token.type+" "+current_token.value);
-            notify_members(current_token.value);
-            eat("STRING");
+            notify_members(str_expr());
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("RPAREN");
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("SCOL");
         }      
-        if(token.type=="STR"){//String declaration
-            eat("STR");
-            Console.WriteLine(current_token.type+" "+current_token.value);
-            eat("VAR");
-            Console.WriteLine(current_token.type+" "+current_token.value);
-            eat("ASG");
-            Console.WriteLine(current_token.type+" "+current_token.value);
-            eat("STRING");
-            Console.WriteLine(current_token.type+" "+current_token.value);
-            eat("SCOL");
-        }          
-        
         if(token.type=="INT"){//Integer declaration
             eat("INT");
             Console.WriteLine(current_token.type+" "+current_token.value);
+            string vname=current_token.value;
             eat("VAR");
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("ASG");
             Console.WriteLine(current_token.type+" "+current_token.value);
-            eat("INTEGER");
+            int value=expr();
+            if(!context.ContainsKey(vname))
+                context.Add(vname,value);
+            else
+                context[vname]=value;
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("SCOL");
+        }
+        if(token.type=="VAR"){//Integrer modification
+            string vname=current_token.value;
+            eat("VAR");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            eat("ASG");
+            Console.WriteLine(current_token.type+" "+current_token.value);
+            int value=expr();
+            if(!context.ContainsKey(vname))
+                context.Add(vname,value);
+            else
+                context[vname]=value;
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("SCOL");
         }       
