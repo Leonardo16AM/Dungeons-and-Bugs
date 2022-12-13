@@ -1,3 +1,15 @@
+
+
+class power{
+    public string name,descr,script;
+    public power(string nam,string desc,string scr){
+        name=nam;
+        descr=desc;
+        script=scr;
+    }
+}
+
+
 class character{
     public int life,strength,agility,mana;
     public Dictionary<string,int>others=new Dictionary<string,int>();
@@ -37,7 +49,7 @@ class hero:character{
 class player:hero{
     public int chat_id;
     public string name,user;
-
+    public List<power>powers=new List<power>();
     public player(int chat_id,string name,string username){
         this.chat_id=chat_id;
         this.name=name;

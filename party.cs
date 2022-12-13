@@ -72,12 +72,27 @@ class party:adventure{
         string vs="Variables: \n";
         vs+=$"{vill.c_name}.life: {vill.life} \n";
         foreach(var prop in vars){
+            if(prop.Key=="deads")continue;
             vs+=$"{prop.Key}: {prop.Value} \n";
         }
         tlg.send_message(botClient,chat_id,vs);
     }
 
+    public void actions(int chat_id){
+        string vs="Player actions: \n";
+        foreach(player member in members){
+            if(member.chat_id==chat_id){
+                int wr=1;
+                foreach(power pw in member.powers){
+                    vs+=$"{wr} - {pw.name}: {pw.descr} \n";
+                }
+            }
+        }
+        vs+="Para ejecutar alguna de estas acciones usa /do {action numer}";
+        tlg.send_message(botClient,chat_id,vs);
 
+
+    }
     public Dictionary<string,int> context(){
         // Returns a dictionary of all variables of the party
         Dictionary<string,int>ret=new Dictionary<string,int>();
@@ -141,6 +156,11 @@ class party:adventure{
                 member.strength=file.heroes[hero_id].strength;
                 member.agility=file.heroes[hero_id].agility;
                 member.mana=file.heroes[hero_id].mana;
+
+                foreach(var pw in file.heroes[hero_id].powers){
+                    member.powers.Add(new power((string)pw[0],(string)pw[1],(string)pw[2]));
+                }
+
                 string message=$"@{member.user} ha elegido a {member.c_name}:\n {member.h_hist}\n Life: {member.life}\n Strength: {member.strength}\n Agility: {member.agility}\n Mana: {member.mana}";
                 string picture=file.heroes[hero_id].img;
                 heroSelection[hero_id]=true;

@@ -126,7 +126,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             
         }
 
-        if (messageText.StartsWith("/action") ){
+        if (messageText.StartsWith("/do") ){
             parties[player_party[(int)chatId]].action();
             parties[player_party[(int)chatId]].end_turn();
             return;
@@ -134,6 +134,11 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
         if (messageText.StartsWith("/variables") ){
             parties[player_party[(int)chatId]].print_vars((int)chatId);
+            return;
+        }
+
+        if (messageText.StartsWith("/actions") ){
+            parties[player_party[(int)chatId]].actions((int)chatId);
             return;
         }
         send_message(botClient,(int)chatId,"Unknown command");

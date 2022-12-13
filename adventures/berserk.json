@@ -11,7 +11,11 @@
             "mana": 20,
             "desc": "Guts es el mercenario mas temido de todo Midland, algunos lo conocen como el caballero negro, cuenta la leyenda que una vez mato a 100 hombres el solo ... En sus manos lleva algo demasiado grande para ser una espada, parecido a un gran pedazo de hierro",
             "img": "https://i.imgur.com/D8TIxdK.jpg",
-            "power": ["","",""]
+            "powers": [
+                ["sword_attack","⚔️ Ataca con la espada al enemigo, si tu fortaleza es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.",
+                "if(Villain.strength<Guts.strength){int dif=Guts.strength-Villain.strength;Villain.life=Villain.life-(dif);notify(\"⚔️ Guts ha atacado con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Guts ha atacado con su espada pero ha fallado, su enemigo es más fuerte.\");}"
+                ]
+            ]
         },
         {
             "token": "griffith",
@@ -22,7 +26,11 @@
             "mana": 40,
             "desc": "Griffith pareciera de la realeza, pero realmente es solo un plebello. Pero no uno cualquiera, su  sed de poder lo ha llevado a ser el lider de la banda del halcon ... y lo llevara a mucho mas",
             "img": "https://i.imgur.com/vLkayOk.jpg",
-            "power": ["","",""]
+            "powers": [
+                ["sword_attack","⚔️ Ataca con la espada al enemigo, si tu agilidad es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.",
+                "if(Villain.agility<Grifith.agility){int dif=Griffith.strength-Villain.strength;Villain.life=Villain.life-(dif);notify(\"⚔️ Grifith ha atacado rapidamente con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Grifith ha intentado atacar con su espada, pero el enemigo ha sido más agil.\");}"
+                ]
+            ]
         },
         {
             "token": "casca",
@@ -33,7 +41,11 @@
             "mana": 10,
             "desc": "La fiel casca es la unica mujer de la banda del halcon, pero no nos dejemos engañar porque es tambien uno de sus mas mortferos miembros",
             "img": "https://i.imgur.com/0NOmlhY.jpg",
-            "power":["","",""]
+            "powers":[
+                ["bow_attack","🏹 Ataca con flechas al enemigo, le quitarás la cantidad de puntos de fortaleza que tenga dividido entre 5",
+                "int dif=Villain.agility/5;Villain.life=Villain.life-dif;if(dif>0){notify(\"🏹 Casca le ha disparado flechas, algunas le han dado y le han quitado \"+dif+\" puntos de vida.\");}else{notify(\"🏹 Las flechas de Casca no le han hecho daño!\");}"
+                ]
+            ]
         },
         {
             "token": "jadeau",
@@ -44,7 +56,14 @@
             "mana": 15,
             "desc": "Jadeau parecierano tan poderoso como el resto, pero posee una agilidad impresionante, es capaz de lanzar cuchillos con una precision milimetrica, no quisieras interponerte a el",
             "img": "https://i.imgur.com/CCmuMoq.jpg",
-            "power": ["","",""]
+            "powers": [
+                ["heal_friends","❤️‍🩹  Sana a tus amigos con el polvo de hadas que tienes en una bolsita, les restaurará 10 puntos de vida a cada uno",
+                "if(Guts.life>0){Guts.life=Guts.life+10;notify(\"Aunque no se ha querido dejar sanar en medio de su ira, Jadeau ha logrado sanar a Guts dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Guts\");}if(Griffith.life>0){Griffith.life=Griffith.life+10;notify(\"Jadeau le ha tirado el polvo de hadas a Griffith el cual se lo ha untado dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Grifith, se le extraña mucho.\");}                if(Casca.life>0){Casca.life=Casca.life+10;notify(\"Casca se ha untado los polvos que le ha dado Jadeau dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Guts\");}"
+                ],
+                ["heal_yourself","❤️‍🩹  Sanate a ti mismo y obtendrás 30 puntos de salud",
+                "Jadeau.life=Jadeau.life+30;"
+                ]
+            ]
         }
     ],
     "story":[
