@@ -85,6 +85,7 @@ class party:adventure{
                 int wr=1;
                 foreach(power pw in member.powers){
                     vs+=$"{wr} - {pw.name}: {pw.descr} \n";
+                    wr++;
                 }
             }
         }
