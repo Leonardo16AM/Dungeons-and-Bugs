@@ -73,6 +73,7 @@ class party:adventure{
         vs+=$"{vill.c_name}.life: {vill.life} \n";
         foreach(var prop in vars){
             if(prop.Key=="deads")continue;
+            if(prop.Key.StartsWith("Villain"))continue;
             vs+=$"{prop.Key}: {prop.Value} \n";
         }
         tlg.send_message(botClient,chat_id,vs);
@@ -104,6 +105,9 @@ class party:adventure{
                 ret.Add(prop.Key,prop.Value);
             }
         }
+        foreach(var prop in vill.context()){
+            ret.Add(prop.Key,prop.Value);
+        }
         return ret;
     }
 
@@ -117,6 +121,9 @@ class party:adventure{
                     members[i].upd_param(tokens[1],s.Value);
                     break;
                 }
+            }
+            if(tokens[0]=="Villain"){
+                vill.upd_param(tokens[1],s.Value);
             }
         }
         deads=cont["deads"];
@@ -191,6 +198,7 @@ class party:adventure{
 
     
     public void do_action(int chat_id,int num){
+<<<<<<< HEAD
         if(members[turn].chat_id==chat_id){
             foreach(player member in members){
                 if(member.chat_id==chat_id){
@@ -199,11 +207,23 @@ class party:adventure{
                     interp.run();
                     from_context(interp.context);                     
                 }
+=======
+        foreach(player member in members){
+            if(member.chat_id==chat_id){
+                string action=member.powers[num-1].script;
+                interpreter interp=new interpreter(botClient,action,context(),chat_ids() );
+                interp.run();
+                from_context(interp.context);                     
+>>>>>>> 0c658d9a5b6f59255a4b1e1749f8fb8ddafe1200
             }
         }else{
            tlg.send_message(botClient,(int)chat_id,"Solo puedes jugar durante tu turno"); 
         }
+<<<<<<< HEAD
 
+=======
+        end_turn();
+>>>>>>> 0c658d9a5b6f59255a4b1e1749f8fb8ddafe1200
     }
 
     public void print_turn(){ 

@@ -28,7 +28,7 @@
             "img": "https://i.imgur.com/vLkayOk.jpg",
             "powers": [
                 ["sword_attack","⚔️ Ataca con la espada al enemigo, si tu agilidad es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.",
-                "if(Villain.agility<Grifith.agility){int dif=Griffith.strength-Villain.strength;Villain.life=Villain.life-(dif);notify(\"⚔️ Grifith ha atacado rapidamente con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Grifith ha intentado atacar con su espada, pero el enemigo ha sido más agil.\");}"
+                "if(Villain.agility<Griffith.agility){int dif=Griffith.strength-Villain.strength;Villain.life=Villain.life-(dif);notify(\"⚔️ Griffith ha atacado rapidamente con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Griffith ha intentado atacar con su espada, pero el enemigo ha sido más agil.\");}"
                 ]
             ]
         },
