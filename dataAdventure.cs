@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 public static class DataAdventure{
     public static Dictionary<string, dynamic> Adventures = new Dictionary<string, dynamic>();
@@ -24,11 +25,21 @@ public static class DataAdventure{
             return;
         }
         string s="Aventuras Disponibles: \n";
-        int counter=1;
+        int counter=0;
+        InlineKeyboardButton[] payload= new InlineKeyboardButton[Adventures.Count()];
         foreach(KeyValuePair<string, dynamic> adv in Adventures){
-            s+= $"{counter.ToString()} - {adv.Key} \n";
+            payload[counter]= InlineKeyboardButton.WithCallbackData(
+                text: $"{(counter+1).ToString()} - {adv.Value.name} \n", 
+                callbackData: $"/new_adv {adv.Key}"
+            );
+            counter++;
         }
-        tlg.send_message(botClient, (int)chatId, s, (int)reply);;
+        botClient.SendTextMessageAsync(
+            chatId: (int)chatId,
+            text: s,
+            replyMarkup: new InlineKeyboardMarkup(payload),
+            replyToMessageId: reply==-1? null: (int)reply
+        );
     }
 
 }

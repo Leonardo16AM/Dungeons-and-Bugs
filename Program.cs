@@ -3,6 +3,7 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 var botClient = new TelegramBotClient("5747520451:AAFUXAYgxTJK7tU4m3HLk3N5ec-5Ks0xGDs");
 
 using var cts = new CancellationTokenSource();
@@ -57,7 +58,31 @@ cts.Cancel();
 
 async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken){
     try{
-        if (update.Message is not { } message)return;
+        if (update.Message is not { } message) { //CallBackHandling
+            if(update.CallbackQuery is not {} callb) return;
+            
+            var cId=callb.Message.Chat.Id;
+            Console.WriteLine($"{cId}({callb.Message.Chat.FirstName}): {callb.Data}");
+
+            if(callb.Data.StartsWith("/choose_hero")){
+                parties[player_party[(int)cId]].choose_hero((int)cId,int.Parse(callb.Data.Substring(13)) );
+            }
+
+            if(callb.Data.StartsWith("/new_adv")){
+                string adv_name=callb.Data.Substring(9);
+                add_party(botClient,(int)cId,adv_name,callb.Message.Chat.FirstName,callb.Message.Chat.Username);
+                send_message(botClient,(int)cId,$"Adventure created : {current_party-1}", callb.Message.MessageId);
+            }
+            if (callb.Data.StartsWith("/do") ){
+                string mess=callb.Data.Substring(3);
+                parties[player_party[(int)cId]].do_action((int)cId,int.Parse(mess));
+                return;
+            }
+                    
+            
+            return;
+        }
+            
         if (message.Text is not { } messageText)return;
         var chatId = message.Chat.Id;
 
@@ -65,8 +90,8 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         
         if (messageText.StartsWith("/test") ){// Only for developers
             if( (int)chatId==789850916 || (int)chatId==639646249 ){
-                interpreter i=new interpreter(botClient,"if((2*4+6)>(4-(2*1))){notify(\"Wiii\"); notify(\"the deff of block works\"); if((2*4+6)>(4-(2*1))){notify(\"if anidado\");} notify(\"sigo dentro del if\");}", parties[player_party[(int)chatId]].context(),parties[player_party[(int)chatId]].chat_ids() );
-                i.run();
+                // interpreter i=new interpreter(botClient,"if((2*4+6)>(4-(2*1))){notify(\"Wiii\"); notify(\"the deff of block works\"); if((2*4+6)>(4-(2*1))){notify(\"if anidado\");} notify(\"sigo dentro del if\");}", parties[player_party[(int)chatId]].context(),parties[player_party[(int)chatId]].chat_ids() );
+                // i.run();
             }
             return;
         }
@@ -80,20 +105,16 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             return;
         }
 
-        if(messageText=="/available_adventures"){
-            DataAdventure.printAllAdventures(botClient, chatId, message.MessageId);
-            return;
-        }
-
-        if (messageText.StartsWith("/new_adventure")){	
-            string adv_name=messageText.Substring(15);
-            add_party(botClient,(int)chatId,adv_name,message.From.FirstName,message.From.Username);
-            send_message(botClient,(int)chatId,$"Adventure created : {current_party-1}", message.MessageId);
+        if (messageText.StartsWith("/new_adventure")){
+            if(player_party.ContainsKey((int)chatId)){
+                send_message(botClient,(int)chatId,"You are already in one adventure, if you want to host a new one /quit the current", (int)message.MessageId);
+            }
+            DataAdventure.printAllAdventures(botClient, chatId, message.MessageId);	
             return;
         }
         
-        if (messageText.StartsWith("/join_adventure") ){
-            int party=int.Parse(messageText.Substring(16,7));
+        if (messageText.StartsWith("/join") ){
+            int party=int.Parse(messageText.Substring(6,7));
 
             if(player_party.ContainsKey((int)chatId) && player_party[(int)chatId]==(int)party ){
                 send_message(botClient,(int)chatId,"You are already in this adventure");
@@ -104,7 +125,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                 return;
             }
 
-            add_member((int)chatId ,message.From.FirstName,message.From.Username, party);
+            add_member((int)chatId, message.From.FirstName, message.From.Username , party);
             return;
         }
 
@@ -114,11 +135,6 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                 return;
             }
             parties[player_party[(int)chatId]].start_adventure();
-            return;
-        }
-
-        if(messageText.StartsWith("/choose_hero")){
-            parties[player_party[(int)chatId]].choose_hero((int)chatId,int.Parse(messageText.Substring(13)) );
             return;
         }
 
@@ -133,12 +149,6 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             parties[player_party[(int)chatId]].notify_members($"@{message.From.Username}: {mess}", new long[] {chatId});
             return;
             
-        }
-
-        if (messageText.StartsWith("/do") ){
-            string mess=messageText.Substring(3);
-            parties[player_party[(int)chatId]].do_action((int)chatId,int.Parse(mess));
-            return;
         }
 
         if (messageText.StartsWith("/variables") ){
@@ -161,16 +171,6 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         send_message(botClient,(int)chatId,"Bad command ussage or error");
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken){
     var ErrorMessage = exception switch{
