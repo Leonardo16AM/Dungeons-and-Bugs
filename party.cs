@@ -2,6 +2,7 @@
 using Telegram.Bot;
 using System;
 using System.Threading;
+using Telegram.Bot.Types.ReplyMarkups;
 
 class party:adventure{
     public int id,leader,turn=0,chosen_heroes=0,deads=0;
@@ -38,6 +39,26 @@ class party:adventure{
                     continue;
             }
             tlg.send_message(botClient,member.chat_id,message);
+        }
+    }
+    public void notify_btn(string message,long [] except,InlineKeyboardMarkup payload){
+        foreach(player member in members){
+            if(except.Length!= 0){
+                bool next= false;
+                for(int i=0;i<except.Length; i++){
+                    if(member.chat_id == except[i]){
+                        next = true;
+                        break;
+                    }
+                }
+                if(next)
+                    continue;
+            }
+            botClient.SendTextMessageAsync(
+                chatId: member.chat_id,
+                text: message,
+                replyMarkup: payload
+            );
         }
     }
 
@@ -78,20 +99,33 @@ class party:adventure{
         }
         tlg.send_message(botClient,chat_id,vs);
     }
-
+    private int count_powers(int chatid){
+        int n=0;
+        foreach(player member in members)
+            if(member.chat_id==chatid)
+                foreach(power pw in member.powers)
+                    n++;
+        return n;          
+    }
     public void actions(int chat_id){
         string vs="Player actions: \n";
+        InlineKeyboardButton[] payload= new InlineKeyboardButton[count_powers(chat_id)];
         foreach(player member in members){
             if(member.chat_id==chat_id){
                 int wr=1;
                 foreach(power pw in member.powers){
                     vs+=$"{wr} - {pw.name}: {pw.descr} \n";
+                    payload[wr-1]= InlineKeyboardButton.WithCallbackData(text: pw.name ,callbackData: "/do "+wr.ToString());
                     wr++;
                 }
             }
         }
-        vs+="Para ejecutar alguna de estas acciones usa /do {action numer}";
-        tlg.send_message(botClient,chat_id,vs);
+        vs+="Selecciona una de las acciones anteriores";
+        botClient.SendTextMessageAsync(
+            chatId: chat_id,
+            text: vs,
+            replyMarkup: new InlineKeyboardMarkup(payload)
+        );
 
 
     }
@@ -136,14 +170,14 @@ class party:adventure{
         isStarted=true;
         string message="La aventura ha comenzado!";
         notify_members( message, new long[0]);
-        message="Elije a tu heroe:\n";
-        int cont=0;        
+        message="Elije a tu heroe:";
+        int cont=0;  
+        InlineKeyboardButton[] payload= new InlineKeyboardButton[heroSelection.Length];  
         foreach(var hero in file.heroes){
             cont++;
-            message+=cont.ToString()+" - "+hero.name+"\n";
+            payload[cont-1]= InlineKeyboardButton.WithCallbackData(text: hero.name.ToString(), callbackData: "/choose_hero "+(cont).ToString());
         }
-        message+="Para elegir un heroe escriba:\n /choose_hero [numero]";
-        notify_members( message, new long[0]);
+        notify_btn( message, new long[0], new InlineKeyboardMarkup(payload));
     }
 
     public void choose_hero( int chat_id, int hero_id){
