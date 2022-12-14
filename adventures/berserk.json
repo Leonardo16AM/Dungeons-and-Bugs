@@ -57,11 +57,11 @@
             "desc": "Jadeau parecierano tan poderoso como el resto, pero posee una agilidad impresionante, es capaz de lanzar cuchillos con una precision milimetrica, no quisieras interponerte a el",
             "img": "https://i.imgur.com/CCmuMoq.jpg",
             "powers": [
-                ["heal_friends","❤️‍🩹  Sana a tus amigos con el polvo de hadas que tienes en una bolsita, les restaurará 10 puntos de vida a cada uno",
-                "if(Guts.life>0){Guts.life=Guts.life+10;notify(\"Aunque no se ha querido dejar sanar en medio de su ira, Jadeau ha logrado sanar a Guts dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Guts\");}if(Griffith.life>0){Griffith.life=Griffith.life+10;notify(\"Jadeau le ha tirado el polvo de hadas a Griffith el cual se lo ha untado dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Grifith, se le extraña mucho.\");}                if(Casca.life>0){Casca.life=Casca.life+10;notify(\"Casca se ha untado los polvos que le ha dado Jadeau dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Guts\");}"
+                ["heal_friends","❤️‍🩹  Sana a tus amigos con el polvo de hadas que tienes en una bolsita, les restaurará 10 puntos de vida a cada uno, esto te cuesta 3 puntos de mana",
+                "Jadeau.mana=Jadeau.mana-3;if(Guts.life>0){Guts.life=Guts.life+10;notify(\"Aunque no se ha querido dejar sanar en medio de su ira, Jadeau ha logrado sanar a Guts dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Guts\");}if(Griffith.life>0){Griffith.life=Griffith.life+10;notify(\"Jadeau le ha tirado el polvo de hadas a Griffith el cual se lo ha untado dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Grifith, se le extraña mucho.\");}                if(Casca.life>0){Casca.life=Casca.life+10;notify(\"Casca se ha untado los polvos que le ha dado Jadeau dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Guts\");}"
                 ],
-                ["heal_yourself","❤️‍🩹  Sanate a ti mismo y obtendrás 30 puntos de salud",
-                "Jadeau.life=Jadeau.life+30;"
+                ["heal_yourself","❤️‍🩹  Sanate a ti mismo y obtendrás 30 puntos de salud, esto te cuesta 3 puntos de mana",
+                "Jadeau.life=Jadeau.life+30;Jadeau.mana=Jadeau.mana-3;"
                 ]
             ]
         }

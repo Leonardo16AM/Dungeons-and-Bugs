@@ -205,18 +205,7 @@ class interpreter{
                 context[vname]=value;
             Console.WriteLine(current_token.type+" "+current_token.value);
             eat("SCOL");
-        }
-        if(token.type=="IF"){
-                eat("IF");
-                eat("LPAREN");
-                bool bex=bool_expr();
-                eat("RPAREN");
-                if(bex){
-                    block();
-                }else{
-                    pass();
-                }
-            }       
+        }     
     }
 
     void pass(){
@@ -229,38 +218,30 @@ class interpreter{
         }
     }
     void block(){
-        if(current_token.type=="LKEY"){
-            eat("LKEY");
-            while(current_token.type!="RKEY")
-                line();
-        }
-        else
-            line();
+        while(current_token.type!="RKEY" && current_token.type!="EOF" ){
+            token token = current_token;
+            
+            if(token.type=="IF"){
+                eat("IF");
+                eat("LPAREN");
+                bool bex=bool_expr();
+                eat("RPAREN");
+                eat("LKEY");
+                if(bex){
+                    block();
+                    eat("RKEY");
+                }else{
+                    pass();
+                }
+                continue;
+            }
 
-        eat("RKEY");
+            line();
+        }
     }
 
     public void run(){
-        while(current_token.type!="}" && current_token.type!="EOF" ){
-            token token = current_token;
-            // if(token.type=="IF"){
-            //     eat("IF");
-            //     eat("LPAREN");
-            //     bool bex=bool_expr();
-            //     eat("RPAREN");
-            //     if(bex){
-            //         block();
-            //     }else{
-            //         pass();
-            //     }
-            //     continue;
-            // }
-            if(token.type=="WHILE"){
-                eat("WHILE");
-                continue;
-            }
-            line();
-        }
+        block();
     }
 
 }
