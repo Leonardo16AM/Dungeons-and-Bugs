@@ -191,16 +191,19 @@ class party:adventure{
 
     
     public void do_action(int chat_id,int num){
-        
-
-        foreach(player member in members){
-            if(member.chat_id==chat_id){
-                string action=member.powers[num-1].script;
-                interpreter interp=new interpreter(botClient,action,context(),chat_ids() );
-                interp.run();
-                from_context(interp.context);                     
+        if(members[turn].chat_id==chat_id){
+            foreach(player member in members){
+                if(member.chat_id==chat_id){
+                    string action=member.powers[num-1].script;
+                    interpreter interp=new interpreter(botClient,action,context(),chat_ids() );
+                    interp.run();
+                    from_context(interp.context);                     
+                }
             }
+        }else{
+           tlg.send_message(botClient,(int)chat_id,"Solo puedes jugar durante tu turno"); 
         }
+
     }
 
     public void print_turn(){ 
