@@ -73,6 +73,7 @@ class party:adventure{
         vs+=$"{vill.c_name}.life: {vill.life} \n";
         foreach(var prop in vars){
             if(prop.Key=="deads")continue;
+            if(prop.Key.StartsWith("Villain"))continue;
             vs+=$"{prop.Key}: {prop.Value} \n";
         }
         tlg.send_message(botClient,chat_id,vs);
@@ -104,6 +105,9 @@ class party:adventure{
                 ret.Add(prop.Key,prop.Value);
             }
         }
+        foreach(var prop in vill.context()){
+            ret.Add(prop.Key,prop.Value);
+        }
         return ret;
     }
 
@@ -117,6 +121,9 @@ class party:adventure{
                     members[i].upd_param(tokens[1],s.Value);
                     break;
                 }
+            }
+            if(tokens[0]=="Villain"){
+                vill.upd_param(tokens[1],s.Value);
             }
         }
         deads=cont["deads"];
@@ -191,8 +198,6 @@ class party:adventure{
 
     
     public void do_action(int chat_id,int num){
-        
-
         foreach(player member in members){
             if(member.chat_id==chat_id){
                 string action=member.powers[num-1].script;
@@ -201,6 +206,7 @@ class party:adventure{
                 from_context(interp.context);                     
             }
         }
+        end_turn();
     }
 
     public void print_turn(){ 

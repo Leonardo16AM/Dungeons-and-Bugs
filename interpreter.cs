@@ -33,10 +33,14 @@ class interpreter{
         throw new Exception("Invalid syntax");
     }
     public void eat(string token_type){
+        
+        Console.WriteLine("--->"+current_token.type);
         if(current_token.type==token_type)
             current_token=lex.get_next_token();
         else
             error();
+            
+        Console.WriteLine("->"+current_token.type);
     }
     public int factor(){
         token token = current_token;
@@ -232,6 +236,16 @@ class interpreter{
                     eat("RKEY");
                 }else{
                     pass();
+                }
+                if(current_token.type=="ELSE"){
+                    eat("ELSE");
+                    eat("LKEY");
+                    if(!bex){
+                        block();
+                        eat("RKEY");
+                    }else{
+                        pass();
+                    }
                 }
                 continue;
             }
