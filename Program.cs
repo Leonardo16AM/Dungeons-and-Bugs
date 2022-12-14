@@ -70,6 +70,14 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             }
             return;
         }
+        if (messageText.StartsWith("/run") ){// Only for developers
+            if( (int)chatId==789850916 || (int)chatId==639646249 ){
+                string script= messageText.Substring(5);
+                interpreter i=new interpreter(botClient, script, parties[player_party[(int)chatId]].context(),parties[player_party[(int)chatId]].chat_ids() );
+                i.run();
+            }
+            return;
+        }
 
         if(messageText=="/available_adventures"){
             DataAdventure.printAllAdventures(botClient, chatId, message.MessageId);
