@@ -75,6 +75,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                 string script= messageText.Substring(5);
                 interpreter i=new interpreter(botClient, script, parties[player_party[(int)chatId]].context(),parties[player_party[(int)chatId]].chat_ids() );
                 i.run();
+                parties[player_party[(int)chatId]].from_context(i.context);
             }
             return;
         }
