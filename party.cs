@@ -259,9 +259,25 @@ class party:adventure{
                 deads++;
                 end_turn();
             }
-        }else{end_turn();}
+        }
+        else{
+            if(!validateParty()){
+                GameOver();
+                return;
+            }
+            end_turn();
+        }
     }
+    private bool validateParty(){
+        foreach(player member in members)
+            if(member.life>0)
+                return true;
 
+        return false;
+    }
+    private void GameOver(){
+        notify_members("☠️Game Over☠️",new long[0]);
+    }
     public void action(){
         vill.life-=100;
         notify_members("Se le han hecho 100 puntos de daño al enemigo",new long[0]);
