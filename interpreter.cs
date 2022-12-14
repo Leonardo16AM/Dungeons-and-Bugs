@@ -58,6 +58,8 @@ class interpreter{
         }
         return 0;
     }
+
+
     public int term(){
         int result = factor();
         while(current_token.type=="MUL" || current_token.type=="DIV"){
@@ -121,6 +123,44 @@ class interpreter{
         return result;
     }
 
+
+
+    bool bool_term(){
+        int a=factor();
+        string comp_type=current_token.type;
+        eat(comp_type);
+        int b=factor();
+        Console.WriteLine(a);
+        Console.WriteLine(comp_type);
+        Console.WriteLine(b);
+        if(comp_type=="EQ"){return a==b;}
+        if(comp_type=="DIF"){return a!=b;}
+        if(comp_type=="GT"){return a>b;}
+        if(comp_type=="LT"){return a<b;}
+        if(comp_type=="GET"){return a>=b;}
+        if(comp_type=="LET"){return a<=b;}
+        return false;
+    }
+
+    public bool bool_expr(){
+        bool ret=bool_term();
+        while(current_token.type!="SCOL" && current_token.type!= "RPAREN"){
+            token token = current_token;
+            if(token.type=="AND"){
+                eat("AND");
+                ret=(ret&&bool_expr());
+                continue;
+            }
+            if(token.type=="OR"){
+                eat("OR");
+                ret=(ret||bool_expr());
+                continue;
+            }
+        }
+        Console.WriteLine(ret);
+        return ret;
+    }
+
     public void line(){
         token token = current_token;
         Console.WriteLine(current_token.type+" "+current_token.value);
@@ -168,11 +208,31 @@ class interpreter{
         }       
     }
 
+    void pass(){
+        int cnt=1;
+        while(cnt!=0){
+            string type=current_token.type;
+            if(type=="LKEY"){cnt++;}
+            if(type=="RKEY"){cnt--;}
+            eat(type);
+        }
+    }
+
     public void run(){
         while(current_token.type!="}" && current_token.type!="EOF" ){
             token token = current_token;
             if(token.type=="IF"){
                 eat("IF");
+                eat("LPAREN");
+                bool bex=bool_expr();
+                eat("RPAREN");
+                eat("LKEY");
+                if(bex){
+                    line();
+                    eat("RKEY");
+                }else{
+                    pass();
+                }
                 continue;
             }
             if(token.type=="WHILE"){

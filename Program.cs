@@ -65,7 +65,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         
         if (messageText.StartsWith("/test") ){// Only for developers
             if( (int)chatId==789850916 || (int)chatId==639646249 ){
-                interpreter i=new interpreter(botClient,"int asd=23*Guts.life;asd=asd-1;notify(\"HOLA\"+123+\"ads\"+Guts.life);notify(asd);", parties[player_party[(int)chatId]].context(),parties[player_party[(int)chatId]].chat_ids() );
+                interpreter i=new interpreter(botClient,"if((2*4+6)>(4-(2*1))){notify(\"Wiii\");}", parties[player_party[(int)chatId]].context(),parties[player_party[(int)chatId]].chat_ids() );
                 i.run();
             }
             return;
