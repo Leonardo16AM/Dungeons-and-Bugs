@@ -135,8 +135,8 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         }
 
         if (messageText.StartsWith("/do") ){
-            parties[player_party[(int)chatId]].action();
-            parties[player_party[(int)chatId]].end_turn();
+            string mess=messageText.Substring(3);
+            parties[player_party[(int)chatId]].do_action((int)chatId,int.Parse(mess));
             return;
         }
 
