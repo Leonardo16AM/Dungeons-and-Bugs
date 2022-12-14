@@ -10,9 +10,9 @@ class lexer{
     List<string>token_names=new List<string>(){"PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY","RKEY","SCOL","AND","OR","GT","LT","GET","LET","DIF","EQ","NOTI","IF","ELSE","WHILE"};
     List<string>token_string=new List<string>(){"+","-","*","/","=","(",")","{","}",";","&","|",">","<",">=","<=","!=","==","notify","if","else","while"};
 
-    string text,last_token;
-    int pos;
-    char  current_char;
+    public string text,last_token;
+    public int pos;
+    public char  current_char;
     List<string>vars;
 
     public lexer(string s,List<string>v){
