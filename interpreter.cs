@@ -33,20 +33,22 @@ class interpreter{
         throw new Exception("Invalid syntax");
     }
     public void eat(string token_type){
-        
-        Console.WriteLine("--->"+current_token.type);
+        Console.WriteLine(">>> "+current_token.type);
         if(current_token.type==token_type)
             current_token=lex.get_next_token();
         else
             error();
-            
-        Console.WriteLine("->"+current_token.type);
     }
-    public int factor(){
+    public int int_factor(){
         token token = current_token;
         
         if(token.type == "INTEGER"){
             eat("INTEGER");
+            return int.Parse(token.value);
+        }
+        if(token.type == "RND"){
+            Console.WriteLine(token.value.ToString());
+            eat("RND");
             return int.Parse(token.value);
         }
         if(token.type == "VAR"){
@@ -56,7 +58,7 @@ class interpreter{
         }
         if(token.type == "LPAREN"){
             eat("LPAREN");
-            int result = expr();
+            int result = int_expr();
             eat("RPAREN");
             return result;
         }
@@ -64,32 +66,32 @@ class interpreter{
     }
 
 
-    public int term(){
-        int result = factor();
+    public int int_term(){
+        int result = int_factor();
         while(current_token.type=="MUL" || current_token.type=="DIV"){
             token token = current_token;
             if(token.type=="MUL"){
                 eat("MUL");
-                result*=factor();
+                result*=int_factor();
             }
             else if(token.type=="DIV"){
                 eat("DIV");
-                result/=factor();
+                result/=int_factor();
             }
         }
         return result;
     }
-    public int expr(){
-        int result = term();
+    public int int_expr(){
+        int result = int_term();
         while(current_token.type=="PLUS" || current_token.type=="MINUS"){
             token token = current_token;
             if(token.type=="PLUS"){
                 eat("PLUS");
-                result+=term();
+                result+=int_term();
             }
             else if(token.type=="MINUS"){
                 eat("MINUS");
-                result-=term();
+                result-=int_term();
             }
         }
         return result;
@@ -103,10 +105,14 @@ class interpreter{
             eat("STRING");
         }
         if(current_token.type=="INTEGER"){    
-           result=current_token.value.ToString();
-           eat("INTEGER");
+            result=current_token.value.ToString();
+            eat("INTEGER");
         }
-        
+        if(current_token.type=="RND"){    
+            Console.WriteLine(current_token.value.ToString());
+            result=current_token.value.ToString();
+            eat("RND");
+        }
         if(current_token.type=="VAR"){
            result+=context[current_token.value].ToString();
            eat("VAR");
@@ -127,13 +133,41 @@ class interpreter{
         return result;
     }
 
-
+    bool is_bool(){
+        token wr=current_token;
+        bool ret=false;
+        string last_token=lex.last_token;
+        int pos=lex.pos;
+        char current_char=lex.current_char;
+        int cnt=1;
+        eat("LPAREN");
+        while(cnt!=0){
+            token token=current_token;
+            if(token.type=="LPAREN")cnt++;
+            if(token.type=="RPAREN")cnt--;
+            if(token.type=="EQ"||token.type=="DIF"||token.type=="LET"||token.type=="GET"||token.type=="GT"||token.type=="LT")ret=true;        
+            eat(token.type);
+        }
+        current_token=wr;
+        lex.last_token=last_token;
+        lex.pos=pos;
+        lex.current_char=current_char;
+        return ret;
+    }
 
     bool bool_term(){
-        int a=factor();
+        if(current_token.type=="LPAREN" && is_bool() ){
+            Console.WriteLine("is bool");
+            eat("LPAREN");
+            bool ret=bool_expr();
+            eat("RPAREN");
+            return ret;
+        }
+
+        int a=int_factor();
         string comp_type=current_token.type;
         eat(comp_type);
-        int b=factor();
+        int b=int_factor();
         Console.WriteLine(a);
         Console.WriteLine(comp_type);
         Console.WriteLine(b);
@@ -152,12 +186,12 @@ class interpreter{
             token token = current_token;
             if(token.type=="AND"){
                 eat("AND");
-                ret=(ret&&bool_expr());
+                ret=(ret&bool_term());
                 continue;
             }
             if(token.type=="OR"){
                 eat("OR");
-                ret=(ret||bool_expr());
+                ret=(ret|bool_term());
                 continue;
             }
         }
@@ -167,47 +201,35 @@ class interpreter{
 
     public void line(){
         token token = current_token;
-        Console.WriteLine(current_token.type+" "+current_token.value);
         
         if(token.type=="NOTI"){//Notification
             eat("NOTI");
-            Console.WriteLine(current_token.type+" "+current_token.value);
             eat("LPAREN");
-            Console.WriteLine(current_token.type+" "+current_token.value);
             notify_members(str_expr());
-            Console.WriteLine(current_token.type+" "+current_token.value);
             eat("RPAREN");
-            Console.WriteLine(current_token.type+" "+current_token.value);
             eat("SCOL");
         }      
         if(token.type=="INT"){//Integer declaration
             eat("INT");
-            Console.WriteLine(current_token.type+" "+current_token.value);
             string vname=current_token.value;
             eat("VAR");
-            Console.WriteLine(current_token.type+" "+current_token.value);
             eat("ASG");
-            Console.WriteLine(current_token.type+" "+current_token.value);
-            int value=expr();
+            int value=int_expr();
             if(!context.ContainsKey(vname))
                 context.Add(vname,value);
             else
                 context[vname]=value;
-            Console.WriteLine(current_token.type+" "+current_token.value);
             eat("SCOL");
         }
         if(token.type=="VAR"){//Integrer modification
             string vname=current_token.value;
             eat("VAR");
-            Console.WriteLine(current_token.type+" "+current_token.value);
             eat("ASG");
-            Console.WriteLine(current_token.type+" "+current_token.value);
-            int value=expr();
+            int value=int_expr();
             if(!context.ContainsKey(vname))
                 context.Add(vname,value);
             else
                 context[vname]=value;
-            Console.WriteLine(current_token.type+" "+current_token.value);
             eat("SCOL");
         }     
     }
@@ -245,6 +267,34 @@ class interpreter{
                         eat("RKEY");
                     }else{
                         pass();
+                    }
+                }
+                continue;
+            }
+            
+            if(token.type=="WHILE"){
+                eat("WHILE");
+                eat("LPAREN");
+                while(true){
+                    token wr=current_token;
+                    bool ret=false;
+                    string last_token=lex.last_token;
+                    int pos=lex.pos;
+                    char current_char=lex.current_char;
+                    
+                    bool bex=bool_expr();
+                    eat("RPAREN");
+                    if(bex){
+                        eat("LKEY");
+                        block();
+                        eat("RKEY");
+                        current_token=wr;
+                        lex.last_token=last_token;
+                        lex.pos=pos;
+                        lex.current_char=current_char;
+                    }else{
+                        pass();
+                        break;
                     }
                 }
                 continue;

@@ -14,6 +14,9 @@
             "powers": [
                 ["sword_attack","⚔️ Ataca con la espada al enemigo, si tu fortaleza es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.",
                 "if(Villain.strength<Guts.strength){int dif=Guts.strength-Villain.strength;Villain.life=Villain.life-(dif);notify(\"⚔️ Guts ha atacado con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Guts ha atacado con su espada pero ha fallado, su enemigo es más fuerte.\");}"
+                ],
+                ["bomb_attack","💣 Lanzale una bomba al enemigo, el daño dependerá de que tan cerca caiga la bomba",
+                "int dif=random;if(dif<50){notify(\"Guts ha tirado una bomba pero ha caido lejos, le ha hecho solo \"+dif+\" puntos de daño al enemigo\");}else{notify(\"Guts ha tirado una bomba y ha caido cerca, le ha hecho \"+dif+\" puntos de daño al enemigo\");}"
                 ]
             ]
         },
@@ -29,6 +32,9 @@
             "powers": [
                 ["sword_attack","⚔️ Ataca con la espada al enemigo, si tu agilidad es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.",
                 "if(Villain.agility<Griffith.agility){int dif=Griffith.strength-Villain.strength;Villain.life=Villain.life-(dif);notify(\"⚔️ Griffith ha atacado rapidamente con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Griffith ha intentado atacar con su espada, pero el enemigo ha sido más agil.\");}"
+                ],
+                ["lider_attack","🧑🏻‍🦳 Usa tus poderes de lider y haz que los soldados que te siguen ataquen al enemigo.",
+                "int dif=random;Villain.life=Villain.life-dif;notify(\"🧑🏻‍🦳 Los soldados siguiendo las ordenes de Griffith le han quitado \"+dif+\"puntos de daño al enemigo.\");"
                 ]
             ]
         },
@@ -44,6 +50,9 @@
             "powers":[
                 ["bow_attack","🏹 Ataca con flechas al enemigo, le quitarás la cantidad de puntos de fortaleza que tenga dividido entre 5",
                 "int dif=Villain.agility/5;Villain.life=Villain.life-dif;if(dif>0){notify(\"🏹 Casca le ha disparado flechas, algunas le han dado y le han quitado \"+dif+\" puntos de vida.\");}else{notify(\"🏹 Las flechas de Casca no le han hecho daño!\");}"
+                ],
+                ["sword_attack","⚔️ Ataca con tu espada al enemigo, si eres mas agil que el, lo heriras",
+                "if(Villain.agility<Casca.agility){int dif=random;Villain.life=Villain.life-(dif);notify(\"⚔️ Casca ha atacado con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Casca ha intentado atacar con su espada, pero el enemigo es demasiado agil.\");}"
                 ]
             ]
         },
@@ -77,14 +86,14 @@
             "events" :{
                 "guts":[
                     "notify(\"Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo\");",
-                    "Guts.life=Guts.life-75;notify(\"💥 Zodd ha golpeado tan fuerte a Guts que le ha hecho 75 puntos de daño!\");"
+                    "int dif=random;Guts.life=Guts.life-dif;notify(\"💥 Zodd ha golpeado tan fuerte a Guts que le ha hecho \"+dif+\" puntos de daño!\");"
                 ],
                 "casca":[
                     "notify(\"No puedes dejar que Zodd mate a Grifith\");",
                     "notify(\"Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro\");"
                 ],
                 "griffith":[
-                    "notify(\"Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase\");",
+                    "int dif=random;Griffith.life=Griffith.life-dif;notify(\"💥 Zodd ha golpeado tan fuerte a Griffith que le ha hecho \"+dif+\" puntos de daño!\");",
                     "notify(\"No puedes morir grifith, un futuro brillante te espera\");"
                 ],
                 "jadeau":[
