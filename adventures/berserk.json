@@ -62,6 +62,9 @@
                 ],
                 ["heal_yourself","❤️‍🩹  Sanate a ti mismo y obtendrás 30 puntos de salud, esto te cuesta 3 puntos de mana",
                 "Jadeau.life=Jadeau.life+30;Jadeau.mana=Jadeau.mana-3;"
+                ],
+                ["attack_with_knifes","Lánzale cuchillos al enemigo y quitale 30 puntos de vida",
+                "Villain.life=Villain.life-30;notify(\"🗡️ Jadeau ha  tirado sus cuchillos tirandole 30 puntos al enemigo\");"
                 ]
             ]
         }
