@@ -207,10 +207,10 @@ class party:adventure{
                     from_context(interp.context);                     
                 }
             }
+            end_turn();
         }else{
            tlg.send_message(botClient,(int)chat_id,"Solo puedes jugar durante tu turno"); 
         }
-        end_turn();
     }
 
     public void print_turn(){ 
