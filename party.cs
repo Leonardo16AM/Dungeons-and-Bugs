@@ -189,6 +189,20 @@ class party:adventure{
         from_context(interp.context); 
     }
 
+    
+    public void do_action(int chat_id,int num){
+        
+
+        foreach(player member in members){
+            if(member.chat_id==chat_id){
+                string action=member.powers[num-1].script;
+                interpreter interp=new interpreter(botClient,action,context(),chat_ids() );
+                interp.run();
+                from_context(interp.context);                     
+            }
+        }
+    }
+
     public void print_turn(){ 
         if(members[turn].life>0){
             string message="Turno de: @";
