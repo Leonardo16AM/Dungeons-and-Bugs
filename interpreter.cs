@@ -33,7 +33,7 @@ class interpreter{
         throw new Exception("Invalid syntax");
     }
     public void eat(string token_type){
-        Console.WriteLine(">>>>>> "+current_token.type);
+        Console.WriteLine(">>> "+current_token.type);
         if(current_token.type==token_type)
             current_token=lex.get_next_token();
         else
@@ -44,6 +44,11 @@ class interpreter{
         
         if(token.type == "INTEGER"){
             eat("INTEGER");
+            return int.Parse(token.value);
+        }
+        if(token.type == "RND"){
+            Console.WriteLine(token.value.ToString());
+            eat("RND");
             return int.Parse(token.value);
         }
         if(token.type == "VAR"){
@@ -100,10 +105,14 @@ class interpreter{
             eat("STRING");
         }
         if(current_token.type=="INTEGER"){    
-           result=current_token.value.ToString();
-           eat("INTEGER");
+            result=current_token.value.ToString();
+            eat("INTEGER");
         }
-        
+        if(current_token.type=="RND"){    
+            Console.WriteLine(current_token.value.ToString());
+            result=current_token.value.ToString();
+            eat("RND");
+        }
         if(current_token.type=="VAR"){
            result+=context[current_token.value].ToString();
            eat("VAR");
@@ -258,6 +267,34 @@ class interpreter{
                         eat("RKEY");
                     }else{
                         pass();
+                    }
+                }
+                continue;
+            }
+            
+            if(token.type=="WHILE"){
+                eat("WHILE");
+                eat("LPAREN");
+                while(true){
+                    token wr=current_token;
+                    bool ret=false;
+                    string last_token=lex.last_token;
+                    int pos=lex.pos;
+                    char current_char=lex.current_char;
+                    
+                    bool bex=bool_expr();
+                    eat("RPAREN");
+                    if(bex){
+                        eat("LKEY");
+                        block();
+                        eat("RKEY");
+                        current_token=wr;
+                        lex.last_token=last_token;
+                        lex.pos=pos;
+                        lex.current_char=current_char;
+                    }else{
+                        pass();
+                        break;
                     }
                 }
                 continue;
