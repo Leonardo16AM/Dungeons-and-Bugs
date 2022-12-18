@@ -109,7 +109,7 @@ class interpreter{
     
     string str_expr(){
         string result=str_term();
-        while(current_token.type!="SCOL" && current_token.type!= "RPAREN"){
+        while(current_token.type!="COMA" && current_token.type!="SCOL" && current_token.type!= "RPAREN"){
             token token = current_token;
             if(token.type=="PLUS"){
                 eat("PLUS");
@@ -191,6 +191,16 @@ class interpreter{
             eat("RPAREN");
             eat("SCOL");
         }      
+        if(token.type=="NOTIP"){//Notification with picture
+            eat("NOTIP");
+            eat("LPAREN");
+            string url=str_expr();
+            eat("COMA");
+            tlg.notify_members_with_picture(botClient,chat_ids,str_expr(),url);
+            eat("RPAREN");
+            eat("SCOL");
+        }
+        
         if(token.type=="INT"){//Integer declaration
             eat("INT");
             string vname=current_token.value;
