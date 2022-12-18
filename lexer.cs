@@ -131,7 +131,7 @@ class lexer{
             }
             if(same_token("random")){
                 Console.WriteLine("////////////////////"+random.Next(50));
-                return new token("RND",random.Next(100).ToString());
+                return new token("RND",random.Next(50).ToString());
             }
             if(is_varname()){
                 return new token("VAR",last_token);
