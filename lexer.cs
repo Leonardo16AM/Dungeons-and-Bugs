@@ -22,9 +22,7 @@ class lexer{
         this.current_char=text[pos];
         this.vars=vars;
     }
-    public void error(string e){
-        throw new Exception(e);
-    }
+    public void error(string e){throw new Exception(e);}
     public void advance(){
         pos++;
         if(pos>text.Length-1)

@@ -7,39 +7,30 @@ class interpreter{
     string code;
     ITelegramBotClient botClient;
     List<int>chat_ids;
-    public interpreter(ITelegramBotClient botClient,string s,Dictionary<string,int>cont,List<int>chat_ids){
+    public interpreter(ITelegramBotClient botClient,string code,Dictionary<string,int>context,List<int>chat_ids){
         this.botClient=botClient;
         this.chat_ids=chat_ids;
-        code=s;
-        context=new Dictionary<string, int>();
-
+        this.code=code;
+        this.context=new Dictionary<string, int>();
+        
         List<string>vars=new List<string>();
-        foreach(var item in cont){
-            context.Add(item.Key,item.Value);
-            vars.Add(item.Key);
-        }
+        if(context!=null)
+            this.context=context;
+            vars=new List<string>(context.Keys);
         lex=new lexer(code,vars);
-    
-        current_token=lex.get_next_token();
+        this.current_token=lex.get_next_token();
     }
 
-    public void notify_members(string message){
-        foreach(int chat_id in chat_ids){
-            tlg.send_message(botClient,chat_id,message);
-        }
-    }
+    public void error(string e){throw new Exception(e);}
 
-    public void error(string e){
-        throw new Exception(e);
-    }
-    public void eat(string token_type){
+    void eat(string token_type){
         Console.WriteLine(">>> "+current_token.type);
         if(current_token.type==token_type)
             current_token=lex.get_next_token();
         else
-            error($"Expected {token_type} found {current_token.type}");
+            error($"Interpreter Error: Expected {token_type} found {current_token.type}");
     }
-    public int int_factor(){
+    int int_factor(){
         token token = current_token;
         
         if(token.type == "INTEGER"){
@@ -47,7 +38,6 @@ class interpreter{
             return int.Parse(token.value);
         }
         if(token.type == "RND"){
-            Console.WriteLine(token.value.ToString());
             eat("RND");
             return int.Parse(token.value);
         }
@@ -66,30 +56,28 @@ class interpreter{
     }
 
 
-    public int int_term(){
+    int int_term(){
         int result = int_factor();
         while(current_token.type=="MUL" || current_token.type=="DIV"){
             token token = current_token;
             if(token.type=="MUL"){
                 eat("MUL");
                 result*=int_factor();
-            }
-            else if(token.type=="DIV"){
+            }else if(token.type=="DIV"){
                 eat("DIV");
                 result/=int_factor();
             }
         }
         return result;
     }
-    public int int_expr(){
+    int int_expr(){
         int result = int_term();
         while(current_token.type=="PLUS" || current_token.type=="MINUS"){
             token token = current_token;
             if(token.type=="PLUS"){
                 eat("PLUS");
                 result+=int_term();
-            }
-            else if(token.type=="MINUS"){
+            }else if(token.type=="MINUS"){
                 eat("MINUS");
                 result-=int_term();
             }
@@ -98,7 +86,7 @@ class interpreter{
     }
 
 
-    public string str_term(){
+    string str_term(){
         string result="";
         if(current_token.type=="STRING"){
             result=current_token.value;
@@ -109,7 +97,6 @@ class interpreter{
             eat("INTEGER");
         }
         if(current_token.type=="RND"){    
-            Console.WriteLine(current_token.value.ToString());
             result=current_token.value.ToString();
             eat("RND");
         }
@@ -120,7 +107,7 @@ class interpreter{
         return result;
     }
     
-    public string str_expr(){
+    string str_expr(){
         string result=str_term();
         while(current_token.type!="SCOL" && current_token.type!= "RPAREN"){
             token token = current_token;
@@ -163,14 +150,10 @@ class interpreter{
             eat("RPAREN");
             return ret;
         }
-
         int a=int_factor();
         string comp_type=current_token.type;
         eat(comp_type);
         int b=int_factor();
-        Console.WriteLine(a);
-        Console.WriteLine(comp_type);
-        Console.WriteLine(b);
         if(comp_type=="EQ"){return a==b;}
         if(comp_type=="DIF"){return a!=b;}
         if(comp_type=="GT"){return a>b;}
@@ -180,7 +163,7 @@ class interpreter{
         return false;
     }
 
-    public bool bool_expr(){
+    bool bool_expr(){
         bool ret=bool_term();
         while(current_token.type!="SCOL" && current_token.type!= "RPAREN"){
             token token = current_token;
@@ -195,17 +178,16 @@ class interpreter{
                 continue;
             }
         }
-        Console.WriteLine(ret);
         return ret;
     }
 
-    public void line(){
+    void line(){
         token token = current_token;
         
         if(token.type=="NOTI"){//Notification
             eat("NOTI");
             eat("LPAREN");
-            notify_members(str_expr());
+            tlg.notify_members(botClient,chat_ids,str_expr());
             eat("RPAREN");
             eat("SCOL");
         }      
@@ -257,18 +239,14 @@ class interpreter{
                 if(bex){
                     block();
                     eat("RKEY");
-                }else{
-                    pass();
-                }
+                }else pass();
                 if(current_token.type=="ELSE"){
                     eat("ELSE");
                     eat("LKEY");
                     if(!bex){
                         block();
                         eat("RKEY");
-                    }else{
-                        pass();
-                    }
+                    }else pass();
                 }
                 continue;
             }
