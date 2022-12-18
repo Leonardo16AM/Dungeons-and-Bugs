@@ -29,15 +29,15 @@ class interpreter{
         }
     }
 
-    public void error(){
-        throw new Exception("Invalid syntax");
+    public void error(string e){
+        throw new Exception(e);
     }
     public void eat(string token_type){
         Console.WriteLine(">>> "+current_token.type);
         if(current_token.type==token_type)
             current_token=lex.get_next_token();
         else
-            error();
+            error($"Expected {token_type} found {current_token.type}");
     }
     public int int_factor(){
         token token = current_token;
@@ -238,6 +238,7 @@ class interpreter{
         int cnt=1;
         while(cnt!=0){
             string type=current_token.type;
+            if(type=="EOF"){return;}
             if(type=="LKEY"){cnt++;}
             if(type=="RKEY"){cnt--;}
             eat(type);
@@ -277,7 +278,6 @@ class interpreter{
                 eat("LPAREN");
                 while(true){
                     token wr=current_token;
-                    bool ret=false;
                     string last_token=lex.last_token;
                     int pos=lex.pos;
                     char current_char=lex.current_char;
