@@ -28,6 +28,17 @@ public static class tlg{
                 parseMode: ParseMode.Html);
     }
 
+    public static void notify_members(ITelegramBotClient botClient,List<int>chat_ids,string message){
+        foreach(int chat_id in chat_ids){
+            send_message(botClient, chat_id,message);
+        }
+    }
+    public static void notify_members_with_picture(ITelegramBotClient botClient,List<int>chat_ids,string message,string picture){
+        foreach(int chat_id in chat_ids){
+            send_picture(botClient, message, chat_id, picture);
+        }
+    }
+
     public static void notify_admins(ITelegramBotClient botClient,string message){
         send_message(botClient, 789850916,message);
         send_message(botClient, 639646249,message);
