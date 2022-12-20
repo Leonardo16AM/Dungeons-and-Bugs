@@ -303,6 +303,11 @@ class party:adventure{
             notify_members(file.story[stage].beg_story,new long[0]);
         else
             notify_members_with_picture((string)file.story[stage].beg_story+$"\n Life: {vill.life}",(string)file.story[stage].beg_pic); 
+
+        interpreter interp=new interpreter(botClient,(string)file.story[stage].beg_code,context(),chat_ids() );
+        interp.run();
+        from_context(interp.context);                     
+
         if(beg)print_turn();
     }
 
@@ -315,6 +320,11 @@ class party:adventure{
 
 
     public void end_stage(){
+        
+        interpreter interp=new interpreter(botClient,(string)file.story[stage].end_code,context(),chat_ids() );
+        interp.run();
+        from_context(interp.context);                     
+
         Thread.Sleep(1000);
         if(file.story[stage].end_pic=="null")
             notify_members((string)file.story[stage].end_story,new long[0]);

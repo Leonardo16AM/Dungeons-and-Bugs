@@ -1,31 +1,28 @@
 class token{
     public string type,value;
-    public token(string ty,string val){
-        type = ty;
-        value = val;
+    public token(string type,string value){
+        this.type = type;
+        this.value = value;
     }
 }
 
 class lexer{
-    List<string>token_names=new List<string>(){"PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY","RKEY","SCOL","AND","OR","GT","LT","GET","LET","DIF","EQ","NOTI","IF","ELSE","WHILE"};
-    List<string>token_string=new List<string>(){"+","-","*","/","=","(",")","{","}",";","&","|",">","<",">=","<=","!=","==","notify","if","else","while"};
-
+    List<string>token_names=new List<string>(){"PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY","RKEY","SCOL","AND","OR","GT","LT","GET","LET","DIF","EQ","NOTI","IF","ELSE","WHILE","NOTIP","COMA"};
+    List<string>token_string=new List<string>(){"+","-","*","/","=","(",")","{","}",";","&","|",">","<",">=","<=","!=","==","notify","if","else","while","notipic",","};
     public string text,last_token;
     public int pos;
     public char  current_char;
     List<string>vars;
     System.Random random; 
 
-    public lexer(string s,List<string>v){
-        random = new System.Random();
-        text=s;
-        pos=0;
-        current_char=text[pos];
-        vars=v;
+    public lexer(string text,List<string>vars){
+        this.random = new System.Random();
+        this.text=text;
+        this.pos=0;
+        this.current_char=text[pos];
+        this.vars=vars;
     }
-    public void error(){
-        throw new Exception("Invalid character");
-    }
+    public void error(string e){throw new Exception(e);}
     public void advance(){
         pos++;
         if(pos>text.Length-1)
@@ -60,10 +57,9 @@ class lexer{
 
 
     bool is_varname(){
-        for(int i=0;i<vars.Count();i++){
+        for(int i=0;i<vars.Count();i++)
             if(same_token(vars[i]) )
                 return true;
-        }
         return false;
     }
 
@@ -71,7 +67,7 @@ class lexer{
 
     public int integer(){
         string result="";
-        while(current_char!='#' && current_char>='0' && current_char<='9'){
+        while(current_char>='0' && current_char<='9'){
             result+=current_char;
             advance();
         }
@@ -100,27 +96,24 @@ class lexer{
 
     public token get_next_token(){
         while(current_char!='#'){
-            if(current_char==' ' || current_char=='\t' || current_char=='\n' || current_char=='\r')
-                skip();
-
+            skip();
+            
             if(last_token=="int" || last_token=="str"){
                 string vname=get_var();
                 vars.Add(vname);
                 last_token="";
                 return new token("VAR",vname);        
             }
-
+            
             if(current_char>='0' && current_char<='9')
                 return new token("INTEGER",integer().ToString());
-            
             if(current_char=='"')
                 return new token("STRING",strin());
 
-            for(int i=0;i<token_names.Count();i++){
-                if(same_token(token_string[i])){
+            for(int i=0;i<token_names.Count();i++)
+                if(same_token(token_string[i]))
                     return new token(token_names[i],token_string[i].ToString());
-                }
-            }
+                
             if(same_token("str")){
                 last_token="str";
                 return new token("STR","str");
@@ -130,13 +123,12 @@ class lexer{
                 return new token("INT","int");
             }
             if(same_token("random")){
-                Console.WriteLine("////////////////////"+random.Next(50));
-                return new token("RND",random.Next(100).ToString());
+                return new token("RND",random.Next(50).ToString());
             }
             if(is_varname()){
                 return new token("VAR",last_token);
             }
-            error();
+            error("Parser error: Invalid character");
         }
         return new token("EOF","#");
     }
