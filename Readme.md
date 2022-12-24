@@ -2,6 +2,7 @@
 
 Dungeons and Bugs es un motor de juegos con historia del tipo Dungeons and Dragons. Permite juegos multijugador en línea, con modo cooperativo o player vs player. Posee su propio  lenguaje de programación para crear aventuras, heroes, poderes y mucho más. ¿Estás listo para vivir aventuras y crear las tuyas propias?
 
+---
 ## ¿Cómo jugar?
 
 Dungeons and Bugs tiene un cliente gráfico para jugar en Telegram llamada Code Dungeon, para acceder a ella entre a [@code_dungeon_bot](https://t.me/code_dungeon_bot) (El servidor debe estar corriendo para poder usarlo).   
@@ -14,14 +15,14 @@ Ya estás dentro de la aventura, deberás seguidamente elegir tu héroe, una vez
 
 El juego se jugará por turnos, y cada personaje podrá usar acciones predeterminadas en el inicio, es probable que  durante el transcurso de la aventura obtengan nuevas acciones, y además podrás programar tus propias acciones, para ver las acciones disponibles podrás usar `/actions`. Durante el transcurso de la aventura podrán morir jugadores, luchar con monstruos, resolver puzles y muchas cosas más.
 
-
+---
 ## Creando tu propia aventura:
 
-Las avneturas estarán guardadas en archivos `JSON` en la carpeta `adventures`. Para crear aventuras nuevas deberás seguir el formato siguiente:
+Las avnenturas estarán guardadas en archivos `JSON` en la carpeta `adventures`. Para crear aventuras nuevas se debera usar el formato siguiente:
 
 ```json
 {
-    "name":"Nombre extenso de la aventura",
+    "name":"Nombre completo de la aventura",
     "token": "mini_name",
     "heroes":[
         {
@@ -76,3 +77,69 @@ Las avneturas estarán guardadas en archivos `JSON` en la carpeta `adventures`. 
     ]
 }
 ```
+Como se observa al inicio del archivo deberan crearse todos los posibles heroes, de estos se debe dar una descripcion del heroe, sus estadisticas y una imagen del mismo.
+> ⚠ Los links a las imagenes de jugadores, stages, o imagenes usadas en C+- deben ser links en linea, se recomienda subir las imagenes a [imgur](imgur.com).
+
+Las aventuras se divididen en distintos stages, donde cada stage es un objetivo adistinto a vencer, el stage dara por finalizado cuando `Villain.life` llegue a cero. Durante los stages los heroes jugaran por turnos para vencer el objetivo del stage actual. Al principio cada turno se ejecutara un encuentro, el cual sera un pedazo de codigo en C+-. Lo que  pase en cada encuentro puede variar dependiendo de la historia y de el codigo implementado en ellos, uno de los encuentros posibles puede ser que el jugador obtenga un poder nuevo, recupere vida, o simplemente reciba algun mensaje. Los encuentros se elegirtan aleatoriamente entre todos los posibles encuentros del stage actual. Tanto al iniciar un stage como el terminar se correra un codigo en C+- y se mostrara un anuncio con una imagen en el cual se ira contando la historia que va ocurriendo.
+
+---
+## C+- un lenguaje para gobernarlos a todos.
+El lenguaje para progrmar poderes, encuentros y la historia en general es llamado C+-. Es un lenguaje Turing completo y su nombre surge debido a su parecido con el lenguaje C++.  
+### Componentes principales del lenguaje:  
+
+Declaracion de numeros enteros:   
+ ```c++ 
+    int n=16;
+ ```
+ Declaracion de cadenas de caracteres:   
+ ```c++ 
+    str s="Hello there!";
+ ```
+ 
+ Notificar a todos los jugadores en una partida:   
+ ```c++ 
+    notify("General Kenobi!");
+ ```
+ 
+ Notificar a todos los jugadores en una partida con una imagen y un subtexto:   
+ ```c++ 
+    notipic("https://disruptivo.tv/wp-content/uploads/2015/12/Untitled.png","Not the droids you are looking for");
+ ```
+ Condicional if:
+  ```c++ 
+    if(5>3){
+        notify("It is obvius");
+    }
+ ```
+ 
+ Condicional if-else:
+  ```c++ 
+    if(534134>3488353){
+        notify("It is obvius");
+    }else{
+        notify("Not so obvius");    
+    }
+ ```
+ Ciclo while:
+ ```c++
+    int cnt=5;
+    while(cnt!=0){
+        notify(cnt);
+        cnt=cnt-5;
+    }
+ ```
+
+ Elscript siemrpe va a poseer variables globales tales que van a representar el estado acutal del juego, tales como `Villain,life` y otras mas, ademas se le pueden adicionar mas variables al estado del juego para luego ser usadas en turnos posteriores.Con estas estructuras basicas del lenguaje se pueden crear operaciones mas complicadas: 
+ ```c++
+    while( Gandalf.life!=0 ){
+        if( Villain.life>0 &  Gandalf.strength>50 ){
+            notify("Gandalf says: You shall not pass!");
+        }else{
+            notify("Gandalf and the balrog fall into the abyss while fighting");
+            sleep(1000);
+            Gandalf.life=Gandalf.life-(Villain.strength-Gandlaf.strength/10);
+            Villain.life=Villain.life-random();
+            notify("Gandalf's life is now"+ Gandalf.life +" and the Balrog's life is"+Villain.life);
+        }
+    }
+ ```
