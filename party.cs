@@ -168,9 +168,14 @@ class party:adventure{
     public void start_adventure(){
         // Starts the adventure
         isStarted=true;
-        string message="La aventura ha comenzado!";
-        notify_members( message, new long[0]);
-        message="Elije a tu heroe:";
+        
+        interpreter interp=new interpreter(botClient,(string)file.start_code,context(),chat_ids() );
+        interp.run();
+        foreach(var h in file.heroes){
+                notify_members_with_picture( (string)h.desc,(string)h.img);
+                Thread.Sleep(1000);
+        }
+        string message="Elije a tu heroe:";
         int cont=0;  
         InlineKeyboardButton[] payload= new InlineKeyboardButton[heroSelection.Length];  
         foreach(var hero in file.heroes){
@@ -203,7 +208,7 @@ class party:adventure{
                     member.powers.Add(new power((string)pw[0],(string)pw[1],(string)pw[2]));
                 }
 
-                string message=$"@{member.user} ha elegido a {member.c_name}:\n {member.h_hist}\n Life: {member.life}\n Strength: {member.strength}\n Agility: {member.agility}\n Mana: {member.mana}";
+                string message=$"@{member.user} ha elegido a {member.c_name}:\n Life: {member.life}\n Strength: {member.strength}\n Agility: {member.agility}\n Mana: {member.mana}";
                 string picture=file.heroes[hero_id].img;
                 heroSelection[hero_id]=true;
                 notify_members_with_picture( message,picture);
@@ -212,12 +217,8 @@ class party:adventure{
             }
         }
         if(chosen_heroes==members.Count()){
-            string message="Todos los heroes han sido elegidos, que comience la aventura!";
-            notify_members(message,new long[0]);
-            Thread.Sleep(2000);
             start_stage(true);
         }
-
     }
 
 
