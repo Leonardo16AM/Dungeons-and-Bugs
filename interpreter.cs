@@ -1,4 +1,6 @@
 using Telegram.Bot;
+using System;
+using System.Threading;
 
 class interpreter{
     public Dictionary<string,int>context;
@@ -222,6 +224,13 @@ class interpreter{
                 context.Add(vname,value);
             else
                 context[vname]=value;
+            eat("SCOL");
+        }
+        if(token.type=="SLEEP"){//sleep
+            eat("SLEEP");
+            eat("LPAREN");
+            Thread.Sleep(int_expr());
+            eat("RPAREN");
             eat("SCOL");
         }     
     }

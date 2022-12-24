@@ -1,6 +1,7 @@
 {
     "name":"Berserk, la Edad Dorada",
     "token": "berserk",
+    "start_code":"notify(\"La Banda del Halcón, es la banda de mercenarios más temida de todo Midland y esta es su historia. \");sleep(2000);notify(\"Todo comienza en una época que llamaremos la Edad Dorada, el caos cae sobre el mundo en forma de una gran guerra, demonios, humanos, hambre, falsos profetas y crueles dictadores. \");sleep(2000);notify(\"En medio de ello la Banda del Halcón ha ganado renombre librando batallas que los caballeros del reino de Midland consideraban perdidas, siendo así cuna de gloriosos héroes. \");sleep(2000);",
     "heroes":[
         {
             "token": "guts",
@@ -9,7 +10,7 @@
             "strength": 100,
             "agility": 70,
             "mana": 20,
-            "desc": "Guts es el mercenario mas temido de todo Midland, algunos lo conocen como el caballero negro, cuenta la leyenda que una vez mato a 100 hombres el solo ... En sus manos lleva algo demasiado grande para ser una espada, parecido a un gran pedazo de hierro",
+            "desc": "Guts, el nuevo recluta extremadamente prometedor. Protegido por el líder. Posee una gran fuerza bruta y habilidad con la espada, una espada más grande que cualquier otra …",
             "img": "https://i.imgur.com/D8TIxdK.jpg",
             "powers": [
                 ["sword_attack","⚔️ Ataca con la espada al enemigo, si tu fortaleza es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.",
@@ -30,7 +31,7 @@
             "strength": 70,
             "agility": 100,
             "mana": 40,
-            "desc": "Griffith pareciera de la realeza, pero realmente es solo un plebello. Pero no uno cualquiera, su  sed de poder lo ha llevado a ser el lider de la banda del halcon ... y lo llevara a mucho mas",
+            "desc": "Griffith es el líder de la banda, es carismático, un gran estratega y guerrero. Daría lo que fuera por lograr su sueño, sin importar lo que se entrometa en su camino.",
             "img": "https://i.imgur.com/vLkayOk.jpg",
             "powers": [
                 ["sword_attack","⚔️ Ataca con la espada al enemigo, si tu agilidad es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.",
@@ -51,7 +52,7 @@
             "strength": 60,
             "agility": 80,
             "mana": 10,
-            "desc": "La fiel Casca es la unica mujer de la banda del halcon, pero no nos dejemos engañar porque es tambien uno de sus mas mortferos miembros",
+            "desc": "Casca, la única mujer de la banda, más ruda y ágil que la mayoría de los hombres al punto de llegar a ser la General de la Banda del Halcón. Su lealtad a Griffith es inimaginable.",
             "img": "https://i.imgur.com/0NOmlhY.jpg",
             "powers":[
                 ["bow_attack","🏹 Ataca con flechas al enemigo, le quitarás la cantidad de puntos de fortaleza que tenga dividido entre 5",
@@ -72,7 +73,7 @@
             "strength": 70,
             "agility": 70,
             "mana": 15,
-            "desc": "Jadeau parecierano tan poderoso como el resto, pero posee una agilidad impresionante, es capaz de lanzar cuchillos con una precision milimetrica, no quisieras interponerte a el",
+            "desc": "Jadeau es el más confiable de todos, brinda ayuda a quien lo necesite. No solo es super ágil lanzando cuchillos, sino que también gracias al polvo de hadas que guarda en su mochila es capaz de sanar a los demás.",
             "img": "https://i.imgur.com/CCmuMoq.jpg",
             "powers": [
                 ["heal_friends","❤️‍🩹  Sana a tus amigos con el polvo de hadas que tienes en una bolsita, les restaurará 10 puntos de vida a cada uno, esto te cuesta 3 puntos de mana",
