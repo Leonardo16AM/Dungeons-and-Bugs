@@ -136,7 +136,7 @@ class party:adventure{
         // Starts the adventure
         isStarted=true;
         
-        interpreter interp=new interpreter(Client,(string)file.start_code,context(),chat_ids() );
+        interpreter interp=new interpreter(Client,(string)file.start_code,new Dictionary<string, int>(),chat_ids() );
         interp.run();
         foreach(var h in file.heroes){
                 Client.notify( 
