@@ -3,10 +3,15 @@ using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
-public static class DataAdventure{
+public class DataAdventure{
     public static Dictionary<string, dynamic> Adventures = new Dictionary<string, dynamic>();
+    IClient Client;
     
-    public static void loadData(){
+    public DataAdventure(IClient client){
+        Client=client;
+        loadData();
+    }
+    public void loadData(){
         string[] paths= Directory.GetFiles("adventures//", "*.json",SearchOption.AllDirectories);
         for(int i=0;i<paths.Length;i++){
             string json = File.ReadAllText(paths[i]);
@@ -19,11 +24,15 @@ public static class DataAdventure{
             
     }
     
-    public static void printAllAdventures(ITelegramBotClient botClient,long chatId, long reply=-1){
+    public void printAllAdventures(int chatId, long reply=-1){
         if(Adventures.Count()==0){
-            tlg.send_message(botClient, (int)chatId, "No hay aventuras disponibles.",(int)reply);
+            Client.notify(
+                new int[] {(int)chatId},
+                new ClientParams("No hay aventuras disponibles.", rM: (int)reply)
+            );
             return;
         }
+
         string s="Aventuras Disponibles: \n";
         int counter=0;
         InlineKeyboardButton[] payload= new InlineKeyboardButton[Adventures.Count()];
@@ -34,11 +43,14 @@ public static class DataAdventure{
             );
             counter++;
         }
-        botClient.SendTextMessageAsync(
-            chatId: (int)chatId,
-            text: s,
-            replyMarkup: new InlineKeyboardMarkup(payload),
-            replyToMessageId: reply==-1? null: (int)reply
+
+        Client.notify(
+            new int[] {(int)chatId},
+            new ClientParams(
+                s,
+                rS: new InlineKeyboardMarkup(payload),
+                rM: reply==-1? null: (int)reply
+            )
         );
     }
 

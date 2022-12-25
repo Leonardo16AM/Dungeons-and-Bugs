@@ -13,13 +13,17 @@ var receiverOptions = new ReceiverOptions{
 };
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+IClient telegram= new TlgClient("5747520451:AAFUXAYgxTJK7tU4m3HLk3N5ec-5Ks0xGDs");
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 List<party> parties=new List<party>();
 Dictionary<int,int>player_party=new Dictionary<int, int>();
-DataAdventure.loadData();
+DataAdventure Data= new DataAdventure(telegram);
 int current_party=1000000;
 
-void add_party(ITelegramBotClient botClient,int leader,string adv_name,string leader_name, string leader_user){
-    parties.Add(new party(botClient,current_party,adv_name,leader,leader_name,leader_user));
+
+void add_party(int leader,string adv_name,string leader_name, string leader_user){
+    parties.Add(new party(telegram,current_party,adv_name,leader,leader_name,leader_user));
     player_party.Add(leader,current_party-1000000);
     current_party++;
 }
@@ -27,13 +31,6 @@ void add_party(ITelegramBotClient botClient,int leader,string adv_name,string le
 void add_member(int member, string name,string user, int party_id){
     player_party.Add(member,party_id-1000000);
     parties[party_id-1000000].add_member( member, name, user);
-}
-
-void send_message(ITelegramBotClient botClient, int chat_id,string message, int reply= -1){
-    if(reply != -1)
-        botClient.SendTextMessageAsync(chat_id,message,parseMode: ParseMode.MarkdownV2, replyToMessageId: reply);
-    else
-        botClient.SendTextMessageAsync(chat_id,message,parseMode: ParseMode.MarkdownV2);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +45,7 @@ botClient.StartReceiving(
 
 var me = await botClient.GetMeAsync();
 Console.WriteLine($"Server started correctly");
-tlg.notify_admins(botClient,"Server started correctly");
+((TlgClient)telegram).notifyAdmins(new ClientParams("Server started correctly"));
 Console.ReadLine();
 cts.Cancel();
 
@@ -70,16 +67,20 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
             if(callb.Data.StartsWith("/new_adv")){
                 string adv_name=callb.Data.Substring(9);
-                add_party(botClient,(int)cId,adv_name,callb.Message.Chat.FirstName,callb.Message.Chat.Username);
-                send_message(botClient,(int)cId,$"Adventure created : {current_party-1}", callb.Message.MessageId);
+                add_party((int)cId,adv_name,callb.Message.Chat.FirstName,callb.Message.Chat.Username);
+                telegram.notify(
+                    new int[] {(int)cId},
+                    new ClientParams(
+                        $"Adventure created : {current_party-1}",
+                        rM: callb.Message.MessageId)
+                );
             }
             if (callb.Data.StartsWith("/do") ){
                 string mess=callb.Data.Substring(3);
                 parties[player_party[(int)cId]].do_action((int)cId,int.Parse(mess));
                 return;
             }
-                    
-            
+
             return;
         }
             
@@ -98,7 +99,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         if (messageText.StartsWith("/run") ){// Only for developers
             if( (int)chatId==789850916 || (int)chatId==639646249 ){
                 string script= messageText.Substring(5);
-                interpreter i=new interpreter(botClient, script, parties[player_party[(int)chatId]].context(),parties[player_party[(int)chatId]].chat_ids() );
+                interpreter i=new interpreter(telegram, script, parties[player_party[(int)chatId]].context(),parties[player_party[(int)chatId]].chat_ids() );
                 i.run();
                 parties[player_party[(int)chatId]].from_context(i.context);
             }
@@ -107,9 +108,15 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
         if (messageText.StartsWith("/new_adventure")){
             if(player_party.ContainsKey((int)chatId)){
-                send_message(botClient,(int)chatId,"You are already in one adventure, if you want to host a new one /quit the current", (int)message.MessageId);
+                telegram.notify(
+                    new int[] {(int)chatId},
+                    new ClientParams(
+                        "You are already in one adventure, if you want to host a new one /quit the current",
+                        rM: (int)message.MessageId
+                    )
+                );
             }
-            DataAdventure.printAllAdventures(botClient, chatId, message.MessageId);	
+            Data.printAllAdventures((int)chatId, message.MessageId);	
             return;
         }
         
@@ -117,11 +124,17 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             int party=int.Parse(messageText.Substring(6,7));
 
             if(player_party.ContainsKey((int)chatId) && player_party[(int)chatId]==(int)party ){
-                send_message(botClient,(int)chatId,"You are already in this adventure");
+                telegram.notify(
+                    new int[] {(int)chatId},
+                    new ClientParams("You are already in this adventure")
+                );
                 return;
             }
             if(parties[party-1000000].isStarted){
-                send_message(botClient,(int)chatId,"That adventure is already started, try another or create a new one");
+                telegram.notify(
+                    new int[]{(int)chatId},
+                    new ClientParams("That adventure is already started, try another or create a new one")
+                );
                 return;
             }
 
@@ -131,7 +144,13 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
         if(messageText=="/start_adventure"){
             if( !player_party.ContainsKey((int)chatId) ){
-                send_message(botClient,(int)chatId,"You have to host an adventure first, type new_adventure to host it", (int)message.MessageId);
+                telegram.notify(
+                    new int[] {(int)chatId},
+                    new ClientParams(
+                        "You have to host an adventure first, type new_adventure to host it",
+                        rM:(int)message.MessageId
+                    )
+                );
                 return;
             }
             parties[player_party[(int)chatId]].start_adventure();
@@ -139,14 +158,20 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         }
 
         if(!player_party.ContainsKey((int)chatId)){
-            send_message(botClient,(int)chatId,"You are not in any adventure, create one or join one", message.MessageId);
+            telegram.notify(
+                new int [] {(int)chatId},
+                new ClientParams(
+                    "You are not in any adventure, create one or join one",
+                    rM: message.MessageId
+                )
+            );
             return;
         }        
 
         if (messageText.StartsWith("/chat") ){
             string mess=messageText.Substring(5);
             if(mess=="") return;
-            parties[player_party[(int)chatId]].notify_members($"@{message.From.Username}: {mess}", new long[] {chatId});
+            parties[player_party[(int)chatId]].chat($"@{message.From.Username}: {mess}", (int)chatId);
             return;
             
         }
@@ -160,15 +185,22 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             parties[player_party[(int)chatId]].actions((int)chatId);
             return;
         }
-        send_message(botClient,(int)chatId,"Unknown command");
+
+        telegram.notify(
+            new int []{(int)chatId},
+            new ClientParams("Unknown command")
+        );
     
     }catch (Exception e){
 
-        Console.WriteLine("{0}Exception caught.", e);
+        Console.WriteLine("{0} Exception caught.", e);
         if (update.Message is not { } message)return;
         if (message.Text is not { } messageText)return;
         var chatId = message.Chat.Id;
-        send_message(botClient,(int)chatId,"Bad command ussage or error");
+        telegram.notify(
+            new int [] {(int)chatId},
+            new ClientParams ("Bad command ussage or error")
+        );
     }
 }
 
