@@ -17,9 +17,18 @@ public class TlgClient : IClient
     }
     public void notify(int[] chatIds, IClientParams param, int[]? exc=null)
     {
-        if (((ClientParams)param).picUrl == null)
-        {
-            foreach (int chatId in chatIds)
+        foreach (int chatId in chatIds)
+        {   
+            bool next=false;
+            if(exc!=null)
+                foreach(int integer in exc)
+                    if(chatId==integer)
+                        next=true;
+
+            if(next)
+                continue;
+
+            if (((ClientParams)param).picUrl == null)
             {
                 botClient.SendTextMessageAsync(
                     chatId: chatId,
@@ -31,10 +40,7 @@ public class TlgClient : IClient
                     replyMarkup: ((ClientParams)param).replyStyle == null ? null : ((ClientParams)param).replyStyle
                 );
             }
-        }
-        else
-        {
-            foreach (int chatId in chatIds)
+            else
             {
                 botClient.SendPhotoAsync(
                     chatId: chatId,
@@ -47,6 +53,7 @@ public class TlgClient : IClient
                 );
             }
         }
+        
     }
     
     public void notifyAdmins(IClientParams param){

@@ -38,14 +38,18 @@ class party:adventure{
         members.Add(new player(member,name,user));
         string message=$"@{user} joined the adventure";
         Client.notify(
-            tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+            tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
             new ClientParams(message)
         );
         if(members.Count()==heroSelection.Length)
             start_adventure();
     }
     public void chat(string message, int sender){
-        throw new NotImplementedException();
+        Client.notify(
+          tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
+          new ClientParams(message),
+          new int[]{sender}  
+        );
     }
 
     public void print_vars(int chat_id){
@@ -136,7 +140,7 @@ class party:adventure{
         interp.run();
         foreach(var h in file.heroes){
                 Client.notify( 
-                    tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+                    tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
                     new ClientParams(
                         (string)h.desc,
                         pU: (string)h.img
@@ -152,7 +156,7 @@ class party:adventure{
             payload[cont-1]= InlineKeyboardButton.WithCallbackData(text: hero.name.ToString(), callbackData: "/choose_hero "+(cont).ToString());
         }
         Client.notify( 
-            tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+            tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
             new ClientParams(
                 message,
                 rS: new InlineKeyboardMarkup(payload)
@@ -190,7 +194,7 @@ class party:adventure{
                 string picture=file.heroes[hero_id].img;
                 heroSelection[hero_id]=true;
                 Client.notify( 
-                    tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+                    tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
                     new ClientParams(message, pU: picture)
                 );
                 Thread.Sleep(1000);
@@ -238,13 +242,13 @@ class party:adventure{
             message+=members[turn].user;
             Thread.Sleep(300);
             Client.notify(
-                tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+                tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
                 new ClientParams(message)
             );
             encounter(members[turn]);
             if(members[turn].life<0){
                 Client.notify(
-                    tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+                    tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
                     new ClientParams($"🪦 {members[turn].c_name} ha muerto!")
                     
                 );        
@@ -269,14 +273,14 @@ class party:adventure{
     }
     private void GameOver(){
         Client.notify(
-            tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+            tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
             new ClientParams("☠️Game Over☠️")
         );
     }
     public void action(){
         vill.life-=100;
         Client.notify(
-            tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+            tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
             new ClientParams("Se le han hecho 100 puntos de daño al enemigo")
         );
     }
@@ -299,12 +303,12 @@ class party:adventure{
         vill.life=(int)file.story[stage].villain.life;
         if(file.story[stage].beg_pic=="null")
             Client.notify(
-                tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+                tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
                 new ClientParams(file.story[stage].beg_story)
             );
         else
             Client.notify(
-                tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+                tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
                 new ClientParams(
                     (string)file.story[stage].beg_story+$"\n Life: {vill.life}",
                     pU: (string)file.story[stage].beg_pic)
@@ -321,7 +325,7 @@ class party:adventure{
     public void end_game(){
         Thread.Sleep(500);
         Client.notify(
-            tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+            tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
             new ClientParams("El juego ha terminado")
         );
         finished=true;
@@ -337,12 +341,12 @@ class party:adventure{
         Thread.Sleep(1000);
         if(file.story[stage].end_pic=="null")
             Client.notify(
-                tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+                tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
                 new ClientParams((string)file.story[stage].end_story)
             );
         else
             Client.notify(
-                tlg.filter<int, player>(members, (m)=> {return m.chat_id;}),
+                tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
                 new ClientParams(
                     (string)file.story[stage].end_story,
                     pU: (string)file.story[stage].end_pic
