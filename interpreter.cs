@@ -8,9 +8,10 @@ class interpreter{
     token current_token;
     string code;
     ITelegramBotClient botClient;
+    IClient Client;
     List<int>chat_ids;
-    public interpreter(ITelegramBotClient botClient,string code,Dictionary<string,int>context,List<int>chat_ids){
-        this.botClient=botClient;
+    public interpreter(IClient client,string code,Dictionary<string,int>context,List<int>chat_ids){
+        this.Client=client;
         this.chat_ids=chat_ids;
         this.code=code;
         this.context=new Dictionary<string, int>();
@@ -189,7 +190,10 @@ class interpreter{
         if(token.type=="NOTI"){//Notification
             eat("NOTI");
             eat("LPAREN");
-            tlg.notify_members(botClient,chat_ids,str_expr());
+            Client.notify(
+                tlg.map<int, int>(chat_ids, num => {return num;}),
+                new ClientParams(str_expr())
+            );
             eat("RPAREN");
             eat("SCOL");
         }      
@@ -198,7 +202,10 @@ class interpreter{
             eat("LPAREN");
             string url=str_expr();
             eat("COMA");
-            tlg.notify_members_with_picture(botClient,chat_ids,str_expr(),url);
+            Client.notify(
+                tlg.map<int, int>(chat_ids, num => {return num;}),
+                new ClientParams(str_expr(), pU: url)
+            );
             eat("RPAREN");
             eat("SCOL");
         }
