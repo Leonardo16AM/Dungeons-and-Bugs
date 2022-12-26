@@ -69,7 +69,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                 string adv_name=callb.Data.Substring(9);
                 add_party((int)cId,adv_name,callb.Message.Chat.FirstName,callb.Message.Chat.Username);
                 telegram.notify(
-                    new int[] {(int)cId},
+                    new List<int> {(int)cId},
                     new ClientParams(
                         $"Adventure created. Send to your friends the following command to join the adventure /join {current_party-1}",
                         rM: callb.Message.MessageId)
@@ -100,7 +100,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         if (messageText.StartsWith("/new_adventure")){
             if(player_party.ContainsKey((int)chatId)){
                 telegram.notify(
-                    new int[] {(int)chatId},
+                    new List<int> {(int)chatId},
                     new ClientParams(
                         "You are already in one adventure, if you want to host a new one /quit the current",
                         rM: (int)message.MessageId
@@ -116,14 +116,14 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
             if(player_party.ContainsKey((int)chatId) && player_party[(int)chatId]==(int)party ){
                 telegram.notify(
-                    new int[] {(int)chatId},
+                    new List<int> {(int)chatId},
                     new ClientParams("You are already in this adventure")
                 );
                 return;
             }
             if(parties[party-1000000].isStarted){
                 telegram.notify(
-                    new int[]{(int)chatId},
+                    new List<int>{(int)chatId},
                     new ClientParams("That adventure is already started, try another or create a new one")
                 );
                 return;
@@ -136,7 +136,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         if(messageText=="/start_adventure"){
             if( !player_party.ContainsKey((int)chatId) ){
                 telegram.notify(
-                    new int[] {(int)chatId},
+                    new List<int> {(int)chatId},
                     new ClientParams(
                         "You have to host an adventure first, type /new_adventure to host it",
                         rM:(int)message.MessageId
@@ -150,7 +150,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
         if(!player_party.ContainsKey((int)chatId)){
             telegram.notify(
-                new int [] {(int)chatId},
+                new List<int> {(int)chatId},
                 new ClientParams(
                     "You are not in any adventure, create one or join one",
                     rM: message.MessageId
@@ -176,7 +176,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         }
 
         telegram.notify(
-            new int []{(int)chatId},
+            new List<int> {(int)chatId},
             new ClientParams("Unknown command")
         );
     
@@ -187,7 +187,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
         if (message.Text is not { } messageText)return;
         var chatId = message.Chat.Id;
         telegram.notify(
-            new int [] {(int)chatId},
+            new List<int> {(int)chatId},
             new ClientParams ("Bad command ussage or error")
         );
     }

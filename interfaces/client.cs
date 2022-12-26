@@ -1,5 +1,5 @@
 public interface IClient {
-    void notify(int [] users, IClientParams param, int []? except=null);
+    void notify(IEnumerable<int> users, IClientParams param, IEnumerable<int>? except=null);
 
     void notifyAdmins(IClientParams param);
 }
