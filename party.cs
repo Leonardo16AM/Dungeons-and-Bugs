@@ -22,6 +22,10 @@ class party:adventure{
         members=new List<player>();
         heroSelection = new bool[count_dynamic(file.heroes)];
         members.Add(new player(leader,leader_name,leader_user));
+        foreach(var h in file.heroes){
+            Console.WriteLine((string)h.hname);
+            vars.Add((string)h.name+".life",0);
+        }
         Client= client;
     }
 
@@ -105,7 +109,7 @@ class party:adventure{
         foreach(player p in members){
             Dictionary<string,int>player_dict=p.context();
             foreach(var prop in player_dict){
-                ret.Add(prop.Key,prop.Value);
+                ret[prop.Key]=prop.Value;
             }
         }
         foreach(var prop in vill.context()){
@@ -149,6 +153,7 @@ class party:adventure{
         interpreter interp=new interpreter(Client,(string)file.start_code,new Dictionary<string, int>(),chat_ids() );
         interp.run();
         foreach(var h in file.heroes){
+                Thread.Sleep(4000);
                 Client.notify( 
                     tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
                     new ClientParams(
@@ -156,7 +161,6 @@ class party:adventure{
                         pU: (string)h.img
                     )
                 );
-                Thread.Sleep(3000);
         }
         string message="Elije a tu heroe:";
         int cont=0;  
@@ -214,14 +218,34 @@ class party:adventure{
         }
     }
 
+    public void run_script(string script){
+        interpreter interp=new interpreter(Client,script,context(),chat_ids() );
+        interp.run();
+        from_context(interp.context); 
+        foreach(string a in interp.actions){
+            string[] token=a.Split('%');
+            if(token[0]=="add")
+                foreach(player member in members)
+                    if(member.c_name==token[1]){
+                        Console.WriteLine("Adding power: "+token[2]+" "+token[3]+" "+token[4]);
+                        member.powers.Add(new power(token[2],token[3],token[4]));
+                    }
+            if(token[0]=="del")
+                foreach(player member in members)
+                    if(member.c_name==token[1]){
+                        Console.WriteLine("deleting power: "+token[2]);
+                        member.powers.Remove(member.powers.Find(x => x.name==token[2]));
+                    }
+                
+            Console.WriteLine(a);
+        }
+    }
 
     public void encounter(player curr){
         int enc=rnd.Next(0, count_dynamic(file.story[stage].events[curr.h_ref]));
         string encount=(string)file.story[stage].events[curr.h_ref][enc];
         Thread.Sleep(300);
-        interpreter interp=new interpreter(Client,encount,context(),chat_ids() );
-        interp.run();
-        from_context(interp.context); 
+        run_script(encount);
     }
 
     
@@ -230,10 +254,7 @@ class party:adventure{
             foreach(player member in members){
                 if(member.chat_id==chat_id){
                     string action=member.powers[num-1].script;
-                    interpreter interp=new interpreter(Client,action,context(),chat_ids() );
-                    interp.run();
-                    from_context(interp.context);                     
-                }
+                    run_script(action);               }
             }
             end_turn();
         }else{
@@ -308,11 +329,7 @@ class party:adventure{
     public void start_stage(bool beg=false){
         Thread.Sleep(1000);
         vill.life=(int)file.story[stage].villain.life;
-
-        interpreter interp=new interpreter(Client,(string)file.story[stage].beg_code,context(),chat_ids() );
-        interp.run();
-        from_context(interp.context);                     
-
+        run_script((string)file.story[stage].beg_code);   
         if(beg)print_turn();
     }
 
@@ -328,10 +345,7 @@ class party:adventure{
 
 
     public void end_stage(){
-        
-        interpreter interp=new interpreter(Client,(string)file.story[stage].end_code,context(),chat_ids() );
-        interp.run();
-        from_context(interp.context);                     
+        run_script((string)file.story[stage].end_code);
 
         Thread.Sleep(1000);
         stage++;
