@@ -9,6 +9,7 @@ class party:adventure{
     bool[] heroSelection;
     public bool isStarted = false, finished =false;
     IClient Client;
+    Dictionary<string,int> vars=new Dictionary<string,int>();
 
     int stage=0;
     villain  vill=new villain();
@@ -57,10 +58,11 @@ class party:adventure{
         Dictionary<string,int>vars=context();
         string vs="Variables: \n";
         vs+=$"{vill.c_name}.life: {vill.life} \n";
-        foreach(var prop in vars){
-            if(prop.Key=="deads")continue;
-            if(prop.Key.StartsWith("Villain"))continue;
-            vs+=$"{prop.Key}: {prop.Value} \n";
+        foreach(player member in members){    
+            foreach(var prop in vars){
+                if(prop.Key.StartsWith(member.c_name))
+                    vs+=$"{prop.Key}: {prop.Value} \n";
+            }
         }
         Client.notify(
             new int [] {chat_id},
@@ -98,7 +100,7 @@ class party:adventure{
     }
     public Dictionary<string,int> context(){
         // Returns a dictionary of all variables of the party
-        Dictionary<string,int>ret=new Dictionary<string,int>();
+        Dictionary<string,int>ret=new Dictionary<string,int>(vars);
         ret.Add("deads",deads);
         foreach(player p in members){
             Dictionary<string,int>player_dict=p.context();
@@ -115,19 +117,27 @@ class party:adventure{
     public void from_context(Dictionary<string,int>cont){
         // Sets the variables of the party from a dictionary
         char[] delims={'.'};
+        List<string>del=new List<string>();
         foreach(var s in cont){
             string[] tokens=s.Key.Split(delims);
             for(int i=0;i<members.Count();i++){
                 if( tokens[0]==members[i].c_name ){
+                    del.Add(s.Key);
                     members[i].upd_param(tokens[1],s.Value);
                     break;
                 }
             }
             if(tokens[0]=="Villain"){
                 vill.upd_param(tokens[1],s.Value);
+                del.Add(s.Key);    
             }
         }
         deads=cont["deads"];
+        del.Add("deads");
+        foreach(var s in del){
+            cont.Remove(s);
+        }
+        vars=cont;
     }
 
 
@@ -250,7 +260,6 @@ class party:adventure{
                 Client.notify(
                     tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
                     new ClientParams($"🪦 {members[turn].c_name} ha muerto!")
-                    
                 );        
                 deads++;
                 end_turn();
