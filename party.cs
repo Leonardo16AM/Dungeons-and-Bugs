@@ -29,21 +29,12 @@ class party:adventure{
         Client= client;
     }
 
-    public List<int>chat_ids(){
-        // Returns a list of chat_ids of all members of the party
-        List<int>ids=new List<int>();
-        foreach(player member in members){
-            ids.Add(member.chat_id);
-        }
-        return ids;
-    }
-
     public void add_member(int member, string name,string user){
         // Adds a member to the party
         members.Add(new player(member,name,user));
         string message=$"@{user} joined the adventure";
         Client.notify(
-            tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
+            members.map<int, player>((m)=> {return m.chat_id;}),
             new ClientParams(message)
         );
         if(members.Count()==heroSelection.Length)
@@ -51,9 +42,9 @@ class party:adventure{
     }
     public void chat(string message, int sender){
         Client.notify(
-          tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
+          members.map<int, player>((m)=> {return m.chat_id;}),
           new ClientParams(message),
-          new int[]{sender}  
+          new List<int> {sender}  
         );
     }
 
@@ -150,12 +141,17 @@ class party:adventure{
         // Starts the adventure
         isStarted=true;
         
-        interpreter interp=new interpreter(Client,(string)file.start_code,new Dictionary<string, int>(),chat_ids() );
+        interpreter interp=new interpreter(
+            Client,
+            (string)file.start_code,
+            new Dictionary<string, int>(),
+            new List<int>(members.map<int, player>((m)=> {return m.chat_id;}))
+        );
         interp.run();
         foreach(var h in file.heroes){
                 Thread.Sleep(4000);
                 Client.notify( 
-                    tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
+                    members.map<int, player>((m)=> {return m.chat_id;}),
                     new ClientParams(
                         (string)h.desc,
                         pU: (string)h.img
@@ -170,7 +166,7 @@ class party:adventure{
             payload[cont-1]= InlineKeyboardButton.WithCallbackData(text: hero.name.ToString(), callbackData: "/choose_hero "+(cont).ToString());
         }
         Client.notify( 
-            tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
+            members.map<int, player>((m)=> {return m.chat_id;}),
             new ClientParams(
                 message,
                 rS: new InlineKeyboardMarkup(payload)
@@ -183,7 +179,7 @@ class party:adventure{
         hero_id--;
         if(heroSelection[hero_id]){
             Client.notify(
-                new int[] {chat_id},
+                new List<int> {chat_id},
                 new ClientParams("Ese heroe ya ha sido seleccionado, pruebe con otro.")
             );
             return;
@@ -206,7 +202,7 @@ class party:adventure{
                 string message=$"@{member.user} ha elegido a {member.c_name}:\n Life: {member.life}     Strength: {member.strength}\n Agility: {member.agility}   Mana: {member.mana}";
                 heroSelection[hero_id]=true;
                 Client.notify( 
-                    tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
+                    members.map<int, player>((m)=> {return m.chat_id;}),
                     new ClientParams(message)
                 );
                 Thread.Sleep(1000);
@@ -219,7 +215,12 @@ class party:adventure{
     }
 
     public void run_script(string script){
-        interpreter interp=new interpreter(Client,script,context(),chat_ids() );
+        interpreter interp=new interpreter(
+            Client,
+            script,
+            context(),
+            new List<int>(members.map<int, player>((m)=> {return m.chat_id;}))
+        );
         interp.run();
         from_context(interp.context); 
         foreach(string a in interp.actions){
@@ -271,13 +272,13 @@ class party:adventure{
             message+=members[turn].user;
             Thread.Sleep(300);
             Client.notify(
-                tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
+                members.map<int, player>((m)=> {return m.chat_id;}),
                 new ClientParams(message)
             );
             encounter(members[turn]);
             if(members[turn].life<0){
                 Client.notify(
-                    tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
+                    members.map<int, player>((m)=> {return m.chat_id;}),
                     new ClientParams($"🪦 {members[turn].c_name} ha muerto!")
                 );        
                 deads++;
@@ -301,14 +302,14 @@ class party:adventure{
     }
     private void GameOver(){
         Client.notify(
-            tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
+            members.map<int, player>((m)=> {return m.chat_id;}),
             new ClientParams("☠️Game Over☠️")
         );
     }
     public void action(){
         vill.life-=100;
         Client.notify(
-            tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
+            members.map<int, player>((m)=> {return m.chat_id;}),
             new ClientParams("Se le han hecho 100 puntos de daño al enemigo")
         );
     }
@@ -337,7 +338,7 @@ class party:adventure{
     public void end_game(){
         Thread.Sleep(500);
         Client.notify(
-            tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
+            members.map<int, player>((m)=> {return m.chat_id;}),
             new ClientParams("El juego ha terminado")
         );
         finished=true;

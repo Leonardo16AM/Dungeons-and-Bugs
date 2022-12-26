@@ -192,7 +192,7 @@ class interpreter{
             eat("NOTI");
             eat("LPAREN");
             Client.notify(
-                tlg.map<int, int>(chat_ids, num => {return num;}),
+                chat_ids,
                 new ClientParams(str_expr())
             );
             eat("RPAREN");
@@ -204,7 +204,7 @@ class interpreter{
             string url=str_expr();
             eat("COMA");
             Client.notify(
-                tlg.map<int, int>(chat_ids, num => {return num;}),
+                chat_ids,
                 new ClientParams(str_expr(), pU: url)
             );
             eat("RPAREN");
