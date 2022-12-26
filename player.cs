@@ -2,10 +2,10 @@
 
 class power{
     public string name,descr,script;
-    public power(string nam,string desc,string scr){
-        name=nam;
-        descr=desc;
-        script=scr;
+    public power(string name,string descr,string script){
+        this.name=name;
+        this.descr=descr;
+        this.script=script;
     }
 }
 

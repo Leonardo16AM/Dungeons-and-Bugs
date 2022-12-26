@@ -1,7 +1,7 @@
 {
     "name":"Berserk, la Edad Dorada",
     "token": "berserk",
-    "start_code":"notify(\"La Banda del Halcón, es la banda de mercenarios más temida de todo Midland y esta es su historia. \");sleep(2000);notify(\"Todo comienza en una época que llamaremos la Edad Dorada, el caos cae sobre el mundo en forma de una gran guerra, demonios, humanos, hambre, falsos profetas y crueles dictadores. \");sleep(2000);notify(\"En medio de ello la Banda del Halcón ha ganado renombre librando batallas que los caballeros del reino de Midland consideraban perdidas, siendo así cuna de gloriosos héroes. \");sleep(2000);",
+    "start_code":"notify(\"La Banda del Halcón, es la banda de mercenarios más temida de todo Midland y esta es su historia. \");sleep(4000);notify(\"Todo comienza en una época que llamaremos la Edad Dorada, el caos cae sobre el mundo en forma de una gran guerra, demonios, humanos, hambre, falsos profetas y crueles dictadores. \");sleep(4000);notify(\"En medio de ello la Banda del Halcón ha ganado renombre librando batallas que los caballeros del reino de Midland consideraban perdidas, siendo así cuna de gloriosos héroes. \");sleep(4000);",
     "heroes":[
         {
             "token": "guts",
@@ -90,60 +90,104 @@
     ],
     "story":[
         {
-            "villain": {"life":200,"strength":150,"agility":50,"mana":100},
-            "beg_story":"La banda del halcon se ha encontrado en las mazmorras de un castillo a alguien que parece ser Zodd el inmortal, quien cuentan las leyendas que ha matado a batallones completos, debeis luchar y derrotarlo, vuestra vida depende de ello!",
-            "beg_pic":"https://i.imgur.com/RjDVsyZ.jpg",
-            "beg_code":"notify(\"begin_stage\");"
+            "villain": {"life":200,"strength":75,"agility":75,"mana":75},
+            "beg_code":"notipic(\"https://imgur.com/2a1FmtN.png\",\"Como una sentencia de muerte, nuestra banda de mercenarios ha sido enviada a intentar derrotar al general invencible, ese cuyo nombre se ha escuchado por mas de un siglo, derrotando reinos y ejércitos, se resguarda dentro de un castillo rodeado por un gran ejercito de 2000 hombres a los que debéis derrotar. Que comience la batalla!\");"
             ,"events" :{
                 "guts":[
-                    "notify(\"Guts, te has dado cuenta que Zodd es la persona mas fuerte que te has encontrado, nunca nadie te habia costado tanto trabajo\");",
-                    "int dif=random;Guts.life=Guts.life-dif;notify(\"💥 Zodd ha golpeado tan fuerte a Guts que le ha hecho \"+dif+\" puntos de daño!\");"
+                    "int dif=random;Guts.life=Guts.life-dif;notify(\"El ejercito enemigo ha lanzado flechas al cielo quitándole \"+dif+\" puntos de vida a Guts\");",
+                    "int dif=random;Guts.life=Guts.life-dif;notify(\"Un escudero enemigo ha acuchillado a Guts, le ha quitado \"+dif+\" puntos de vida\");",
+                    "int dif=random;Guts.life=Guts.life+dif;notify(\"Uno de los sanadores de la banda ha vendado las heridas de guts, ganando asi \"+dif+\" puntos de vida\");",
+                    "notify(\"Guts se ha lanzado el solo contra la caballería enemiga\");",
+                    "notify(\"Un grupo de hombres rodean a Guts\");"
                 ],
                 "casca":[
-                    "notify(\"No puedes dejar que Zodd mate a Grifith\");",
-                    "notify(\"Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro\");"
+                    "int dif=random;Casca.life=Casca.life-dif;notify(\"Tres enemigos han rodeado a Casca, le han quitdo \"+dif+\" puntos de vida, pero aun asi ella ha logrado sobrevivir\");",
+                    "int dif=random;Casca.life=Casca.life+dif;notify(\"Casca ha encontrado un botiquin, lo ha usado y ha ganado\"+dif+\" puntos de vida\");",
+                    "notify(\"Casca se ha infiltrado junto a su batallón en el ala norte del castillo\");",
+                    "notify(\"Los enemigos observan con asombro la agilidad de Casca\");"
                 ],
                 "griffith":[
-                    "int dif=random;Griffith.life=Griffith.life-dif;notify(\"💥 Zodd ha golpeado tan fuerte a Griffith que le ha hecho \"+dif+\" puntos de daño!\");",
-                    "notify(\"No puedes morir grifith, un futuro brillante te espera\");"
+                    "int dif=random;Griffith.life= Griffith.life-dif;notify(\"El ejercito enemigo ha lanzado flechas al cielo quitándole \"+dif+\" puntos de vida a Griffith\");",
+                    "int dif=random; Griffith.life= Griffith.life-dif;notify(\"Un lanzero enemigo ha golpeado a Griffith, le ha quitado \"+dif+\" puntos de vida\");",
+                    "int dif=random; Villain.life= Villain.life-dif;notify(\"Griffith ha cabalgado junto a la segunda división contra las líneas enemigas \");",
+                    "notify(\"Al parecer el curso de la batalla va según lo planeado\");",
+                    "notify(\"Desde una colina el Rey observa la maravillosa estrategia de los halcones\");"
                 ],
                 "jadeau":[
-                    "notify(\"No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan\");",
-                    "notify(\"Debes proteger a tus amigos Jadeau\");"
+                    "int dif=random;Jadeau.life=Jadeau.life-dif;notify(\"Un soldado mas fuerte ha golpeado a Jadueau, ha perdido \"+dif+\" puntos de vida, pero aun asi ella ha logrado sobrevivir\");",
+                    "Casca.life=Casca.life+20;notify(\"Jadeau ha sanado a Casca\");",
+                    "Griffith.life= Griffith.life+20;notify(\"Jadeau ha sanado a Griffith\");",
+                    "Guts.life=Guts.life+20;notify(\"Jadeau ha sanado a Guts\");",
+                    "notify(\"Jadeau se ha infiltrado junto a Casca en el castillo\");"
                 ]
             },
-            "end_story":"Zodd yace tirado en el piso, parece haber sido derrotado, pero ... un segundo ... se sigue moviendo.",
-            "end_code":"notify(\"end_stage\");"
-            ,"end_pic":"null"
+            "end_code":"notipic(\"https://imgur.com/fUecDlJ.png\",\"Luego de la formidable estrategia trazada por Griffith, finalmente se ha conseguido entrar al castillo. YA ES FINALMENTE NUESTRO!!!\");if(Guts.life>0){Guts.life=Guts.life+50;}if(Griffith.life>0){Griffith.life=Griffith.life+50;}"
         },
         {
-            "villain": {"life":200,"strength":200,"agility":30,"mana":50},
-            "beg_story":"Zood se levanta y su cuerpo comienza a crecer, se hace mas peludo, y de su cabeza empiezan a salir cuernos gigantes, no parece ser humano, parece ... un demonio ... Derrotadlo!",
-            "beg_pic":"https://i.imgur.com/YWLYAfX.jpg",
-            "beg_code":"notify(\"begin_stage\");"
-            ,"events": {
+            "villain": {"life":100,"strength":200,"agility":30,"mana":50},
+            "beg_code":"notify(\"Pero ...  hay un ala del castillo a la cual entró un batallón de nuestros mejores soldados pero ninguno ha regresado. Se pueden escuchar sus gritos de horror… pero repentinamente silencio absoluto  … nuestros héroes deciden entrar, que clase de bestias nos esperarán dentro?\");sleep(2000);notipic(\"https://i.imgur.com/rCxqv65.png\",\"El  piso inundado de los pedazos de nuestro batallón, el olor a sangre, el silencio, solo la respiración fuerte de  una persona se escucha… porque solo hay un hombre en pie. Es Zodd el inmortal.\");"
+            ,"events" :{
                 "guts":[
-                    "Guts.life=Guts.life-55;notify(\"💥De un solo gole te le ha quitado hecho 55 de daño a Guts\");",
-                    "notify(\"A pesar de que el hacha de Zodd yace rota en el piso, ha aguantado tu espada con sus propiad manos\");"
+                    "",
+                    ""
                 ],
                 "casca":[
-                    "notify(\"No puedes dejar que Zodd mate a Grifith\");",
-                    "notify(\"Casca se pregunta si quizas fue muy impulsivo por guts enfrentarse a Zodd y poner a Grifith en peligro\");"
-                ],
+                    "",
+                    ""],
                 "griffith":[
-                    "notify(\"Zodd ha estado a punto de matar a guts, Grifith no dejara que esto pase\");",
-                    "notify(\"No puedes morir grifith, un futuro brillante te espera\");"
+                    "",
+                    ""
                 ],
                 "jadeau":[
-                    "notify(\"No puedes hacer mucho en contra, tus cuchillos casi no lo atraviesan\");",
-                    "notify(\"Debes proteger a tus amigos Jadeau\");"
+                    "",
+                    ""
                 ]
             },        
-            "end_code":"notify(\"end_stage\");"
-            ,"end_story":"Luego de un golpe rotundo, Zodd ha divisado el collar que lleva en el cuello Grifith, y exclama: No puede ser!  \n En ello un par de alas salen de su cuerpio y destroza el techo y se va volando, pero no sin antes advertirle a Guts: Si de verdad te consideras su amigo, estate dispuesto a sufrir la muerte mas dolorosa posible, porque cuando sus sueños se vean pisoteados ocurrirá el eclipse.",
-            "end_pic":"https://i.imgur.com/SQlcxw7.png"
-        }
-        
-        
+            "end_code":"notify(\"Zodd se encuentra inmóvil. Pareciera haber sido derrotado …\");sleep(1000);"
+        },
+        {
+            "villain": {"life":100,"strength":200,"agility":30,"mana":50},
+            "beg_code":"notipic(\"https://imgur.com/65yfOpY.png\",\"UN MOMENTO!!! Se esta moviendo, parece que empieza a crecer, sus facciones no son las mismas, se ha vuelto una bestia inhumana, nunca habíamos visto nada igual.\");"
+            ,"events" :{
+                "guts":[
+                    "",
+                    ""
+                ],
+                "casca":[
+                    "",
+                    ""],
+                "griffith":[
+                    "",
+                    ""
+                ],
+                "jadeau":[
+                    "",
+                    ""
+                ]
+            },        
+            "end_code":"notipic(\"https://imgur.com/SQlcxw7.png\",\"Zodd ha estado a punto  de matar a Griffith y a Guts, ambos se encuentran gravemente heridos, pero de pronto, ha observado el raro amuleto que siempre lleva Griffith, y ha gritado ”No puede ser! Conque así debe ser!” Ha mirado a Guts y le ha dicho: “Si de verdad te consideras su amigo, prepárate para algo peor que la muerte el día que todos sus sueños se derrumben”. Atravesando el techo ha salido volando perdiéndose entre las nubes.\");sleep(1000);"
+        },
+        {
+            "villain": {"life":100,"strength":200,"agility":30,"mana":50},
+            "beg_code":"notify(\"Después de semanas de recuperación Griffith se reúne con el rey, la banda ha escalado por sus victorias pero aun no es tiempo de celebrar. Nuestros héroes han sido enviados a la batalla interminable de los 100 años. Un puesto de avanzada en un castillo que durante un siglo ha sido vital para nuestros enemigos y nunca ha podido ser tomado. Aunque el rey no crea que podéis hacerlo, debéis acabar con el enemigo, nuestra  confianza yace en nuestro líder, y el confía a nosotros su vida. DESTROCEMOS A ESOS MALDITOS!!!\");"
+            ,"events" :{
+                "guts":[
+                    "",
+                    ""
+                ],
+                "casca":[
+                    "",
+                    ""],
+                "griffith":[
+                    "",
+                    ""
+                ],
+                "jadeau":[
+                    "",
+                    ""
+                ]
+            },        
+            "end_code":"notify(\"Fua ganaron, que cracks jasjasjkda, luego sigo haciendo la historia.\");sleep(1000);"
+        }   
     ]
 }
