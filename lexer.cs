@@ -21,6 +21,7 @@ class lexer{
         this.pos=0;
         this.current_char=text[pos];
         this.vars=vars;
+        this.last_token="";
     }
     public void error(string e){throw new Exception(e);}
     public void advance(){

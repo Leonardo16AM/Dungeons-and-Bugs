@@ -71,7 +71,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                 telegram.notify(
                     new int[] {(int)cId},
                     new ClientParams(
-                        $"Adventure created : {current_party-1}",
+                        $"Adventure created. Send to your friends the following command to join the adventure /join {current_party-1}",
                         rM: callb.Message.MessageId)
                 );
             }
@@ -89,13 +89,6 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 
         Console.WriteLine($"{chatId}({message.From.FirstName}): {messageText}");
         
-        if (messageText.StartsWith("/test") ){// Only for developers
-            if( (int)chatId==789850916 || (int)chatId==639646249 ){
-                // interpreter i=new interpreter(botClient,"if((2*4+6)>(4-(2*1))){notify(\"Wiii\"); notify(\"the deff of block works\"); if((2*4+6)>(4-(2*1))){notify(\"if anidado\");} notify(\"sigo dentro del if\");}", parties[player_party[(int)chatId]].context(),parties[player_party[(int)chatId]].chat_ids() );
-                // i.run();
-            }
-            return;
-        }
         if (messageText.StartsWith("/run") ){// Only for developers
             if( (int)chatId==789850916 || (int)chatId==639646249 ){
                 string script= messageText.Substring(5);
@@ -145,7 +138,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                 telegram.notify(
                     new int[] {(int)chatId},
                     new ClientParams(
-                        "You have to host an adventure first, type new_adventure to host it",
+                        "You have to host an adventure first, type /new_adventure to host it",
                         rM:(int)message.MessageId
                     )
                 );
@@ -166,22 +159,20 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             return;
         }        
 
-        if (messageText.StartsWith("/chat") ){
-            string mess=messageText.Substring(5);
-            if(mess=="") return;
-            parties[player_party[(int)chatId]].chat($"@{message.From.Username}: {mess}", (int)chatId);
-            return;
-            
-        }
-
-        if (messageText.StartsWith("/variables") ){
+        if(messageText.StartsWith("/variables") ){
             parties[player_party[(int)chatId]].print_vars((int)chatId);
             return;
         }
 
-        if (messageText.StartsWith("/actions") ){
+        if(messageText.StartsWith("/actions") ){
             parties[player_party[(int)chatId]].actions((int)chatId);
             return;
+        }
+
+        if( !messageText.StartsWith("/") ){
+            if(messageText=="") return;
+            parties[player_party[(int)chatId]].chat($"@{message.From.Username}: {messageText}", (int)chatId);
+            return;            
         }
 
         telegram.notify(
