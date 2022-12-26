@@ -7,8 +7,8 @@ class token{
 }
 
 class lexer{
-    List<string>token_names=new List<string>(){"PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY","RKEY","SCOL","AND","OR","GT","LT","GET","LET","DIF","EQ","NOTI","IF","ELSE","WHILE","NOTIP","COMA","SLEEP"};
-    List<string>token_string=new List<string>(){"+","-","*","/","=","(",")","{","}",";","&","|",">","<",">=","<=","!=","==","notify","if","else","while","notipic",",","sleep"};
+    List<string>token_names=new List<string>(){"PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY","RKEY","SCOL","AND","OR","GT","LT","GET","LET","DIF","EQ","NOTI","IF","ELSE","WHILE","NOTIP","COMA","SLEEP","ADDP","DELP"};
+    List<string>token_string=new List<string>(){"+","-","*","/","=","(",")","{","}",";","&","|",">","<",">=","<=","!=","==","notify","if","else","while","notipic",",","sleep","add_power","del_power"};
     public string text,last_token;
     public int pos;
     public char  current_char;
@@ -21,6 +21,7 @@ class lexer{
         this.pos=0;
         this.current_char=text[pos];
         this.vars=vars;
+        this.last_token="";
     }
     public void error(string e){throw new Exception(e);}
     public void advance(){
@@ -84,6 +85,17 @@ class lexer{
         advance();
         return result;
     }
+    public string script(){
+        string result="";
+        advance();
+        while(current_char!='\'' && current_char!='#'){
+            result+=current_char;
+            advance();
+        }
+        advance();
+        return result;
+    }
+
 
     string get_var(){
         string ret="";
@@ -109,6 +121,8 @@ class lexer{
                 return new token("INTEGER",integer().ToString());
             if(current_char=='"')
                 return new token("STRING",strin());
+            if(current_char=='\'')
+                return new token("SCRIPT",script());
 
             for(int i=0;i<token_names.Count();i++)
                 if(same_token(token_string[i]))
@@ -128,7 +142,7 @@ class lexer{
             if(is_varname()){
                 return new token("VAR",last_token);
             }
-            error("Parser error: Invalid character");
+            error("Parser error: Invalid character :"+current_char);
         }
         return new token("EOF","#");
     }

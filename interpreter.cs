@@ -4,6 +4,7 @@ using System.Threading;
 
 class interpreter{
     public Dictionary<string,int>context;
+    public List<string> actions;
     lexer lex;
     token current_token;
     string code;
@@ -15,7 +16,7 @@ class interpreter{
         this.chat_ids=chat_ids;
         this.code=code;
         this.context=new Dictionary<string, int>();
-        
+        this.actions=new List<string>();
         List<string>vars=new List<string>();
         if(context!=null)
             this.context=context;
@@ -88,6 +89,7 @@ class interpreter{
         return result;
     }
 
+    
 
     string str_term(){
         string result="";
@@ -147,7 +149,6 @@ class interpreter{
 
     bool bool_term(){
         if(current_token.type=="LPAREN" && is_bool() ){
-            Console.WriteLine("is bool");
             eat("LPAREN");
             bool ret=bool_expr();
             eat("RPAREN");
@@ -191,7 +192,7 @@ class interpreter{
             eat("NOTI");
             eat("LPAREN");
             Client.notify(
-                tlg.map<int, int>(chat_ids, num => {return num;}),
+                chat_ids,
                 new ClientParams(str_expr())
             );
             eat("RPAREN");
@@ -203,9 +204,35 @@ class interpreter{
             string url=str_expr();
             eat("COMA");
             Client.notify(
-                tlg.map<int, int>(chat_ids, num => {return num;}),
+                chat_ids,
                 new ClientParams(str_expr(), pU: url)
             );
+            eat("RPAREN");
+            eat("SCOL");
+        }
+        if(token.type=="ADDP"){//Add power to player
+            eat("ADDP");
+            eat("LPAREN");
+            string user=str_expr();
+            eat("COMA");
+            string p_name=str_expr();
+            eat("COMA");
+            string p_desc=str_expr();
+            eat("COMA");
+            string p_script=current_token.value;
+            eat("SCRIPT");
+            actions.Add($"add%{user}%{p_name}%{p_desc}%{p_script}");
+            eat("RPAREN");
+            eat("SCOL");
+        }
+        
+        if(token.type=="DELP"){//Remove power from player player
+            eat("DELP");
+            eat("LPAREN");
+            string user=str_expr();
+            eat("COMA");
+            string p_name=str_expr();
+            actions.Add($"del%{user}%{p_name}");
             eat("RPAREN");
             eat("SCOL");
         }
