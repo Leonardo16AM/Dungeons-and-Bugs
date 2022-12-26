@@ -1,7 +1,7 @@
 {
     "name":"Berserk, la Edad Dorada",
     "token": "berserk",
-    "start_code":"notify(\"La Banda del Halcón, es la banda de mercenarios más temida de todo Midland y esta es su historia. \");sleep(2000);notify(\"Todo comienza en una época que llamaremos la Edad Dorada, el caos cae sobre el mundo en forma de una gran guerra, demonios, humanos, hambre, falsos profetas y crueles dictadores. \");sleep(2000);notify(\"En medio de ello la Banda del Halcón ha ganado renombre librando batallas que los caballeros del reino de Midland consideraban perdidas, siendo así cuna de gloriosos héroes. \");sleep(2000);",
+    "start_code":"notify(\"La Banda del Halcón, es la banda de mercenarios más temida de todo Midland y esta es su historia. \");sleep(5000);notify(\"Todo comienza en una época que llamaremos la Edad Dorada, el caos cae sobre el mundo en forma de una gran guerra, demonios, humanos, hambre, falsos profetas y crueles dictadores. \");sleep(2000);notify(\"En medio de ello la Banda del Halcón ha ganado renombre librando batallas que los caballeros del reino de Midland consideraban perdidas, siendo así cuna de gloriosos héroes. \");sleep(2000);",
     "heroes":[
         {
             "token": "guts",
@@ -91,8 +91,6 @@
     "story":[
         {
             "villain": {"life":200,"strength":150,"agility":50,"mana":100},
-            "beg_story":"La banda del halcon se ha encontrado en las mazmorras de un castillo a alguien que parece ser Zodd el inmortal, quien cuentan las leyendas que ha matado a batallones completos, debeis luchar y derrotarlo, vuestra vida depende de ello!",
-            "beg_pic":"https://i.imgur.com/RjDVsyZ.jpg",
             "beg_code":"notify(\"begin_stage\");"
             ,"events" :{
                 "guts":[
@@ -112,14 +110,10 @@
                     "notify(\"Debes proteger a tus amigos Jadeau\");"
                 ]
             },
-            "end_story":"Zodd yace tirado en el piso, parece haber sido derrotado, pero ... un segundo ... se sigue moviendo.",
             "end_code":"notify(\"end_stage\");"
-            ,"end_pic":"null"
         },
         {
             "villain": {"life":200,"strength":200,"agility":30,"mana":50},
-            "beg_story":"Zood se levanta y su cuerpo comienza a crecer, se hace mas peludo, y de su cabeza empiezan a salir cuernos gigantes, no parece ser humano, parece ... un demonio ... Derrotadlo!",
-            "beg_pic":"https://i.imgur.com/YWLYAfX.jpg",
             "beg_code":"notify(\"begin_stage\");"
             ,"events": {
                 "guts":[
@@ -140,10 +134,6 @@
                 ]
             },        
             "end_code":"notify(\"end_stage\");"
-            ,"end_story":"Luego de un golpe rotundo, Zodd ha divisado el collar que lleva en el cuello Grifith, y exclama: No puede ser!  \n En ello un par de alas salen de su cuerpio y destroza el techo y se va volando, pero no sin antes advertirle a Guts: Si de verdad te consideras su amigo, estate dispuesto a sufrir la muerte mas dolorosa posible, porque cuando sus sueños se vean pisoteados ocurrirá el eclipse.",
-            "end_pic":"https://i.imgur.com/SQlcxw7.png"
-        }
-        
-        
+        }   
     ]
 }

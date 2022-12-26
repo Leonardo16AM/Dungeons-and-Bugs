@@ -156,7 +156,7 @@ class party:adventure{
                         pU: (string)h.img
                     )
                 );
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
         }
         string message="Elije a tu heroe:";
         int cont=0;  
@@ -199,13 +199,11 @@ class party:adventure{
                 foreach(var pw in file.heroes[hero_id].powers){
                     member.powers.Add(new power((string)pw[0],(string)pw[1],(string)pw[2]));
                 }
-
-                string message=$"@{member.user} ha elegido a {member.c_name}:\n Life: {member.life}\n Strength: {member.strength}\n Agility: {member.agility}\n Mana: {member.mana}";
-                string picture=file.heroes[hero_id].img;
+                string message=$"@{member.user} ha elegido a {member.c_name}:\n Life: {member.life}     Strength: {member.strength}\n Agility: {member.agility}   Mana: {member.mana}";
                 heroSelection[hero_id]=true;
                 Client.notify( 
                     tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
-                    new ClientParams(message, pU: picture)
+                    new ClientParams(message)
                 );
                 Thread.Sleep(1000);
                 break;
@@ -310,18 +308,6 @@ class party:adventure{
     public void start_stage(bool beg=false){
         Thread.Sleep(1000);
         vill.life=(int)file.story[stage].villain.life;
-        if(file.story[stage].beg_pic=="null")
-            Client.notify(
-                tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
-                new ClientParams(file.story[stage].beg_story)
-            );
-        else
-            Client.notify(
-                tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
-                new ClientParams(
-                    (string)file.story[stage].beg_story+$"\n Life: {vill.life}",
-                    pU: (string)file.story[stage].beg_pic)
-            ); 
 
         interpreter interp=new interpreter(Client,(string)file.story[stage].beg_code,context(),chat_ids() );
         interp.run();
@@ -348,19 +334,6 @@ class party:adventure{
         from_context(interp.context);                     
 
         Thread.Sleep(1000);
-        if(file.story[stage].end_pic=="null")
-            Client.notify(
-                tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
-                new ClientParams((string)file.story[stage].end_story)
-            );
-        else
-            Client.notify(
-                tlg.map<int, player>(members, (m)=> {return m.chat_id;}),
-                new ClientParams(
-                    (string)file.story[stage].end_story,
-                    pU: (string)file.story[stage].end_pic
-                )
-            ); 
         stage++;
         if(stage==count_dynamic(file.story)){
             end_game();
