@@ -90,8 +90,6 @@ class party:adventure{
             new int[] {chat_id},
             new ClientParams( vs, rS: new InlineKeyboardMarkup(payload)) 
         );
-
-
     }
     public Dictionary<string,int> context(){
         // Returns a dictionary of all variables of the party
@@ -103,9 +101,8 @@ class party:adventure{
                 ret[prop.Key]=prop.Value;
             }
         }
-        foreach(var prop in vill.context()){
+        foreach(var prop in vill.context())
             ret.Add(prop.Key,prop.Value);
-        }
         return ret;
     }
 
@@ -129,13 +126,10 @@ class party:adventure{
         }
         deads=cont["deads"];
         del.Add("deads");
-        foreach(var s in del){
+        foreach(var s in del)
             cont.Remove(s);
-        }
         vars=cont;
     }
-
-
 
     public void start_adventure(){
         // Starts the adventure
@@ -158,6 +152,7 @@ class party:adventure{
                     )
                 );
         }
+        Thread.Sleep(2000);
         string message="Elije a tu heroe:";
         int cont=0;  
         InlineKeyboardButton[] payload= new InlineKeyboardButton[heroSelection.Length];  
@@ -196,9 +191,9 @@ class party:adventure{
                 member.agility=file.heroes[hero_id].agility;
                 member.mana=file.heroes[hero_id].mana;
 
-                foreach(var pw in file.heroes[hero_id].powers){
+                foreach(var pw in file.heroes[hero_id].powers)
                     member.powers.Add(new power((string)pw[0],(string)pw[1],(string)pw[2]));
-                }
+                
                 string message=$"@{member.user} ha elegido a {member.c_name}:\n Life: {member.life}     Strength: {member.strength}\n Agility: {member.agility}   Mana: {member.mana}";
                 heroSelection[hero_id]=true;
                 Client.notify( 
@@ -209,9 +204,8 @@ class party:adventure{
                 break;
             }
         }
-        if(chosen_heroes==members.Count()){
+        if(chosen_heroes==members.Count())
             start_stage(true);
-        }
     }
 
     public void run_script(string script){
@@ -255,7 +249,8 @@ class party:adventure{
             foreach(player member in members){
                 if(member.chat_id==chat_id){
                     string action=member.powers[num-1].script;
-                    run_script(action);               }
+                    run_script(action);               
+                }
             }
             end_turn();
         }else{
@@ -306,26 +301,15 @@ class party:adventure{
             new ClientParams("☠️Game Over☠️")
         );
     }
-    public void action(){
-        vill.life-=100;
-        Client.notify(
-            members.map<int, player>((m)=> {return m.chat_id;}),
-            new ClientParams("Se le han hecho 100 puntos de daño al enemigo")
-        );
-    }
 
     public void end_turn(){
         turn++;
         if(turn==members.Count())
             turn=0;
-        
-        if(vill.life<=0){
+        if(vill.life<=0)
             end_stage();   
-        }
         if(!finished)print_turn();
     }
-
-
 
     public void start_stage(bool beg=false){
         Thread.Sleep(1000);
@@ -333,7 +317,6 @@ class party:adventure{
         run_script((string)file.story[stage].beg_code);   
         if(beg)print_turn();
     }
-
 
     public void end_game(){
         Thread.Sleep(500);
@@ -344,10 +327,8 @@ class party:adventure{
         finished=true;
     }
 
-
     public void end_stage(){
         run_script((string)file.story[stage].end_code);
-
         Thread.Sleep(1000);
         stage++;
         if(stage==count_dynamic(file.story)){
@@ -356,6 +337,5 @@ class party:adventure{
         }
         start_stage();
     }
-
 
 }
