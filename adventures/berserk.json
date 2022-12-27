@@ -98,15 +98,18 @@
                     "int dif=random;Guts.life=Guts.life-dif;notify(\"Un escudero enemigo ha acuchillado a Guts, le ha quitado \"+dif+\" puntos de vida\");",
                     "int dif=random;Guts.life=Guts.life+dif;notify(\"Uno de los sanadores de la banda ha vendado las heridas de guts, ganando asi \"+dif+\" puntos de vida\");",
                     "notify(\"Guts se ha lanzado el solo contra la caballería enemiga\");",
-                    "notify(\"Un grupo de hombres rodean a Guts\");"
+                    "notify(\"Un grupo de hombres rodean a Guts\");",
+                    "Villain.life=Villain.life+30;notify(\"Un refuerzo de 300 de hombres se han unido al ejercito ejercito enemigo\");"
                 ],
                 "casca":[
+                    "notify(\"Haz encontrado una lanza, puedes lanzarla una sola vez\");add_power(\"Casca\",\"spear\",\"Tira la lanza al enemigo, solo podras hacer esto una vez\",'Villain.life=Villain.life-30;notify(\"Casca le ha hecho 30 puntos de daño al enemigo con una lanza\");del_power(\"Casca\",\"spear\");');",
                     "int dif=random;Casca.life=Casca.life-dif;notify(\"Tres enemigos han rodeado a Casca, le han quitdo \"+dif+\" puntos de vida, pero aun asi ella ha logrado sobrevivir\");",
                     "int dif=random;Casca.life=Casca.life+dif;notify(\"Casca ha encontrado un botiquin, lo ha usado y ha ganado\"+dif+\" puntos de vida\");",
                     "notify(\"Casca se ha infiltrado junto a su batallón en el ala norte del castillo\");",
                     "notify(\"Los enemigos observan con asombro la agilidad de Casca\");"
                 ],
                 "griffith":[
+                    "notify(\"Haz encontrado una debilidad en las filas enemigas, puedes aprovecharla\");add_power(\"Griffith\",\"debility\",\"Aprovecha el punto debil del enemigo\",'Villain.life=Villain.life-40;notify(\"Griffith ha aprovechado una brecha entre las lineas enemigas, le ha quitado 40 puntos al ejercito enemigo\");del_power(\"Casca\",\"debility\");');",
                     "int dif=random;Griffith.life= Griffith.life-dif;notify(\"El ejercito enemigo ha lanzado flechas al cielo quitándole \"+dif+\" puntos de vida a Griffith\");",
                     "int dif=random; Griffith.life= Griffith.life-dif;notify(\"Un lanzero enemigo ha golpeado a Griffith, le ha quitado \"+dif+\" puntos de vida\");",
                     "int dif=random; Villain.life= Villain.life-dif;notify(\"Griffith ha cabalgado junto a la segunda división contra las líneas enemigas \");",
@@ -121,7 +124,7 @@
                     "notify(\"Jadeau se ha infiltrado junto a Casca en el castillo\");"
                 ]
             },
-            "end_code":"notipic(\"https://imgur.com/fUecDlJ.png\",\"Luego de la formidable estrategia trazada por Griffith, finalmente se ha conseguido entrar al castillo. YA ES FINALMENTE NUESTRO!!!\");if(Guts.life>0){Guts.life=Guts.life+50;}if(Griffith.life>0){Griffith.life=Griffith.life+50;}"
+            "end_code":"sleep(1000);notipic(\"https://imgur.com/fUecDlJ.png\",\"Luego de la formidable estrategia trazada por Griffith, finalmente se ha conseguido entrar al castillo. YA ES FINALMENTE NUESTRO!!!\");if(Guts.life>0){Guts.life=Guts.life+50;}if(Griffith.life>0){Griffith.life=Griffith.life+50;}sleep(1000);"
         },
         {
             "villain": {"life":200,"strength":200,"agility":30,"mana":50},
@@ -132,7 +135,8 @@
                     "int dif=random;Guts.life=Guts.life-dif;notify(\"Guts ha recibido un golpe directo en el pecho, le ha quitado \"+dif+\" puntos de vida\");",
                     "int dif=random;Villain.life=Villain.life-dif;notify(\"Las heridas de Zodd parecen sanarse! ha ganando asi \"+dif+\" puntos de vida\");",
                     "notify(\"Guts observa asombrado la fuerza de Zodd, no es algo humano\");",
-                    "notify(\"Zodd le grita a Guts: Eres el unico humano que ha logrado hacerme frente en todos estos años, sentire mucho placer al derrotarte\");"
+                    "notify(\"Zodd le grita a Guts: Eres el unico humano que ha logrado hacerme frente en todos estos años, sentire mucho placer al derrotarte\");",
+                    "Guts.strength=Guts.strength-10;notify(\"El cansancio de la pelea se empieza a sentir en tu cuerpo, empiezas a perder fortaleza\");"
                 ],
                 "casca":[
                     "notify(\"Casca ha rodeado con sus hombres a Guts y a Griffith mientras luchan con Zodd, pero Griffith le ha ordenado no acercarse\");",
@@ -150,14 +154,15 @@
                 "jadeau":[
                     "notify(\"Haz encontrado una bayesta con una flecha, puedes usarla una sola vez\");add_power(\"Jadeau\",\"bow_attack\",\"Lanza una flecha al enemigo, solo podras hacer esto una sola vez\",'Villain.life=Villain.life-30;notify(\"Jaddeau le ha hecho 30 puntos de daño al enemigo con una flecha\");del_power(\"Jadeau\",\"bow_attack\");');",
                     "if(Griffith.life>0){Griffith.life= Griffith.life+20;notify(\"Jadeau ha sanado a Griffith\");}",
-                    "if(Guts.life>0){Guts.life=Guts.life+20;notify(\"Jadeau ha sanado a Guts\");}"
+                    "if(Guts.life>0){Guts.life=Guts.life+20;notify(\"Jadeau ha sanado a Guts\");}",
+                    "notify(\"Jadeau ordena a sus hombres a retirarse, Zodd es demasiado fuerte\");"
                 ]
             },        
-            "end_code":"notify(\"Zodd se encuentra inmóvil. Pareciera haber sido derrotado …\");sleep(1000);"
+            "end_code":"sleep(1000);notify(\"Zodd se encuentra inmóvil. Pareciera haber sido derrotado …\");sleep(1000);"
         },
         {
             "villain": {"life":300,"strength":100,"agility":100,"mana":50},
-            "beg_code":"notipic(\"https://imgur.com/65yfOpY.png\",\"UN MOMENTO!!! Se esta moviendo, parece que empieza a crecer, sus facciones no son las mismas, se ha vuelto una bestia inhumana, nunca habíamos visto nada igual.\");"
+            "beg_code":"sleep(1000);notipic(\"https://imgur.com/65yfOpY.png\",\"UN MOMENTO!!! Se esta moviendo, parece que empieza a crecer, sus facciones no son las mismas, se ha vuelto una bestia inhumana, nunca habíamos visto nada igual.\");"
             ,"events" :{
                 "guts":[
                     "int dif=random;Guts.life=Guts.life-dif;notify(\"Zodd ha golpeado con un cuerno a Guts quitándole \"+dif+\" puntos de vida\");",
@@ -167,21 +172,25 @@
                     "notipic(\"https://imgur.com/yYLcymr.png\",\"Te has dado cuenta que la unica manera de derrotar a Zodd es juntando tu fuerzas con las de Griffith\");add_power(\"Guts\",\"team_attack\",\"Ataca simultaneamente junto a Griffith\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Guts\",\"team_attack\");del_power(\"Griffith\",\"team_attack\");');add_power(\"Griffith\",\"team_attack\",\"Ataca simultaneamente junto a Guts\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Griffith\",\"team_attack\");del_power(\"Guts\",\"team_attack\");');"
                 ],
                 "casca":[
-                    "",
-                    ""],
+                    "notify(\"La sangre gotea de las manos de Zodd\");",
+                    "notify(\"Los hombres de Casca miran aterrorizados a Zodd\");",
+                    "notify(\"Casca quiere atacar, pero Griffith le ha ordenado no hacerlo\");",
+                    "notify(\"La fuerza de Zodd es inhumana\");"
+                ],
                 "griffith":[
                     "int dif=random;Griffith.life=Griffith.life-dif;notify(\"Zodd ha golpeado con una garra a Griffith quitándole \"+dif+\" puntos de vida\");",
                     "int dif=random;Griffith.life=Griffith.life-dif;notify(\"De un espadazo Zodd le ha quitado \"+dif+\" puntos de vida a Griffith\");",
                     "int dif=random;Villain.life=Villain.life-dif;notify(\"Las heridas de Zodd parecen sanarse!\");",
-                    "notipic(\"https://imgur.com/pRO4G8Z.png\",\"La Banda del Halcon le ha disparado flechas a Zodd, pero casi no le han hecho daño\");",
-                    "notipic(\"https://imgur.com/yYLcymr.png\",\"Te has dado cuenta que la unica manera de derrotar a Zodd es juntando tu fuerzas con las de Guts\");add_power(\"Guts\",\"team_attack\",\"Ataca simultaneamente junto a Griffith\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Guts\",\"team_attack\");del_power(\"Griffith\",\"team_attack\");');add_power(\"Griffith\",\"team_attack\",\"Ataca simultaneamente junto a Guts\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Griffith\",\"team_attack\");del_power(\"Guts\",\"team_attack\");');"
+                    "notipic(\"https://imgur.com/pRO4G8Z.png\",\"La Banda del Halcon le ha disparado flechas a Zodd, pero casi no le han hecho daño\");"
                 ],
                 "jadeau":[
-                    "",
-                    ""
+                    "notify(\"La pelea transcurre con Guts y Griffith como protagonistas\");",
+                    "notify(\"Griffith no dejara que Zodd mate a Guts\");",
+                    "notify(\"Es a caso esta una pelea que podamos ganar?\");",
+                    "notify(\"Los hombres sudaan del terror\");"
                 ]
             },        
-            "end_code":"notipic(\"https://imgur.com/VsU2OCJ.png\",\"Zodd ha estado a punto  de matar a Griffith y a Guts, ambos se encuentran gravemente heridos, pero de pronto, ha observado el raro amuleto que siempre lleva Griffith, y ha gritado ”No puede ser! Conque así debe ser!” Ha mirado a Guts y le ha dicho: “Si de verdad te consideras su amigo, prepárate para algo peor que la muerte el día que todos sus sueños se derrumben\");notipic(\"https://imgur.com/SQlcxw7.png\",\"Atravesando el techo ha salido volando perdiéndose entre las nubes.\");sleep(1000);"
+            "end_code":"sleep(2000);notipic(\"https://imgur.com/VsU2OCJ.png\",\"Zodd ha estado a punto  de matar a Griffith y a Guts, ambos se encuentran gravemente heridos, pero de pronto, ha observado el raro amuleto que siempre lleva Griffith, y ha gritado ”No puede ser! Conque así debe ser!” Ha mirado a Guts y le ha dicho: “Si de verdad te consideras su amigo, prepárate para algo peor que la muerte el día que todos sus sueños se derrumben\");sleep(2000);notipic(\"https://imgur.com/SQlcxw7.png\",\"Atravesando el techo ha salido volando perdiéndose entre las nubes.\");sleep(2000);"
         },
         {
             "villain": {"life":100,"strength":200,"agility":30,"mana":50},
