@@ -17,10 +17,13 @@
                 "if(Villain.strength<Guts.strength){int dif=Guts.strength-Villain.strength;Villain.life=Villain.life-dif;notify(\"⚔️ Guts ha atacado con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Guts ha atacado con su espada pero ha fallado, su enemigo es más fuerte.\");}"
                 ],
                 ["bomb","💣 Lanzale una bomba al enemigo, el daño dependerá de que tan cerca caiga la bomba",
-                "int dif=random;if(dif<50){notify(\"Guts ha tirado una bomba pero ha caido lejos, le ha hecho solo \"+dif+\" puntos de daño al enemigo\");}else{notify(\"Guts ha tirado una bomba y ha caido cerca, le ha hecho \"+dif+\" puntos de daño al enemigo\");}"
+                "int dif=random;if(dif<50){notify(\"💣 Guts ha tirado una bomba pero ha caido lejos, le ha hecho solo \"+dif+\" puntos de daño al enemigo\");}else{notify(\"💣 Guts ha tirado una bomba y ha caido cerca, le ha hecho \"+dif+\" puntos de daño al enemigo\");}"
+                ],
+                ["punch","🤛🏻 Dale un golpe al enemigo, si tu fuerza es mayor le quitaras 25 puntos",
+                "if(Villain.strength<Guts.strength){notify(\"🤛🏻 Guts ha golpeado al enemigo y le ha quitado 25 puntos\");Villain.life=Villain.life-25;}else{notify(\"🤛🏻 Guts ha intentado golpear al enemigo,, pero es mucho mas fuerte que el\");}"
                 ],
                 ["heal","❤️‍🩹 Sánate y obtendras 5 puntos de vida costándote 1 punto de mana.",
-                "Guts.life=Guts.life+5;Guts.mana=Guts.mana-1;notify(\"Guts se ha aplicado un vendaje tapándose las heridas, ha recuperado 5 puntos de vida\");"
+                "Guts.life=Guts.life+5;Guts.mana=Guts.mana-1;notify(\"❤️‍🩹 Guts se ha aplicado un vendaje tapándose las heridas, ha recuperado 5 puntos de vida\");"
                 ]
             ]
         },
@@ -41,7 +44,7 @@
                 "int dif=random;Villain.life=Villain.life-dif;notify(\"🧑🏻‍🦳 Los soldados siguiendo las ordenes de Griffith le han quitado \"+dif+\" puntos de daño al enemigo.\");"
                 ],
                 ["heal","❤️‍🩹 Sánate y obtendrás 3 puntos de vida costándote 1 punto de mana.",
-                "Griffith.life=Griffith.life+3;Griffith.mana=Griffith.mana-1;notify(\"Griffith se ha sanado a si mismo, ha recuperado 3 puntos de vida\");"
+                "Griffith.life=Griffith.life+3;Griffith.mana=Griffith.mana-1;notify(\"❤️‍🩹 Griffith se ha sanado a si mismo, ha recuperado 3 puntos de vida\");"
                 ]
             ]
         },
@@ -62,7 +65,7 @@
                 "if(Villain.agility<Casca.agility){int dif=random;Villain.life=Villain.life-(dif);notify(\"⚔️ Casca ha atacado con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Casca ha intentado atacar con su espada, pero el enemigo es demasiado agil.\");}"
                 ],
                 ["heal","❤️‍🩹 Sánate y obtendrás 7 puntos de vida costándote 1 punto de mana.",
-                "Casca.life=Casca.life+3;Casca.mana=Casca.mana-1;notify(\"❤️‍🩹Casca ha recuperado 3 puntos de vida gracias a sus conocimientos de medicina\");"
+                "Casca.life=Casca.life+3;Casca.mana=Casca.mana-1;notify(\"❤️‍🩹 Casca ha recuperado 3 puntos de vida gracias a sus conocimientos de medicina\");"
                 ]
             ]
         },
@@ -77,7 +80,7 @@
             "img": "https://i.imgur.com/CCmuMoq.jpg",
             "powers": [
                 ["heal_friends","❤️‍🩹  Sana a tus amigos con el polvo de hadas que tienes en una bolsita, les restaurará 10 puntos de vida a cada uno, esto te cuesta 3 puntos de mana",
-                "Jadeau.mana=Jadeau.mana-3;if(Guts.life>0){Guts.life=Guts.life+10;notify(\"Aunque no se ha querido dejar sanar en medio de su ira, Jadeau ha logrado sanar a Guts dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Guts\");}if(Griffith.life>0){Griffith.life=Griffith.life+10;notify(\"Jadeau le ha tirado el polvo de hadas a Griffith el cual se lo ha untado dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Grifith, se le extraña mucho.\");}                if(Casca.life>0){Casca.life=Casca.life+10;notify(\"Casca se ha untado los polvos que le ha dado Jadeau dandole 10 puntos mas de vida\");}else{notify(\"Aunque Jadeau lo ha intentado no ha podido revivir a Guts\");}"
+                "Jadeau.mana=Jadeau.mana-3;if(Guts.life>0){Guts.life=Guts.life+10;notify(\"👨🏻 Aunque no se ha querido dejar sanar en medio de su ira, Jadeau ha logrado sanar a Guts dandole 10 puntos mas de vida\");}if(Griffith.life>0){Griffith.life=Griffith.life+10;notify(\"🧑🏻‍🦳Jadeau le ha tirado el polvo de hadas a Griffith el cual se lo ha untado dandole 10 puntos mas de vida\");}    if(Casca.life>0){Casca.life=Casca.life+10;notify(\"👩🏾 Casca se ha untado los polvos que le ha dado Jadeau dandole 10 puntos mas de vida\");}"
                 ],
                 ["heal","❤️‍🩹  Sanate a ti mismo y obtendrás 30 puntos de salud, esto te cuesta 3 puntos de mana",
                 "Jadeau.life=Jadeau.life+30;Jadeau.mana=Jadeau.mana-3;notify(\"❤️‍🩹Jadeau se ha untado polvo de hadas y se ha aumentado 30 puntos de vida\");"
