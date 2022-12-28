@@ -18,7 +18,7 @@ El juego se jugará por turnos, y cada personaje podrá usar acciones predetermi
 ---
 ## Creando tu propia aventura:
 
-Las avnenturas estarán guardadas en archivos `JSON` en la carpeta `adventures`. Para crear aventuras nuevas se debera usar el formato siguiente:
+Las aventuras estarán guardadas en archivos `JSON` en la carpeta `adventures`. Para crear aventuras nuevas se deberá usar el formato siguiente:
 
 ```json
 {
@@ -76,18 +76,18 @@ Las avnenturas estarán guardadas en archivos `JSON` en la carpeta `adventures`.
 Como se observa al inicio del archivo deberan crearse todos los posibles heroes, de estos se debe dar una descripcion del heroe, sus estadisticas y una imagen del mismo.
 > ⚠ Los links a las imagenes de jugadores, stages, o imagenes usadas en C+- deben ser links en linea, se recomienda subir las imagenes a [imgur](imgur.com).
 
-Las aventuras se divididen en distintos stages, donde cada stage es un objetivo adistinto a vencer, el stage dara por finalizado cuando `Villain.life` llegue a cero. Durante los stages los heroes jugaran por turnos para vencer el objetivo del stage actual. Al principio cada turno se ejecutara un encuentro, el cual sera un pedazo de codigo en C+-. Lo que  pase en cada encuentro puede variar dependiendo de la historia y de el codigo implementado en ellos, uno de los encuentros posibles puede ser que el jugador obtenga un poder nuevo, recupere vida, o simplemente reciba algun mensaje. Los encuentros se elegirtan aleatoriamente entre todos los posibles encuentros del stage actual. Tanto al iniciar un stage como el terminar se correra un codigo en C+-.
+Las aventuras se divididen en distintos stages, donde cada stage es un objetivo adistinto a vencer, el stage dara por finalizado cuando `Villain.life` llegue a cero. Durante los stages los heroes jugaran por turnos para vencer el objetivo del stage actual. Al principio cada turno se ejecutará un encuentro, el cual sera un pedazo de codigo en C+-. Lo que  pase en cada encuentro puede variar dependiendo de la historia y de el codigo implementado en ellos, uno de los encuentros posibles puede ser que el jugador obtenga un poder nuevo, recupere vida, o simplemente reciba algun mensaje. Los encuentros se elegirtan aleatoriamente entre todos los posibles encuentros del stage actual. Tanto al iniciar un stage como el terminar se correrá un codigo en C+-.
 
 ---
 ## C+- un lenguaje para gobernarlos a todos.
 El lenguaje para progrmar poderes, encuentros y la historia en general es llamado C+-. Es un lenguaje Turing completo y su nombre surge debido a su parecido con el lenguaje C++.  
 ### Componentes principales del lenguaje:  
 
-Declaracion de numeros enteros:   
+Declaración de numeros enteros:   
  ```c++ 
     int n=16;
  ```
- Declaracion de cadenas de caracteres:   
+ Declaración de cadenas de caracteres:   
  ```c++ 
     str s="Hello there!";
  ```
