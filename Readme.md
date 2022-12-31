@@ -1,4 +1,4 @@
-![ Dungeons and Bugs ](images/D%26B-14. "Dungeons and Bugs Logo")
+![ Dungeons and Bugs ](images/D%26B-14.jpg "Dungeons and Bugs Logo")
 
 Dungeons and Bugs es un motor de juegos con historia del tipo Dungeons and Dragons. Permite juegos multijugador en línea, con modo cooperativo o player vs player. Posee su propio  lenguaje de programación para crear aventuras, heroes, poderes y mucho más. ¿Estás listo para vivir aventuras y crear las tuyas propias?
 
