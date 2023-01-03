@@ -80,25 +80,24 @@ class party: IAdventure {
     }
     private int count_powers(int chatid){
         int n=0;
-        foreach(player member in members)
-            if(member.chat_id==chatid)
-                foreach(power pw in member.powers)
-                    n++;
+        foreach(power pw in members.Find(m=>m.chat_id==chatid).powers)
+            n++;
         return n;          
     }
     public void actions(int chat_id){
         string vs="Player actions: \n";
         InlineKeyboardButton[] payload= new InlineKeyboardButton[count_powers(chat_id)];
-        foreach(player member in members){
-            if(member.chat_id==chat_id){
-                int wr=1;
-                foreach(power pw in member.powers){
-                    vs+=$"{wr} - {pw.name}: {pw.descr} \n";
-                    payload[wr-1]= InlineKeyboardButton.WithCallbackData(text: pw.name ,callbackData: "/do "+wr.ToString());
-                    wr++;
-                }
-            }
+        
+        int wr=1;
+        foreach(power pw in members.Find(m=>m.chat_id==chat_id).powers){
+            vs+=$"{wr} - {pw.name}: {pw.descr} \n";
+            payload[wr-1]= InlineKeyboardButton.WithCallbackData(
+                text: pw.name ,
+                callbackData: "/do "+wr.ToString()
+            );
+            wr++;
         }
+            
         vs+="Selecciona una de las acciones anteriores";
         Client.notify(
             chat_id,
@@ -209,7 +208,7 @@ class party: IAdventure {
                 member.mana=file.heroes[hero_id].mana;
 
                 foreach(var pw in file.heroes[hero_id].powers)
-                    member.powers.Add(new power((string)pw[0],(string)pw[1],(string)pw[2]));
+                    member.powers.Add(new power((string)pw.name,(string)pw.desc,(string)pw.script));
                 
                 string message=$"@{member.user} ha elegido a {member.c_name}:\n Life: {member.life}     Strength: {member.strength}\n Agility: {member.agility}   Mana: {member.mana}";
                 heroSelection[hero_id]=true;
@@ -236,19 +235,20 @@ class party: IAdventure {
         from_context(interp.context); 
         foreach(string a in interp.actions){
             string[] token=a.Split('%');
-            if(token[0]=="add")
+            if(token[0]=="add"){
                 foreach(player member in members)
                     if(member.c_name==token[1]){
                         Console.WriteLine("Adding power: "+token[2]+" "+token[3]+" "+token[4]);
                         member.powers.Add(new power(token[2],token[3],token[4]));
                     }
-            if(token[0]=="del")
+            }
+            if(token[0]=="del"){
                 foreach(player member in members)
                     if(member.c_name==token[1]){
                         Console.WriteLine("deleting power: "+token[2]);
                         member.powers.Remove(member.powers.Find(x => x.name==token[2]));
                     }
-                
+            }
             Console.WriteLine(a);
         }
     }
