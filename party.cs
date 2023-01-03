@@ -24,7 +24,7 @@ class party: IAdventure {
         this.id=id;
         this.leader=leader;
         members=new List<player>();
-        heroSelection = new bool[tlg.count_dynamic(file.heroes)];
+        heroSelection = new bool[utils.count_dynamic(file.heroes)];
         members.Add(new player(leader,leader_name,leader_user));
         foreach(var h in file.heroes){
             Console.WriteLine((string)h.hname);
@@ -64,7 +64,7 @@ class party: IAdventure {
             }
         }
         Client.notify(
-            new int [] {chat_id},
+            chat_id,
             new ClientParams(vs)
         );
     }
@@ -91,7 +91,7 @@ class party: IAdventure {
         }
         vs+="Selecciona una de las acciones anteriores";
         Client.notify(
-            new int[] {chat_id},
+            chat_id,
             new ClientParams( vs, rS: new InlineKeyboardMarkup(payload)) 
         );
     }
@@ -178,7 +178,7 @@ class party: IAdventure {
         hero_id--;
         if(heroSelection[hero_id]){
             Client.notify(
-                new List<int> {chat_id},
+                chat_id,
                 new ClientParams("Ese heroe ya ha sido seleccionado, pruebe con otro.")
             );
             return;
@@ -241,7 +241,7 @@ class party: IAdventure {
     }
 
     public void encounter(player curr){
-        int enc=rnd.Next(0, tlg.count_dynamic(file.story[stage].events[curr.h_ref]));
+        int enc=rnd.Next(0, utils.count_dynamic(file.story[stage].events[curr.h_ref]));
         string encount=(string)file.story[stage].events[curr.h_ref][enc];
         Thread.Sleep(300);
         run_script(encount);
@@ -259,7 +259,7 @@ class party: IAdventure {
             end_turn();
         }else{
             Client.notify(
-                new int[] {(int)chat_id},
+                (int)chat_id,
                 new ClientParams("Solo puedes jugar durante tu turno")
             ); 
         }
@@ -335,7 +335,7 @@ class party: IAdventure {
         run_script((string)file.story[stage].end_code);
         Thread.Sleep(1000);
         stage++;
-        if(stage== tlg.count_dynamic(file.story)){
+        if(stage== utils.count_dynamic(file.story)){
             end_game();
             return;
         }

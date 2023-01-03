@@ -27,8 +27,14 @@ public class TlgClient : IClient
 
             if(next)
                 continue;
-
-            if (((ClientParams)param).picUrl == null)
+                
+            notify(chatId,param);
+        }
+        
+    }
+    
+    public void notify(int chatId, IClientParams param){
+        if (((ClientParams)param).picUrl == null)
             {
                 botClient.SendTextMessageAsync(
                     chatId: chatId,
@@ -36,7 +42,7 @@ public class TlgClient : IClient
                     parseMode: ((ClientParams)param).parseMode == null ? null : ((ClientParams)param).parseMode,
                     disableWebPagePreview: ((ClientParams)param).disablePreview == null ? null : ((ClientParams)param).disablePreview,
                     disableNotification: ((ClientParams)param).disableNotif == null ? null : ((ClientParams)param).disableNotif,
-                    replyToMessageId: chatIds.Count() == 1 && ((ClientParams)param).replyMessage != null ? ((ClientParams)param).replyMessage : null,
+                    replyToMessageId: ((ClientParams)param).replyMessage != null ? ((ClientParams)param).replyMessage : null,
                     replyMarkup: ((ClientParams)param).replyStyle == null ? null : ((ClientParams)param).replyStyle
                 );
             }
@@ -48,14 +54,11 @@ public class TlgClient : IClient
                     photo: ((ClientParams)param).picUrl!,
                     parseMode: ParseMode.Html,
                     disableNotification: ((ClientParams)param).disableNotif == null ? null : ((ClientParams)param).disableNotif,
-                    replyToMessageId: chatIds.Count() == 1 && ((ClientParams)param).replyMessage != null ? ((ClientParams)param).replyMessage : null,
+                    replyToMessageId: ((ClientParams)param).replyMessage != null ? ((ClientParams)param).replyMessage : null,
                     replyMarkup: ((ClientParams)param).replyStyle == null ? null : ((ClientParams)param).replyStyle
                 );
             }
-        }
-        
     }
-    
     public void notifyAdmins(IClientParams param){
         notify(admins, param);
     }

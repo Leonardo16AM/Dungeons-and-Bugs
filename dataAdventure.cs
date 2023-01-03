@@ -27,7 +27,7 @@ public class DataAdventure{
     public void printAllAdventures(int chatId, long reply=-1){
         if(Adventures.Count()==0){
             Client.notify(
-                new int[] {(int)chatId},
+                (int)chatId,
                 new ClientParams("No hay aventuras disponibles.", rM: (int)reply)
             );
             return;
@@ -45,7 +45,7 @@ public class DataAdventure{
         }
 
         Client.notify(
-            new int[] {(int)chatId},
+            (int)chatId,
             new ClientParams(
                 s,
                 rS: new InlineKeyboardMarkup(payload),
