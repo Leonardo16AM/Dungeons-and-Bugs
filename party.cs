@@ -3,7 +3,9 @@ using Telegram.Bot;
 using System;
 using System.Threading;
 using Telegram.Bot.Types.ReplyMarkups;
-class party:adventure{
+class party: IAdventure {
+    public string adv {get; protected set;}
+    public dynamic file { get; protected set;}
     public int id,leader,turn=0,chosen_heroes=0,deads=0;
     public List<player> members;
     bool[] heroSelection;
@@ -15,12 +17,14 @@ class party:adventure{
     villain  vill=new villain();
     Random rnd = new Random();
 
-    public party(IClient client,int id,string adv_name,int leader,string leader_name,string leader_user):base(adv_name){
+    public party(IClient client,int id,string adv_name,int leader,string leader_name,string leader_user){
+        adv=adv_name;
+        file = DataAdventure.Adventures[adv_name];
         vill.c_name="Villain";
         this.id=id;
         this.leader=leader;
         members=new List<player>();
-        heroSelection = new bool[count_dynamic(file.heroes)];
+        heroSelection = new bool[tlg.count_dynamic(file.heroes)];
         members.Add(new player(leader,leader_name,leader_user));
         foreach(var h in file.heroes){
             Console.WriteLine((string)h.hname);
@@ -237,7 +241,7 @@ class party:adventure{
     }
 
     public void encounter(player curr){
-        int enc=rnd.Next(0, count_dynamic(file.story[stage].events[curr.h_ref]));
+        int enc=rnd.Next(0, tlg.count_dynamic(file.story[stage].events[curr.h_ref]));
         string encount=(string)file.story[stage].events[curr.h_ref][enc];
         Thread.Sleep(300);
         run_script(encount);
@@ -331,7 +335,7 @@ class party:adventure{
         run_script((string)file.story[stage].end_code);
         Thread.Sleep(1000);
         stage++;
-        if(stage==count_dynamic(file.story)){
+        if(stage== tlg.count_dynamic(file.story)){
             end_game();
             return;
         }

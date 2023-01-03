@@ -6,7 +6,11 @@ static class tlg
             yield return lambda(item);
     }
     
-
+    public static int count_dynamic(dynamic obj){
+        int cnt=0;
+        foreach(var i in obj){cnt++;}
+        return cnt;
+    }
 
 
 }
