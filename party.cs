@@ -3,24 +3,36 @@ using Telegram.Bot;
 using System;
 using System.Threading;
 using Telegram.Bot.Types.ReplyMarkups;
-class party:adventure{
-    public int id,leader,turn=0,chosen_heroes=0,deads=0;
+class party: IAdventure {
+
+    //Client
+    IClient Client;
+
+    // implementing IAdventure
+    public string adv {get; protected set;}
+    public dynamic file { get; protected set;}
+
+    // Character Variables
     public List<player> members;
     bool[] heroSelection;
-    public bool isStarted = false, finished =false;
-    IClient Client;
-    Dictionary<string,int> vars=new Dictionary<string,int>();
-
-    int stage=0;
     villain  vill=new villain();
+
+    // Story Control Variables
+    public int id,leader,turn=0,chosen_heroes=0,deads=0;
+    public bool isStarted = false, finished =false;
+    Dictionary<string,int> vars=new Dictionary<string,int>();
+    int stage=0;
     Random rnd = new Random();
 
-    public party(IClient client,int id,string adv_name,int leader,string leader_name,string leader_user):base(adv_name){
+    //Constructor
+    public party(IClient client,int id,string adv_name,int leader,string leader_name,string leader_user){
+        adv=adv_name;
+        file = DataAdventure.Adventures[adv_name];
         vill.c_name="Villain";
         this.id=id;
         this.leader=leader;
         members=new List<player>();
-        heroSelection = new bool[count_dynamic(file.heroes)];
+        heroSelection = new bool[utils.count_dynamic(file.heroes)];
         members.Add(new player(leader,leader_name,leader_user));
         foreach(var h in file.heroes){
             Console.WriteLine((string)h.hname);
@@ -29,6 +41,8 @@ class party:adventure{
         Client= client;
     }
 
+
+    ////////////////////////////// FUNCTIONS ///////////////////////////////////////
     public void add_member(int member, string name,string user){
         // Adds a member to the party
         members.Add(new player(member,name,user));
@@ -60,34 +74,33 @@ class party:adventure{
             }
         }
         Client.notify(
-            new int [] {chat_id},
+            chat_id,
             new ClientParams(vs)
         );
     }
     private int count_powers(int chatid){
         int n=0;
-        foreach(player member in members)
-            if(member.chat_id==chatid)
-                foreach(power pw in member.powers)
-                    n++;
+        foreach(power pw in members.Find(m=>m.chat_id==chatid).powers)
+            n++;
         return n;          
     }
     public void actions(int chat_id){
         string vs="Player actions: \n";
         InlineKeyboardButton[] payload= new InlineKeyboardButton[count_powers(chat_id)];
-        foreach(player member in members){
-            if(member.chat_id==chat_id){
-                int wr=1;
-                foreach(power pw in member.powers){
-                    vs+=$"{wr} - {pw.name}: {pw.descr} \n";
-                    payload[wr-1]= InlineKeyboardButton.WithCallbackData(text: pw.name ,callbackData: "/do "+wr.ToString());
-                    wr++;
-                }
-            }
+        
+        int wr=1;
+        foreach(power pw in members.Find(m=>m.chat_id==chat_id).powers){
+            vs+=$"{wr} - {pw.name}: {pw.descr} \n";
+            payload[wr-1]= InlineKeyboardButton.WithCallbackData(
+                text: pw.name ,
+                callbackData: "/do "+wr.ToString()
+            );
+            wr++;
         }
+            
         vs+="Selecciona una de las acciones anteriores";
         Client.notify(
-            new int[] {chat_id},
+            chat_id,
             new ClientParams( vs, rS: new InlineKeyboardMarkup(payload)) 
         );
     }
@@ -158,7 +171,10 @@ class party:adventure{
         InlineKeyboardButton[] payload= new InlineKeyboardButton[heroSelection.Length];  
         foreach(var hero in file.heroes){
             cont++;
-            payload[cont-1]= InlineKeyboardButton.WithCallbackData(text: hero.name.ToString(), callbackData: "/choose_hero "+(cont).ToString());
+            payload[cont-1]= InlineKeyboardButton.WithCallbackData(
+                text: hero.name.ToString(),
+                callbackData: "/choose_hero "+(cont).ToString()
+            );
         }
         Client.notify( 
             members.map<int, player>((m)=> {return m.chat_id;}),
@@ -174,7 +190,7 @@ class party:adventure{
         hero_id--;
         if(heroSelection[hero_id]){
             Client.notify(
-                new List<int> {chat_id},
+                chat_id,
                 new ClientParams("Ese heroe ya ha sido seleccionado, pruebe con otro.")
             );
             return;
@@ -192,7 +208,7 @@ class party:adventure{
                 member.mana=file.heroes[hero_id].mana;
 
                 foreach(var pw in file.heroes[hero_id].powers)
-                    member.powers.Add(new power((string)pw[0],(string)pw[1],(string)pw[2]));
+                    member.powers.Add(new power((string)pw.name,(string)pw.desc,(string)pw.script));
                 
                 string message=$"@{member.user} ha elegido a {member.c_name}:\n Life: {member.life}     Strength: {member.strength}\n Agility: {member.agility}   Mana: {member.mana}";
                 heroSelection[hero_id]=true;
@@ -219,25 +235,26 @@ class party:adventure{
         from_context(interp.context); 
         foreach(string a in interp.actions){
             string[] token=a.Split('%');
-            if(token[0]=="add")
+            if(token[0]=="add"){
                 foreach(player member in members)
                     if(member.c_name==token[1]){
                         Console.WriteLine("Adding power: "+token[2]+" "+token[3]+" "+token[4]);
                         member.powers.Add(new power(token[2],token[3],token[4]));
                     }
-            if(token[0]=="del")
+            }
+            if(token[0]=="del"){
                 foreach(player member in members)
                     if(member.c_name==token[1]){
                         Console.WriteLine("deleting power: "+token[2]);
                         member.powers.Remove(member.powers.Find(x => x.name==token[2]));
                     }
-                
+            }
             Console.WriteLine(a);
         }
     }
 
     public void encounter(player curr){
-        int enc=rnd.Next(0, count_dynamic(file.story[stage].events[curr.h_ref]));
+        int enc=rnd.Next(0, utils.count_dynamic(file.story[stage].events[curr.h_ref]));
         string encount=(string)file.story[stage].events[curr.h_ref][enc];
         Thread.Sleep(300);
         run_script(encount);
@@ -255,7 +272,7 @@ class party:adventure{
             end_turn();
         }else{
             Client.notify(
-                new int[] {(int)chat_id},
+                (int)chat_id,
                 new ClientParams("Solo puedes jugar durante tu turno")
             ); 
         }
@@ -331,7 +348,7 @@ class party:adventure{
         run_script((string)file.story[stage].end_code);
         Thread.Sleep(1000);
         stage++;
-        if(stage==count_dynamic(file.story)){
+        if(stage== utils.count_dynamic(file.story)){
             end_game();
             return;
         }

@@ -1,6 +1,7 @@
 {
     "name":"Berserk, la Edad Dorada",
     "token": "berserk",
+    "mode": "campaign",
     "start_code":"notify(\"La Banda del Halcón, es la banda de mercenarios más temida de todo Midland y esta es su historia. \");sleep(4000);notify(\"Todo comienza en una época que llamaremos la Edad Dorada, el caos cae sobre el mundo en forma de una gran guerra, demonios, humanos, hambre, falsos profetas y crueles dictadores. \");sleep(4000);notify(\"En medio de ello la Banda del Halcón ha ganado renombre librando batallas que los caballeros del reino de Midland consideraban perdidas, siendo así cuna de gloriosos héroes. \");sleep(4000);",
     "heroes":[
         {
@@ -13,18 +14,27 @@
             "desc": "Guts, el nuevo recluta extremadamente prometedor. Protegido por el líder. Posee una gran fuerza bruta y habilidad con la espada, una espada más grande que cualquier otra …",
             "img": "https://i.imgur.com/D8TIxdK.jpg",
             "powers": [
-                ["sword","⚔️ Ataca con la espada al enemigo, si tu fortaleza es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.",
-                "if(Villain.strength<Guts.strength){int dif=Guts.strength-Villain.strength;Villain.life=Villain.life-dif;notify(\"⚔️ Guts ha atacado con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Guts ha atacado con su espada pero ha fallado, su enemigo es más fuerte.\");}"
-                ],
-                ["bomb","💣 Lanzale una bomba al enemigo, el daño dependerá de que tan cerca caiga la bomba",
-                "int dif=random;if(dif<50){notify(\"💣 Guts ha tirado una bomba pero ha caido lejos, le ha hecho solo \"+dif+\" puntos de daño al enemigo\");}else{notify(\"💣 Guts ha tirado una bomba y ha caido cerca, le ha hecho \"+dif+\" puntos de daño al enemigo\");}"
-                ],
-                ["punch","🤛🏻 Dale un golpe al enemigo, si tu fuerza es mayor le quitaras 25 puntos",
-                "if(Villain.strength<Guts.strength){notify(\"🤛🏻 Guts ha golpeado al enemigo y le ha quitado 25 puntos\");Villain.life=Villain.life-25;}else{notify(\"🤛🏻 Guts ha intentado golpear al enemigo,, pero es mucho mas fuerte que el\");}"
-                ],
-                ["heal","❤️‍🩹 Sánate y obtendras 5 puntos de vida costándote 1 punto de mana.",
-                "Guts.life=Guts.life+5;Guts.mana=Guts.mana-1;notify(\"❤️‍🩹 Guts se ha aplicado un vendaje tapándose las heridas, ha recuperado 5 puntos de vida\");"
-                ]
+                {
+                    "name":"sword",
+                    "desc":"⚔️ Ataca con la espada al enemigo, si tu fortaleza es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.",
+                    "script":"if(Villain.strength<Guts.strength){int dif=Guts.strength-Villain.strength;Villain.life=Villain.life-dif;notify(\"⚔️ Guts ha atacado con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Guts ha atacado con su espada pero ha fallado, su enemigo es más fuerte.\");}"
+                },
+                {
+                    "name":"bomb",
+                    "desc":"💣 Lanzale una bomba al enemigo, el daño dependerá de que tan cerca caiga la bomba",
+                    "script":"int dif=random;if(dif<50){notify(\"💣 Guts ha tirado una bomba pero ha caido lejos, le ha hecho solo \"+dif+\" puntos de daño al enemigo\");}else{notify(\"💣 Guts ha tirado una bomba y ha caido cerca, le ha hecho \"+dif+\" puntos de daño al enemigo\");}"
+                },
+                {
+                    "name":"punch",
+                    "desc":"🤛🏻 Dale un golpe al enemigo, si tu fuerza es mayor le quitaras 25 puntos",
+                    "script":"if(Villain.strength<Guts.strength){notify(\"🤛🏻 Guts ha golpeado al enemigo y le ha quitado 25 puntos\");Villain.life=Villain.life-25;}else{notify(\"🤛🏻 Guts ha intentado golpear al enemigo, pero es mucho mas fuerte que el\");}"
+                
+                },
+                {
+                    "name":"heal",
+                    "desc":"❤️‍🩹 Sánate y obtendras 5 puntos de vida costándote 1 punto de mana.",
+                    "script":"Guts.life=Guts.life+5;Guts.mana=Guts.mana-1;notify(\"❤️‍🩹 Guts se ha aplicado un vendaje tapándose las heridas, ha recuperado 5 puntos de vida\");"
+                }
             ]
         },
         {
@@ -37,15 +47,21 @@
             "desc": "Griffith es el líder de la banda, es carismático, un gran estratega y guerrero. Daría lo que fuera por lograr su sueño, sin importar lo que se entrometa en su camino.",
             "img": "https://i.imgur.com/vLkayOk.jpg",
             "powers": [
-                ["sword","⚔️ Ataca con la espada al enemigo, si tu agilidad es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.",
-                "if(Villain.agility<Griffith.agility){int dif=Griffith.strength-Villain.strength;Villain.life=Villain.life-dif;notify(\"⚔️ Griffith ha atacado rapidamente con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Griffith ha intentado atacar con su espada, pero el enemigo ha sido más agil.\");}"
-                ],
-                ["lead","🧑🏻‍🦳 Usa tus poderes de lider y haz que los soldados que te siguen ataquen al enemigo.",
-                "int dif=random;Villain.life=Villain.life-dif;notify(\"🧑🏻‍🦳 Los soldados siguiendo las ordenes de Griffith le han quitado \"+dif+\" puntos de daño al enemigo.\");"
-                ],
-                ["heal","❤️‍🩹 Sánate y obtendrás 3 puntos de vida costándote 1 punto de mana.",
-                "Griffith.life=Griffith.life+3;Griffith.mana=Griffith.mana-1;notify(\"❤️‍🩹 Griffith se ha sanado a si mismo, ha recuperado 3 puntos de vida\");"
-                ]
+                {
+                    "name":"sword",
+                    "desc":"⚔️ Ataca con la espada al enemigo, si tu agilidad es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.",
+                    "script":"if(Villain.agility<Griffith.agility){int dif=Griffith.strength-Villain.strength;Villain.life=Villain.life-dif;notify(\"⚔️ Griffith ha atacado rapidamente con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Griffith ha intentado atacar con su espada, pero el enemigo ha sido más agil.\");}"
+                },
+                {
+                    "name":"lead",
+                    "desc":"🧑🏻‍🦳 Usa tus poderes de lider y haz que los soldados que te siguen ataquen al enemigo.",
+                    "script":"int dif=random;Villain.life=Villain.life-dif;notify(\"🧑🏻‍🦳 Los soldados siguiendo las ordenes de Griffith le han quitado \"+dif+\" puntos de daño al enemigo.\");"
+                },
+                {
+                    "name":"heal",
+                    "desc":"❤️‍🩹 Sánate y obtendrás 3 puntos de vida costándote 1 punto de mana.",
+                    "script":"Griffith.life=Griffith.life+3;Griffith.mana=Griffith.mana-1;notify(\"❤️‍🩹 Griffith se ha sanado a si mismo, ha recuperado 3 puntos de vida\");"
+                }
             ]
         },
         {
@@ -58,15 +74,21 @@
             "desc": "Casca, la única mujer de la banda, más ruda y ágil que la mayoría de los hombres al punto de llegar a ser la General de la Banda del Halcón. Su lealtad a Griffith es inimaginable.",
             "img": "https://i.imgur.com/0NOmlhY.jpg",
             "powers":[
-                ["bow","🏹 Ataca con flechas al enemigo, le quitarás la cantidad de puntos de fortaleza que tenga dividido entre 5",
-                "int dif=Villain.agility/5;Villain.life=Villain.life-dif;if(dif>0){notify(\"🏹 Casca le ha disparado flechas, algunas le han dado y le han quitado \"+dif+\" puntos de vida.\");}else{notify(\"🏹 Las flechas de Casca no le han hecho daño!\");}"
-                ],
-                ["sword","⚔️ Ataca con tu espada al enemigo, si eres mas agil que el, lo heriras",
-                "if(Villain.agility<Casca.agility){int dif=random;Villain.life=Villain.life-(dif);notify(\"⚔️ Casca ha atacado con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Casca ha intentado atacar con su espada, pero el enemigo es demasiado agil.\");}"
-                ],
-                ["heal","❤️‍🩹 Sánate y obtendrás 7 puntos de vida costándote 1 punto de mana.",
-                "Casca.life=Casca.life+3;Casca.mana=Casca.mana-1;notify(\"❤️‍🩹 Casca ha recuperado 3 puntos de vida gracias a sus conocimientos de medicina\");"
-                ]
+                {
+                    "name":"bow",
+                    "desc":"🏹 Ataca con flechas al enemigo, le quitarás la cantidad de puntos de fortaleza que tenga dividido entre 5",
+                    "script":"int dif=Villain.agility/5;Villain.life=Villain.life-dif;if(dif>0){notify(\"🏹 Casca le ha disparado flechas, algunas le han dado y le han quitado \"+dif+\" puntos de vida.\");}else{notify(\"🏹 Las flechas de Casca no le han hecho daño!\");}"
+                },
+                {
+                    "name":"sword",
+                    "desc":"⚔️ Ataca con tu espada al enemigo, si eres mas agil que el, lo heriras",
+                    "script":"if(Villain.agility<Casca.agility){int dif=random;Villain.life=Villain.life-(dif);notify(\"⚔️ Casca ha atacado con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Casca ha intentado atacar con su espada, pero el enemigo es demasiado agil.\");}"
+                },
+                {
+                    "name":"heal",
+                    "desc":"❤️‍🩹 Sánate y obtendrás 7 puntos de vida costándote 1 punto de mana.",
+                    "script":"Casca.life=Casca.life+3;Casca.mana=Casca.mana-1;notify(\"❤️‍🩹 Casca ha recuperado 3 puntos de vida gracias a sus conocimientos de medicina\");"
+                }
             ]
         },
         {
@@ -79,23 +101,29 @@
             "desc": "Jadeau es el más confiable de todos, brinda ayuda a quien lo necesite. No solo es super ágil lanzando cuchillos, sino que también gracias al polvo de hadas que guarda en su mochila es capaz de sanar a los demás.",
             "img": "https://i.imgur.com/CCmuMoq.jpg",
             "powers": [
-                ["heal_friends","❤️‍🩹  Sana a tus amigos con el polvo de hadas que tienes en una bolsita, les restaurará 10 puntos de vida a cada uno, esto te cuesta 3 puntos de mana",
-                "Jadeau.mana=Jadeau.mana-3;if(Guts.life>0){Guts.life=Guts.life+10;notify(\"👨🏻 Aunque no se ha querido dejar sanar en medio de su ira, Jadeau ha logrado sanar a Guts dandole 10 puntos mas de vida\");}if(Griffith.life>0){Griffith.life=Griffith.life+10;notify(\"🧑🏻‍🦳Jadeau le ha tirado el polvo de hadas a Griffith el cual se lo ha untado dandole 10 puntos mas de vida\");}    if(Casca.life>0){Casca.life=Casca.life+10;notify(\"👩🏾 Casca se ha untado los polvos que le ha dado Jadeau dandole 10 puntos mas de vida\");}"
-                ],
-                ["heal","❤️‍🩹  Sanate a ti mismo y obtendrás 30 puntos de salud, esto te cuesta 3 puntos de mana",
-                "Jadeau.life=Jadeau.life+30;Jadeau.mana=Jadeau.mana-3;notify(\"❤️‍🩹Jadeau se ha untado polvo de hadas y se ha aumentado 30 puntos de vida\");"
-                ],
-                ["knifes","🗡️Lánzale cuchillos al enemigo y quitale 30 puntos de vida",
-                "Villain.life=Villain.life-30;notify(\"🗡️ Jadeau ha  tirado sus cuchillos tirandole 30 puntos al enemigo\");"
-                ]
+                {
+                    "name":"heal_friends",
+                    "desc":"❤️‍🩹  Sana a tus amigos con el polvo de hadas que tienes en una bolsita, les restaurará 10 puntos de vida a cada uno, esto te cuesta 3 puntos de mana",
+                    "script":"Jadeau.mana=Jadeau.mana-3;if(Guts.life>0){Guts.life=Guts.life+10;notify(\"👨🏻 Aunque no se ha querido dejar sanar en medio de su ira, Jadeau ha logrado sanar a Guts dandole 10 puntos mas de vida\");}if(Griffith.life>0){Griffith.life=Griffith.life+10;notify(\"🧑🏻‍🦳Jadeau le ha tirado el polvo de hadas a Griffith el cual se lo ha untado dandole 10 puntos mas de vida\");}    if(Casca.life>0){Casca.life=Casca.life+10;notify(\"👩🏾 Casca se ha untado los polvos que le ha dado Jadeau dandole 10 puntos mas de vida\");}"
+                },
+                {
+                    "name":"heal",
+                    "desc":"❤️‍🩹  Sanate a ti mismo y obtendrás 30 puntos de salud, esto te cuesta 3 puntos de mana",
+                    "script":"Jadeau.life=Jadeau.life+30;Jadeau.mana=Jadeau.mana-3;notify(\"❤️‍🩹Jadeau se ha untado polvo de hadas y se ha aumentado 30 puntos de vida\");"
+                },
+                {
+                    "name":"knifes",
+                    "desc":"🗡️Lánzale cuchillos al enemigo y quitale 30 puntos de vida",
+                    "script":"Villain.life=Villain.life-30;notify(\"🗡️ Jadeau ha  tirado sus cuchillos tirandole 30 puntos al enemigo\");"
+                }
             ]
         }
     ],
     "story":[
         {
             "villain": {"life":200,"strength":75,"agility":75,"mana":75},
-            "beg_code":"notipic(\"https://imgur.com/2a1FmtN.png\",\"Como una sentencia de muerte, nuestra banda de mercenarios ha sido enviada a intentar derrotar al general invencible, ese cuyo nombre se ha escuchado por mas de un siglo, derrotando reinos y ejércitos, se resguarda dentro de un castillo rodeado por un gran ejercito de 2000 hombres a los que debéis derrotar. Que comience la batalla!\");sleep(2000);"
-            ,"events" :{
+            "beg_code":"notipic(\"https://imgur.com/2a1FmtN.png\",\"Como una sentencia de muerte, nuestra banda de mercenarios ha sido enviada a intentar derrotar al general invencible, ese cuyo nombre se ha escuchado por mas de un siglo, derrotando reinos y ejércitos, se resguarda dentro de un castillo rodeado por un gran ejercito de 2000 hombres a los que debéis derrotar. Que comience la batalla!\");sleep(2000);",
+            "events" :{
                 "guts":[
                     "int dif=random;Guts.life=Guts.life-dif;notify(\"El ejercito enemigo ha lanzado flechas al cielo quitándole \"+dif+\" puntos de vida a Guts\");",
                     "int dif=random;Guts.life=Guts.life-dif;notify(\"Un escudero enemigo ha acuchillado a Guts, le ha quitado \"+dif+\" puntos de vida\");",
@@ -131,8 +159,8 @@
         },
         {
             "villain": {"life":200,"strength":125,"agility":30,"mana":50},
-            "beg_code":"notify(\"Pero ...  hay un ala del castillo a la cual entró un batallón de nuestros mejores soldados pero ninguno ha regresado. Se pueden escuchar sus gritos de horror… pero repentinamente silencio absoluto  … nuestros héroes deciden entrar, que clase de bestias nos esperarán dentro?\");sleep(2000);notipic(\"https://i.imgur.com/rCxqv65.png\",\"El  piso inundado de los pedazos de nuestro batallón, el olor a sangre, el silencio, solo la respiración fuerte de  una persona se escucha… porque solo hay un hombre en pie. Es Zodd el inmortal.\");"
-            ,"events" :{
+            "beg_code":"notify(\"Pero ...  hay un ala del castillo a la cual entró un batallón de nuestros mejores soldados pero ninguno ha regresado. Se pueden escuchar sus gritos de horror… pero repentinamente silencio absoluto  … nuestros héroes deciden entrar, que clase de bestias nos esperarán dentro?\");sleep(2000);notipic(\"https://i.imgur.com/rCxqv65.png\",\"El  piso inundado de los pedazos de nuestro batallón, el olor a sangre, el silencio, solo la respiración fuerte de  una persona se escucha… porque solo hay un hombre en pie. Es Zodd el inmortal.\");",
+            "events" :{
                 "guts":[
                     "int dif=random;Guts.life=Guts.life-dif;notify(\"Zodd ha golpeado rotundamente a Guts quitándole \"+dif+\" puntos de vida a Guts\");",
                     "int dif=random;Guts.life=Guts.life-dif;notify(\"Guts ha recibido un golpe directo en el pecho, le ha quitado \"+dif+\" puntos de vida\");",
@@ -165,8 +193,8 @@
         },
         {
             "villain": {"life":300,"strength":150,"agility":100,"mana":50},
-            "beg_code":"sleep(1000);notipic(\"https://imgur.com/65yfOpY.png\",\"UN MOMENTO!!! Se esta moviendo, parece que empieza a crecer, sus facciones no son las mismas, se ha vuelto una bestia inhumana, nunca habíamos visto nada igual.\");"
-            ,"events" :{
+            "beg_code":"sleep(1000);notipic(\"https://imgur.com/65yfOpY.png\",\"UN MOMENTO!!! Se esta moviendo, parece que empieza a crecer, sus facciones no son las mismas, se ha vuelto una bestia inhumana, nunca habíamos visto nada igual.\");",
+            "events" :{
                 "guts":[
                     "int dif=random;Guts.life=Guts.life-dif;notify(\"Zodd ha golpeado con un cuerno a Guts quitándole \"+dif+\" puntos de vida\");",
                     "int dif=random;Guts.life=Guts.life-dif;notify(\"De un zarpazo Zodd le ha quitado \"+dif+\" puntos de vida a Guts\");",
@@ -197,8 +225,8 @@
         },
         {
             "villain": {"life":100,"strength":200,"agility":30,"mana":50},
-            "beg_code":"notify(\"Después de semanas de recuperación Griffith se reúne con el rey, la banda ha escalado por sus victorias pero aun no es tiempo de celebrar. Nuestros héroes han sido enviados a la batalla interminable de los 100 años. Un puesto de avanzada en un castillo que durante un siglo ha sido vital para nuestros enemigos y nunca ha podido ser tomado. Aunque el rey no crea que podéis hacerlo, debéis acabar con el enemigo, nuestra  confianza yace en nuestro líder, y el confía a nosotros su vida. DESTROCEMOS A ESOS MALDITOS!!!\");"
-            ,"events" :{
+            "beg_code":"notify(\"Después de semanas de recuperación Griffith se reúne con el rey, la banda ha escalado por sus victorias pero aun no es tiempo de celebrar. Nuestros héroes han sido enviados a la batalla interminable de los 100 años. Un puesto de avanzada en un castillo que durante un siglo ha sido vital para nuestros enemigos y nunca ha podido ser tomado. Aunque el rey no crea que podéis hacerlo, debéis acabar con el enemigo, nuestra  confianza yace en nuestro líder, y el confía a nosotros su vida. DESTROCEMOS A ESOS MALDITOS!!!\");",
+            "events" :{
                 "guts":[
                     "",
                     ""
