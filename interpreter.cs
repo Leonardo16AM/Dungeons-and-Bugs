@@ -18,9 +18,10 @@ class interpreter{
         this.context=new Dictionary<string, int>();
         this.actions=new List<string>();
         List<string>vars=new List<string>();
-        if(context!=null)
+        if(context!=null){
             this.context=context;
             vars=new List<string>(context.Keys);
+        }
         lex=new lexer(code,vars);
         this.current_token=lex.get_next_token();
     }
@@ -273,9 +274,9 @@ class interpreter{
         int cnt=1;
         while(cnt!=0){
             string type=current_token.type;
-            if(type=="EOF"){return;}
-            if(type=="LKEY"){cnt++;}
-            if(type=="RKEY"){cnt--;}
+            if(type=="EOF")return;
+            if(type=="LKEY")cnt++;
+            if(type=="RKEY")cnt--;
             eat(type);
         }
     }

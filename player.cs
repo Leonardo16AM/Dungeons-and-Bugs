@@ -13,7 +13,7 @@ class power{
 class character{
     public int life,strength,agility,mana;
     public Dictionary<string,int>others=new Dictionary<string,int>();
-    public string c_name;
+    public string c_name="";
 
     public Dictionary<string,int> context(){
         Dictionary<string,int>ret=new Dictionary<string,int>();
@@ -39,7 +39,7 @@ class villain:character{}
 
 class hero:character{
 
-    public string h_ref,h_hist;
+    public string h_ref="",h_hist="";
     public int h_id;
     Dictionary<string,string>actions=new Dictionary<string, string>();
 }
@@ -55,5 +55,4 @@ class player:hero{
         this.name=name;
         this.user=username;
     }
-
 }
