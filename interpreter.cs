@@ -267,6 +267,13 @@ class interpreter{
             Thread.Sleep(int_expr());
             eat("RPAREN");
             eat("SCOL");
+        }
+        if(token.type=="ENDT"){//End turn
+            eat("ENDT");
+            eat("LPAREN");
+            context["G_endturn"]=1;
+            eat("RPAREN");
+            eat("SCOL");
         }     
     }
 

@@ -269,7 +269,8 @@ class party: IAdventure {
                     run_script(action);               
                 }
             }
-            end_turn();
+            if( vars["G_endturn"]!=0 )
+                end_turn();
         }else{
             Client.notify(
                 (int)chat_id,
@@ -279,6 +280,11 @@ class party: IAdventure {
     }
 
     public void print_turn(){ 
+        if(!vars.ContainsKey("G_endturn"))
+            vars.Add("G_endturn",0);
+        else
+            vars["G_endturn"]=0;
+
         if(members[turn].life>0){
             string message="Turno de: @";
             message+=members[turn].user;

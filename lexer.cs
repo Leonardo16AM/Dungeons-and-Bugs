@@ -7,8 +7,8 @@ class token{
 }
 
 class lexer{
-    List<string>token_names=new List<string>(){"PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY","RKEY","SCOL","AND","OR","GT","LT","GET","LET","DIF","EQ","NOTI","IF","ELSE","WHILE","NOTIP","COMA","SLEEP","ADDP","DELP"};
-    List<string>token_string=new List<string>(){"+","-","*","/","=","(",")","{","}",";","&","|",">","<",">=","<=","!=","==","notify","if","else","while","notipic",",","sleep","add_power","del_power"};
+    List<string>token_names=new List<string>(){"PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY","RKEY","SCOL","AND","OR","GT","LT","GET","LET","DIF","EQ","NOTI","IF","ELSE","WHILE","NOTIP","COMA","SLEEP","ADDP","DELP","ENDT"};
+    List<string>token_string=new List<string>(){"+","-","*","/","=","(",")","{","}",";","&","|",">","<",">=","<=","!=","==","notify","if","else","while","notipic",",","sleep","add_power","del_power","end_turn"};
     public string text,last_token;
     public int pos;
     public char  current_char;
