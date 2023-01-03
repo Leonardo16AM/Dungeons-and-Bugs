@@ -10,7 +10,10 @@ class power{
 }
 
 
-class character{
+public abstract class character{
+    //type specify the kind of character will be in the inhereited class
+    //villain (for virtual villains), active (for real players), virtual(for friendly NPC) 
+    public virtual string type {get; protected set;}
     public int life,strength,agility,mana;
     public Dictionary<string,int>others=new Dictionary<string,int>();
     public string c_name="";
@@ -35,10 +38,13 @@ class character{
     }
 }
 
-class villain:character{}
+class villain:character{
+    public villain(){
+        type= "villain";
+    }
+}
 
 class hero:character{
-
     public string h_ref="",h_hist="";
     public int h_id;
     Dictionary<string,string>actions=new Dictionary<string, string>();
@@ -54,5 +60,6 @@ class player:hero{
         this.chat_id=chat_id;
         this.name=name;
         this.user=username;
+        this.type="active";
     }
 }

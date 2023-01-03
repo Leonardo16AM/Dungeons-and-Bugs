@@ -4,19 +4,27 @@ using System;
 using System.Threading;
 using Telegram.Bot.Types.ReplyMarkups;
 class party: IAdventure {
+
+    //Client
+    IClient Client;
+
+    // implementing IAdventure
     public string adv {get; protected set;}
     public dynamic file { get; protected set;}
-    public int id,leader,turn=0,chosen_heroes=0,deads=0;
+
+    // Character Variables
     public List<player> members;
     bool[] heroSelection;
-    public bool isStarted = false, finished =false;
-    IClient Client;
-    Dictionary<string,int> vars=new Dictionary<string,int>();
-
-    int stage=0;
     villain  vill=new villain();
+
+    // Story Control Variables
+    public int id,leader,turn=0,chosen_heroes=0,deads=0;
+    public bool isStarted = false, finished =false;
+    Dictionary<string,int> vars=new Dictionary<string,int>();
+    int stage=0;
     Random rnd = new Random();
 
+    //Constructor
     public party(IClient client,int id,string adv_name,int leader,string leader_name,string leader_user){
         adv=adv_name;
         file = DataAdventure.Adventures[adv_name];
@@ -33,6 +41,8 @@ class party: IAdventure {
         Client= client;
     }
 
+
+    ////////////////////////////// FUNCTIONS ///////////////////////////////////////
     public void add_member(int member, string name,string user){
         // Adds a member to the party
         members.Add(new player(member,name,user));
@@ -162,7 +172,10 @@ class party: IAdventure {
         InlineKeyboardButton[] payload= new InlineKeyboardButton[heroSelection.Length];  
         foreach(var hero in file.heroes){
             cont++;
-            payload[cont-1]= InlineKeyboardButton.WithCallbackData(text: hero.name.ToString(), callbackData: "/choose_hero "+(cont).ToString());
+            payload[cont-1]= InlineKeyboardButton.WithCallbackData(
+                text: hero.name.ToString(),
+                callbackData: "/choose_hero "+(cont).ToString()
+            );
         }
         Client.notify( 
             members.map<int, player>((m)=> {return m.chat_id;}),

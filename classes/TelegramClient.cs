@@ -9,7 +9,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 public class TlgClient : IClient
 {
     IEnumerable<int> admins= new List<int> { 789850916, 639646249};
-    TelegramBotClient botClient;
+    public TelegramBotClient botClient;
 
     public TlgClient(string botID)
     {
@@ -27,7 +27,7 @@ public class TlgClient : IClient
 
             if(next)
                 continue;
-                
+
             notify(chatId,param);
         }
         
@@ -35,29 +35,29 @@ public class TlgClient : IClient
     
     public void notify(int chatId, IClientParams param){
         if (((ClientParams)param).picUrl == null)
-            {
-                botClient.SendTextMessageAsync(
-                    chatId: chatId,
-                    text: param.text,
-                    parseMode: ((ClientParams)param).parseMode == null ? null : ((ClientParams)param).parseMode,
-                    disableWebPagePreview: ((ClientParams)param).disablePreview == null ? null : ((ClientParams)param).disablePreview,
-                    disableNotification: ((ClientParams)param).disableNotif == null ? null : ((ClientParams)param).disableNotif,
-                    replyToMessageId: ((ClientParams)param).replyMessage != null ? ((ClientParams)param).replyMessage : null,
-                    replyMarkup: ((ClientParams)param).replyStyle == null ? null : ((ClientParams)param).replyStyle
-                );
-            }
-            else
-            {
-                botClient.SendPhotoAsync(
-                    chatId: chatId,
-                    caption: param.text,
-                    photo: ((ClientParams)param).picUrl!,
-                    parseMode: ParseMode.Html,
-                    disableNotification: ((ClientParams)param).disableNotif == null ? null : ((ClientParams)param).disableNotif,
-                    replyToMessageId: ((ClientParams)param).replyMessage != null ? ((ClientParams)param).replyMessage : null,
-                    replyMarkup: ((ClientParams)param).replyStyle == null ? null : ((ClientParams)param).replyStyle
-                );
-            }
+        {
+            botClient.SendTextMessageAsync(
+                chatId: chatId,
+                text: param.text,
+                parseMode: ((ClientParams)param).parseMode == null ? null : ((ClientParams)param).parseMode,
+                disableWebPagePreview: ((ClientParams)param).disablePreview == null ? null : ((ClientParams)param).disablePreview,
+                disableNotification: ((ClientParams)param).disableNotif == null ? null : ((ClientParams)param).disableNotif,
+                replyToMessageId: ((ClientParams)param).replyMessage != null ? ((ClientParams)param).replyMessage : null,
+                replyMarkup: ((ClientParams)param).replyStyle == null ? null : ((ClientParams)param).replyStyle
+            );
+        }
+        else
+        {
+            botClient.SendPhotoAsync(
+                chatId: chatId,
+                caption: param.text,
+                photo: ((ClientParams)param).picUrl!,
+                parseMode: ParseMode.Html,
+                disableNotification: ((ClientParams)param).disableNotif == null ? null : ((ClientParams)param).disableNotif,
+                replyToMessageId: ((ClientParams)param).replyMessage != null ? ((ClientParams)param).replyMessage : null,
+                replyMarkup: ((ClientParams)param).replyStyle == null ? null : ((ClientParams)param).replyStyle
+            );
+        }
     }
     public void notifyAdmins(IClientParams param){
         notify(admins, param);

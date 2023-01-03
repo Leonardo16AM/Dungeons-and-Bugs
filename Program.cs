@@ -4,7 +4,6 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-var botClient = new TelegramBotClient("5747520451:AAFUXAYgxTJK7tU4m3HLk3N5ec-5Ks0xGDs");
 
 using var cts = new CancellationTokenSource();
 
@@ -36,14 +35,14 @@ void add_member(int member, string name,string user, int party_id){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-botClient.StartReceiving(
+((TlgClient)telegram).botClient.StartReceiving(
     updateHandler: HandleUpdateAsync,
     pollingErrorHandler: HandlePollingErrorAsync,
     receiverOptions: receiverOptions,
     cancellationToken: cts.Token
 );
 
-var me = await botClient.GetMeAsync();
+var me = await ((TlgClient)telegram).botClient.GetMeAsync();
 Console.WriteLine($"Server started correctly");
 ((TlgClient)telegram).notifyAdmins(new ClientParams("Server started correctly"));
 Console.ReadLine();
