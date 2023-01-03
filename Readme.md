@@ -1,4 +1,4 @@
-# Dungeons and Bugs
+![ Dungeons and Bugs ](images/D%26B-14.jpg "Dungeons and Bugs Logo")
 
 Dungeons and Bugs es un motor de juegos con historia del tipo Dungeons and Dragons. Permite juegos multijugador en línea, con modo cooperativo o player vs player. Posee su propio  lenguaje de programación para crear aventuras, heroes, poderes y mucho más. ¿Estás listo para vivir aventuras y crear las tuyas propias?
 
@@ -18,7 +18,7 @@ El juego se jugará por turnos, y cada personaje podrá usar acciones predetermi
 ---
 ## Creando tu propia aventura:
 
-Las avnenturas estarán guardadas en archivos `JSON` en la carpeta `adventures`. Para crear aventuras nuevas se debera usar el formato siguiente:
+Las aventuras estarán guardadas en archivos `JSON` en la carpeta `adventures`. Para crear aventuras nuevas se deberá usar el formato siguiente:
 
 ```json
 {
@@ -59,8 +59,6 @@ Las avnenturas estarán guardadas en archivos `JSON` en la carpeta `adventures`.
     "story":[
         {
             "villain": {"life":200,"strength":200,"agility":30,"mana":50},
-            "beg_story":"Historia del inicio del stage",
-            "beg_pic":"imagen_de_fin_de_stage.jpg",
             "beg_code":"Codigo en C+- que se correrá al inicio del stage"
             ,"events": {
                 "hero1":[
@@ -71,8 +69,6 @@ Las avnenturas estarán guardadas en archivos `JSON` en la carpeta `adventures`.
                 ]
             },        
             "end_code":"código que se correrá al fin del stage"
-            ,"end_story":"Historia del fin del stage",
-            "end_pic":"imagen_de_fin_de_stage.png"
         }
     ]
 }
@@ -80,18 +76,18 @@ Las avnenturas estarán guardadas en archivos `JSON` en la carpeta `adventures`.
 Como se observa al inicio del archivo deberan crearse todos los posibles heroes, de estos se debe dar una descripcion del heroe, sus estadisticas y una imagen del mismo.
 > ⚠ Los links a las imagenes de jugadores, stages, o imagenes usadas en C+- deben ser links en linea, se recomienda subir las imagenes a [imgur](imgur.com).
 
-Las aventuras se divididen en distintos stages, donde cada stage es un objetivo adistinto a vencer, el stage dara por finalizado cuando `Villain.life` llegue a cero. Durante los stages los heroes jugaran por turnos para vencer el objetivo del stage actual. Al principio cada turno se ejecutara un encuentro, el cual sera un pedazo de codigo en C+-. Lo que  pase en cada encuentro puede variar dependiendo de la historia y de el codigo implementado en ellos, uno de los encuentros posibles puede ser que el jugador obtenga un poder nuevo, recupere vida, o simplemente reciba algun mensaje. Los encuentros se elegirtan aleatoriamente entre todos los posibles encuentros del stage actual. Tanto al iniciar un stage como el terminar se correra un codigo en C+- y se mostrara un anuncio con una imagen en el cual se ira contando la historia que va ocurriendo.
+Las aventuras se divididen en distintos stages, donde cada stage es un objetivo adistinto a vencer, el stage dara por finalizado cuando `Villain.life` llegue a cero. Durante los stages los heroes jugaran por turnos para vencer el objetivo del stage actual. Al principio cada turno se ejecutará un encuentro, el cual sera un pedazo de codigo en C+-. Lo que  pase en cada encuentro puede variar dependiendo de la historia y de el codigo implementado en ellos, uno de los encuentros posibles puede ser que el jugador obtenga un poder nuevo, recupere vida, o simplemente reciba algun mensaje. Los encuentros se elegirtan aleatoriamente entre todos los posibles encuentros del stage actual. Tanto al iniciar un stage como el terminar se correrá un codigo en C+-.
 
 ---
 ## C+- un lenguaje para gobernarlos a todos.
 El lenguaje para progrmar poderes, encuentros y la historia en general es llamado C+-. Es un lenguaje Turing completo y su nombre surge debido a su parecido con el lenguaje C++.  
 ### Componentes principales del lenguaje:  
 
-Declaracion de numeros enteros:   
+Declaración de numeros enteros:   
  ```c++ 
     int n=16;
  ```
- Declaracion de cadenas de caracteres:   
+ Declaración de cadenas de caracteres:   
  ```c++ 
     str s="Hello there!";
  ```
@@ -128,8 +124,19 @@ Declaracion de numeros enteros:
         cnt=cnt-5;
     }
  ```
+ Sleep:
+ ```c++
+    sleep(1000);
+ ```
 
- Elscript siemrpe va a poseer variables globales tales que van a representar el estado acutal del juego, tales como `Villain,life` y otras mas, ademas se le pueden adicionar mas variables al estado del juego para luego ser usadas en turnos posteriores.Con estas estructuras basicas del lenguaje se pueden crear operaciones mas complicadas: 
+ Añadir nuevos poderes a los jugadores  o quitárselos
+
+ ```c++
+    add_power("Gandalf","scream","Grita al enemigo para que no pueda pasar",'notify("You shall not pass!");');
+    del_power("Gandalf","scream");
+ ```
+
+ El script siempre va a poseer variables globales tales que van a representar el estado acutal del juego, tales como `Villain.life`, ademas se le pueden adicionar mas variables al estado del juego para luego ser usadas en turnos posteriores. Con estas estructuras basicas del lenguaje se pueden crear operaciones mas complicadas: 
  ```c++
     while( Gandalf.life!=0 ){
         if( Villain.life>0 &  Gandalf.strength>50 ){
@@ -143,3 +150,5 @@ Declaracion de numeros enteros:
         }
     }
  ```
+
+ ---

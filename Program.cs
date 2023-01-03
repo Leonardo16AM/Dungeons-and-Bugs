@@ -169,11 +169,19 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             return;
         }
 
+        if(messageText.StartsWith("/end_adventure") ){
+            foreach(player member in parties[player_party[(int)chatId]].members){
+                player_party.Remove(member.chat_id);
+            }
+            return;
+        }
+
         if( !messageText.StartsWith("/") ){
             if(messageText=="") return;
             parties[player_party[(int)chatId]].chat($"@{message.From.Username}: {messageText}", (int)chatId);
             return;            
         }
+
 
         telegram.notify(
             new List<int> {(int)chatId},
