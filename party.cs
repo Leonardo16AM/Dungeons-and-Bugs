@@ -20,7 +20,7 @@ class party: IAdventure {
     // Story Control Variables
     public int id,leader,turn=0,chosen_heroes=0,deads=0;
     public bool isStarted = false, finished =false;
-    Dictionary<string,int> vars=new Dictionary<string,int>();
+    Dictionary<string,string> vars=new Dictionary<string,string>();
     int stage=0;
     Random rnd = new Random();
 
@@ -36,7 +36,7 @@ class party: IAdventure {
         members.Add(new player(leader,leader_name,leader_user));
         foreach(var h in file.heroes){
             Console.WriteLine((string)h.hname);
-            vars.Add((string)h.name+".life",0);
+            vars.Add((string)h.name+".life","0");
         }
         Client= client;
     }
@@ -64,7 +64,7 @@ class party: IAdventure {
 
     public void print_vars(int chat_id){
         // Prints all variables of the party to the chat_id
-        Dictionary<string,int>vars=context();
+        Dictionary<string,string>vars=context();
         string vs="Variables: \n";
         vs+=$"{vill.c_name}.life: {vill.life} \n";
         foreach(player member in members){    
@@ -104,22 +104,22 @@ class party: IAdventure {
             new ClientParams( vs, rS: new InlineKeyboardMarkup(payload)) 
         );
     }
-    public Dictionary<string,int> context(){
+    public Dictionary<string,string> context(){
         // Returns a dictionary of all variables of the party
-        Dictionary<string,int>ret=new Dictionary<string,int>(vars);
-        ret.Add("deads",deads);
+        Dictionary<string,string>ret=new Dictionary<string,string>(vars);
+        ret.Add("deads",deads.ToString());
         foreach(player p in members){
             Dictionary<string,int>player_dict=p.context();
             foreach(var prop in player_dict){
-                ret[prop.Key]=prop.Value;
+                ret[prop.Key]=prop.Value.ToString();
             }
         }
         foreach(var prop in vill.context())
-            ret.Add(prop.Key,prop.Value);
+            ret.Add(prop.Key,prop.Value.ToString());
         return ret;
     }
 
-    public void from_context(Dictionary<string,int>cont){
+    public void from_context(Dictionary<string,string>cont){
         // Sets the variables of the party from a dictionary
         char[] delims={'.'};
         List<string>del=new List<string>();
@@ -128,16 +128,16 @@ class party: IAdventure {
             for(int i=0;i<members.Count();i++){
                 if( tokens[0]==members[i].c_name ){
                     del.Add(s.Key);
-                    members[i].upd_param(tokens[1],s.Value);
+                    members[i].upd_param(tokens[1],int.Parse(s.Value));
                     break;
                 }
             }
             if(tokens[0]=="Villain"){
-                vill.upd_param(tokens[1],s.Value);
+                vill.upd_param(tokens[1],int.Parse(s.Value));
                 del.Add(s.Key);    
             }
         }
-        deads=cont["deads"];
+        deads=int.Parse(cont["deads"]);
         del.Add("deads");
         foreach(var s in del)
             cont.Remove(s);
@@ -151,7 +151,7 @@ class party: IAdventure {
         interpreter interp=new interpreter(
             Client,
             (string)file.start_code,
-            new Dictionary<string, int>(),
+            new Dictionary<string, string>(),
             new List<int>(members.map<int, player>((m)=> {return m.chat_id;}))
         );
         interp.run();
@@ -269,7 +269,7 @@ class party: IAdventure {
                     run_script(action);               
                 }
             }
-            if( vars["G_endturn"]!=0 )
+            if( vars["G_endturn"]!="0" )
                 end_turn();
         }else{
             Client.notify(
@@ -281,9 +281,9 @@ class party: IAdventure {
 
     public void print_turn(){ 
         if(!vars.ContainsKey("G_endturn"))
-            vars.Add("G_endturn",0);
+            vars.Add("G_endturn","0");
         else
-            vars["G_endturn"]=0;
+            vars["G_endturn"]="0";
 
         if(members[turn].life>0){
             string message="Turno de: @";

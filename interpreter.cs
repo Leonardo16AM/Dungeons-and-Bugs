@@ -2,21 +2,27 @@ using Telegram.Bot;
 using System;
 using System.Threading;
 
-class interpreter{
-    public Dictionary<string,int>context;
+class interpreter: ICloneable{
+    public Dictionary<string,string>context;
     public List<string> actions;
-    lexer lex;
+    public lexer lex;
     token current_token;
-    string code;
+    public string code;
     ITelegramBotClient botClient;
     IClient Client;
     List<int>chat_ids;
-    public interpreter(IClient client,string code,Dictionary<string,int>context,List<int>chat_ids){
+    string to_ret;
+    public bool ret_int=false;
+    public List<string>created;
+    public bool root =true;
+
+    public interpreter(IClient client,string code,Dictionary<string,string>context,List<int>chat_ids){
         this.Client=client;
         this.chat_ids=chat_ids;
         this.code=code;
-        this.context=new Dictionary<string, int>();
+        this.context=new Dictionary<string, string>();
         this.actions=new List<string>();
+        this.created=new List<string>();
         List<string>vars=new List<string>();
         if(context!=null){
             this.context=context;
@@ -26,10 +32,23 @@ class interpreter{
         this.current_token=lex.get_next_token();
     }
 
+    public object Clone(){
+        return new interpreter(this.Client,this.code,this.context,this.chat_ids); 
+    }
+
     public void error(string e){throw new Exception(e);}
 
+    public void add_var(string key,string value){
+        if(context.ContainsKey(key)){
+            context[key]=value;
+        }else{
+            context.Add(key,value);
+            created.Add(key);
+        }
+    }
+
     void eat(string token_type){
-        Console.WriteLine(">>> "+current_token.type);
+        Console.WriteLine(">>> "+current_token.type+" "+current_token.value );
         if(current_token.type==token_type)
             current_token=lex.get_next_token();
         else
@@ -46,10 +65,14 @@ class interpreter{
             eat("RND");
             return int.Parse(token.value);
         }
-        if(token.type == "VAR"){
+        if(token.type == "VAR"&& context[token.value][0]!='>'){
             string vname=token.value;
             eat("VAR");
-            return context[vname];
+            return int.Parse(context[vname]);
+        }
+        if(token.type == "VAR" && context[token.value][0]=='>'){
+            string r=run_function();
+            return int.Parse(r);
         }
         if(token.type == "LPAREN"){
             eat("LPAREN");
@@ -106,23 +129,25 @@ class interpreter{
             result=current_token.value.ToString();
             eat("RND");
         }
-        if(current_token.type=="VAR"){
+        if(current_token.type=="VAR"&& context[current_token.value][0]!='>'){
            result+=context[current_token.value].ToString();
            eat("VAR");
+        }
+        if(current_token.type=="VAR"&& context[current_token.value][0]=='>'){
+           result+=run_function().ToString();
         }
         return result;
     }
     
     string str_expr(){
         string result=str_term();
-        while(current_token.type!="COMA" && current_token.type!="SCOL" && current_token.type!= "RPAREN"){
+        while(current_token.type!="COMA" && current_token.type!="SCOL" && current_token.type!= "RPAREN"&& current_token.type!= "LPAREN"){
             token token = current_token;
             if(token.type=="PLUS"){
                 eat("PLUS");
                 result+=str_term();
             }
         }
-        Console.WriteLine(result);
         return result;
     }
 
@@ -186,6 +211,64 @@ class interpreter{
         return ret;
     }
 
+    
+    class function{
+        public interpreter interp;
+        public List<string>pms;
+        public string type="v";
+        public function(interpreter interp,Dictionary<string,string> cont,string obj){
+            this.pms=new List<string>();
+            List<string>deobj=new List<string>(obj.Split('~'));
+            this.type=deobj[0].Substring(1);
+            for(int i=1;i<deobj.Count-1;i++){
+                pms.Add(deobj[i]);
+            }
+            this.interp=new interpreter(interp.Client,deobj[deobj.Count-1].Substring(2),new Dictionary<string,string>(cont),interp.chat_ids);
+            if(type=="i")this.interp.ret_int=true;
+            this.interp.root=false;
+        }
+        public void Add(string key,string value){
+            this.interp.add_var(key,value);
+            this.interp.lex.vars.Add(key);
+        }
+        public string run(){
+            return this.interp.run();
+        }    
+    };
+
+
+    string run_function(){
+        string fname=current_token.value;
+        eat("VAR");
+        eat("LPAREN");
+        
+        Dictionary<string,string>cons=new Dictionary<string, string>();
+        Dictionary<string,string>ncont=new Dictionary<string, string>(context);
+        foreach(string s in created ){
+            cons.Add(s.Substring(0),context[s].Substring(0));
+            ncont.Remove(s);
+        }
+
+        function f=new function(this,ncont,context[fname]);
+        foreach(string p in f.pms){
+            string pname=p.Substring(2);
+            if(p[0]=='s')
+                f.Add(pname,str_expr());
+            if(p[0]=='i')
+                f.Add(pname,int_expr().ToString());
+            if(current_token.type=="COMA")eat("COMA");
+        }
+        eat("RPAREN"); 
+        string rett=f.run();
+        
+        context=f.interp.context;    
+        foreach(string s in created)
+            context[s]=cons[s];
+        if(root)foreach(string s in f.interp.created){context.Remove(s);}
+        return rett;
+    }
+
+
     void line(){
         token token = current_token;
         
@@ -244,21 +327,15 @@ class interpreter{
             eat("VAR");
             eat("ASG");
             int value=int_expr();
-            if(!context.ContainsKey(vname))
-                context.Add(vname,value);
-            else
-                context[vname]=value;
+            add_var(vname,value.ToString());
             eat("SCOL");
         }
-        if(token.type=="VAR"){//Integrer modification
+        if(token.type=="VAR" && context[token.value][0]!='>' ){//Integrer modification
             string vname=current_token.value;
             eat("VAR");
             eat("ASG");
             int value=int_expr();
-            if(!context.ContainsKey(vname))
-                context.Add(vname,value);
-            else
-                context[vname]=value;
+            add_var(vname,value.ToString());
             eat("SCOL");
         }
         if(token.type=="SLEEP"){//sleep
@@ -271,10 +348,23 @@ class interpreter{
         if(token.type=="ENDT"){//End turn
             eat("ENDT");
             eat("LPAREN");
-            context["G_endturn"]=1;
+            context["G_endturn"]="1";
             eat("RPAREN");
             eat("SCOL");
-        }     
+        } 
+        if(token.type=="VAR" && context[token.value][0]=='>'){//Calling a void function
+            run_function();
+            eat("SCOL");
+        }
+        if(token.type=="RET"){//Return something
+            eat("RET");
+            if(token.type=="SCOL"){to_ret="";return;}
+            if(ret_int)
+                to_ret=int_expr().ToString();
+            else
+                to_ret=str_expr();
+            eat("SCOL");
+        }         
     }
 
     void pass(){
@@ -287,7 +377,7 @@ class interpreter{
             eat(type);
         }
     }
-    void block(){
+    string block(){
         while(current_token.type!="RKEY" && current_token.type!="EOF" ){
             token token = current_token;
             
@@ -298,14 +388,16 @@ class interpreter{
                 eat("RPAREN");
                 eat("LKEY");
                 if(bex){
-                    block();
+                    string ret=block();
+                    if(ret!="EMPT")return ret;
                     eat("RKEY");
                 }else pass();
                 if(current_token.type=="ELSE"){
                     eat("ELSE");
                     eat("LKEY");
                     if(!bex){
-                        block();
+                        string ret=block();
+                        if(ret!="EMPT")return ret;
                         eat("RKEY");
                     }else pass();
                 }
@@ -325,7 +417,8 @@ class interpreter{
                     eat("RPAREN");
                     if(bex){
                         eat("LKEY");
-                        block();
+                        string ret=block();
+                        if(ret!="EMPT")return ret;
                         eat("RKEY");
                         current_token=wr;
                         lex.last_token=last_token;
@@ -339,12 +432,59 @@ class interpreter{
                 continue;
             }
 
+            
+            if(token.type=="DEF"){                
+                eat("DEF");
+                string func="";
+                if(current_token.type=="VOID"){eat("VOID");func=">v";}                
+                if(current_token.type=="INT"){eat("INT");func=">i";}
+                if(current_token.type=="STR"){eat("STR");func=">s";}
+                string name=current_token.value;
+                eat("VAR");
+                eat("LPAREN");
+                while(current_token.type!="RPAREN"){
+                    if(current_token.type=="INT"){eat("INT");func+="~i:";}
+                    if(current_token.type=="STR"){eat("STR");func+="~s:";}
+                    string vname=current_token.value;
+                    eat("VAR");
+                    func+=vname;
+                    if(current_token.type=="COMA")eat("COMA");
+                }
+                func+="~c:";
+                eat("RPAREN");
+                eat("LKEY");
+                int cnt=1;
+                while(cnt!=0){
+                    if(current_token.type=="LKEY"){cnt++;}
+                    if(current_token.type=="RKEY"){cnt--;}
+                    if(cnt!=0){
+                        if(current_token.type=="STRING")
+                           func+=" \""+current_token.value+"\" ";
+                        else
+                           func+=" "+current_token.value+" ";
+                        eat(current_token.type);
+                    }
+                }
+                eat("RKEY");
+                try{
+                    context.Add(name,func);
+                }catch{
+                    error($"A function called {name} already exist");
+                }
+                continue;
+            }
+
             line();
+            if(to_ret!=null){
+                Console.WriteLine("RETURNING "+to_ret);
+                return to_ret;
+            }
         }
+        return "EMPT";
     }
 
-    public void run(){
-        block();
+    public string run(){
+        return block();
     }
 
 }
