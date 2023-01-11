@@ -238,6 +238,10 @@ class interpreter: ICloneable{
         return ret;
     }
     bool bool_term(){
+        if(current_token.type=="NOT"){
+            eat("NOT");
+            return !bool_expr();
+        }
         if(current_token.type=="LPAREN" && is_bool() ){
             eat("LPAREN");
             bool ret=bool_expr();
@@ -480,6 +484,34 @@ class interpreter: ICloneable{
             if(token.type=="WHILE"){
                 eat("WHILE");
                 eat("LPAREN");
+                while(true){
+                    token wr=current_token;
+                    string last_token=lex.last_token;
+                    int pos=lex.pos;
+                    char current_char=lex.current_char;
+                    
+                    bool bex=bool_expr();
+                    eat("RPAREN");
+                    if(bex){
+                        eat("LKEY");
+                        string ret=block();
+                        if(ret!="EMPT")return ret;
+                        eat("RKEY");
+                        current_token=wr;
+                        lex.last_token=last_token;
+                        lex.pos=pos;
+                        lex.current_char=current_char;
+                    }else{
+                        pass();
+                        break;
+                    }
+                }
+                continue;
+            }
+            if(token.type=="FOR"){
+                eat("FOR");
+                eat("LPAREN");
+                line();
                 while(true){
                     token wr=current_token;
                     string last_token=lex.last_token;
