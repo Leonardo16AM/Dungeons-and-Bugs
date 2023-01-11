@@ -341,7 +341,6 @@ class interpreter: ICloneable{
                 new ClientParams(str_expr())
             );
             eat("RPAREN");
-            eat("SCOL");
         }      
         if(token.type=="NOTIP"){//Notification with picture
             eat("NOTIP");
@@ -353,7 +352,6 @@ class interpreter: ICloneable{
                 new ClientParams(str_expr(), pU: url)
             );
             eat("RPAREN");
-            eat("SCOL");
         }
         if(token.type=="ADDP"){//Add power to player
             eat("ADDP");
@@ -368,7 +366,6 @@ class interpreter: ICloneable{
             eat("SCRIPT");
             actions.Add($"add%{user}%{p_name}%{p_desc}%{p_script}");
             eat("RPAREN");
-            eat("SCOL");
         }
         
         if(token.type=="DELP"){//Remove power from player player
@@ -379,7 +376,6 @@ class interpreter: ICloneable{
             string p_name=str_expr();
             actions.Add($"del%{user}%{p_name}");
             eat("RPAREN");
-            eat("SCOL");
         }
         
         if(token.type=="INT"){//Integer declaration
@@ -389,33 +385,37 @@ class interpreter: ICloneable{
             eat("ASG");
             int value=int_expr();
             add_var(vname,value.ToString());
-            eat("SCOL");
         }
         if(token.type=="VAR" && var_value(token.value)[0]!='>' ){//Integrer modification
             string vname=current_token.value;
             eat("VAR");
-            eat("ASG");
-            int value=int_expr();
-            modify_var(vname,value.ToString());
-            eat("SCOL");
+            if(current_token.type=="ASG"){
+                eat("ASG");
+                int value=int_expr();
+                modify_var(vname,value.ToString());
+            }else{
+                if(current_token.type=="PLPL"){
+                    eat("PLPL");modify_var(vname,(int.Parse(var_value(vname))+1).ToString());
+                }
+                if(current_token.type=="MNMN"){
+                    eat("MNMN");modify_var(vname,(int.Parse(var_value(vname))-1).ToString());
+                }
+            }
         }
         if(token.type=="SLEEP"){//sleep
             eat("SLEEP");
             eat("LPAREN");
             Thread.Sleep(int_expr());
             eat("RPAREN");
-            eat("SCOL");
         }
         if(token.type=="ENDT"){//End turn
             eat("ENDT");
             eat("LPAREN");
             modify_var("G_endturn","1");
             eat("RPAREN");
-            eat("SCOL");
         } 
         if(token.type=="VAR" && var_value(token.value)[0]=='>'){//Calling a void function
             run_function();
-            eat("SCOL");
         }
         if(token.type=="RET"){//Return something
             eat("RET");
@@ -424,8 +424,8 @@ class interpreter: ICloneable{
                 to_ret=int_expr().ToString();
             else
                 to_ret=str_expr();
-            eat("SCOL");
-        }         
+        }   
+        eat("SCOL");      
     }
     void pass(){
         int cnt=1;
