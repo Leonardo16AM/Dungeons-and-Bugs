@@ -9,9 +9,9 @@ class token{
 class lexer{
     List<string>token_names=new List<string>(){"PLPL","MNMN","GET","LET","DIF","EQ","PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY",
     "RKEY","SCOL","AND","OR","GT","LT","NOTI","IF","ELSE","WHILE","NOTIP","COMA","SLEEP","ADDP","DELP","ENDT","RET","DEF","RCOR",
-    "LCOR","FOR","EXST"};
+    "LCOR","FOR","EXST","MOD"};
     List<string>token_string=new List<string>(){"++","--",">=","<=","!=","==","+","-","*","/","=","(",")","{","}",";","&","|",">","<","notify",
-        "if","else","while","notipic",",","sleep","add_power","del_power","end_turn","return","def","[","]","for","exist"};
+        "if","else","while","notipic",",","sleep","add_power","del_power","end_turn","return","def","[","]","for","exist","%"};
     public string text,last_token;
     public int pos;
     public char  current_char;

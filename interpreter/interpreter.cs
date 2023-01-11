@@ -142,9 +142,14 @@ class interpreter: ICloneable{
             if(token.type=="MUL"){
                 eat("MUL");
                 result*=int_factor();
-            }else if(token.type=="DIV"){
+            }
+            if(token.type=="DIV"){
                 eat("DIV");
                 result/=int_factor();
+            }
+            if(token.type=="MOD"){
+                eat("MOD");
+                result%=int_factor();
             }
         }
         return result;
@@ -236,6 +241,15 @@ class interpreter: ICloneable{
         if(current_token.type=="LPAREN" && is_bool() ){
             eat("LPAREN");
             bool ret=bool_expr();
+            eat("RPAREN");
+            return ret;
+        }
+        if(current_token.type=="EXST" ){
+            bool ret=false;
+            eat("EXST");
+            eat("LPAREN");
+            string v=str_expr();
+            if(context.ContainsKey(v) || inner_context.ContainsKey(v))ret=true;
             eat("RPAREN");
             return ret;
         }
