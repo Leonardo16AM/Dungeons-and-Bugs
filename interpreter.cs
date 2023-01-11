@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 
 class interpreter: ICloneable{
-    public Dictionary<string,string>context;
+    public Dictionary<string,string>context,inner_context;
     public List<string> actions;
     public lexer lex;
     token current_token;
@@ -13,7 +13,6 @@ class interpreter: ICloneable{
     List<int>chat_ids;
     string to_ret;
     public bool ret_int=false;
-    public List<string>created;
     public bool root =true;
 
     public interpreter(IClient client,string code,Dictionary<string,string>context,List<int>chat_ids){
@@ -21,8 +20,8 @@ class interpreter: ICloneable{
         this.chat_ids=chat_ids;
         this.code=code;
         this.context=new Dictionary<string, string>();
+        this.inner_context=new Dictionary<string, string>();
         this.actions=new List<string>();
-        this.created=new List<string>();
         List<string>vars=new List<string>();
         if(context!=null){
             this.context=context;
@@ -31,21 +30,70 @@ class interpreter: ICloneable{
         lex=new lexer(code,vars);
         this.current_token=lex.get_next_token();
     }
-
     public object Clone(){
         return new interpreter(this.Client,this.code,this.context,this.chat_ids); 
+    }
+    public object CloneC(string script){
+        return new interpreter(this.Client,script,this.context,this.chat_ids); 
     }
 
     public void error(string e){throw new Exception(e);}
 
+
+
+
+
+
+
     public void add_var(string key,string value){
-        if(context.ContainsKey(key)){
-            context[key]=value;
+        if(root){
+            if(context.ContainsKey(key))
+                context[key]=value;
+            else
+                context.Add(key,value);
         }else{
-            context.Add(key,value);
-            created.Add(key);
+            if(inner_context.ContainsKey(key))
+                inner_context[key]=value;
+            else
+                inner_context.Add(key,value);
         }
     }
+
+    void modify_var(string key,string value){
+        if(!context.ContainsKey(key) && !inner_context.ContainsKey(key)){
+            add_var(key,value);
+        }else{
+            if(context.ContainsKey(key))
+                context[key]=value;
+            else
+                inner_context[key]=value;
+        }
+    }
+    string var_value(string key){
+        if(context.ContainsKey(key))
+            return context[key];
+        if(inner_context.ContainsKey(key))
+            return inner_context[key];
+        error("Interpreter Error: Variable "+key+" not found");
+        return "";
+    }
+    public void print_context(){
+        Console.WriteLine("===========Printing context============");
+        foreach (var entry in context){
+            Console.WriteLine(entry.Key+" "+entry.Value);
+        }
+        Console.WriteLine("===========Printing inner context============");
+        foreach (var entry in inner_context){
+            Console.WriteLine(entry.Key+" "+entry.Value);
+        }
+        Console.WriteLine("=======================================");
+    }
+
+
+
+
+
+
 
     void eat(string token_type){
         Console.WriteLine(">>> "+current_token.type+" "+current_token.value );
@@ -54,6 +102,11 @@ class interpreter: ICloneable{
         else
             error($"Interpreter Error: Expected {token_type} found {current_token.type}");
     }
+
+
+
+
+
     int int_factor(){
         token token = current_token;
         
@@ -65,12 +118,12 @@ class interpreter: ICloneable{
             eat("RND");
             return int.Parse(token.value);
         }
-        if(token.type == "VAR"&& context[token.value][0]!='>'){
+        if(token.type == "VAR"&& var_value(token.value)[0]!='>'){
             string vname=token.value;
             eat("VAR");
-            return int.Parse(context[vname]);
+            return int.Parse(var_value(vname));
         }
-        if(token.type == "VAR" && context[token.value][0]=='>'){
+        if(token.type == "VAR" && var_value(token.value)[0]=='>'){
             string r=run_function();
             return int.Parse(r);
         }
@@ -82,8 +135,6 @@ class interpreter: ICloneable{
         }
         return 0;
     }
-
-
     int int_term(){
         int result = int_factor();
         while(current_token.type=="MUL" || current_token.type=="DIV"){
@@ -113,6 +164,10 @@ class interpreter: ICloneable{
         return result;
     }
 
+
+
+
+
     
 
     string str_term(){
@@ -129,16 +184,15 @@ class interpreter: ICloneable{
             result=current_token.value.ToString();
             eat("RND");
         }
-        if(current_token.type=="VAR"&& context[current_token.value][0]!='>'){
-           result+=context[current_token.value].ToString();
+        if(current_token.type=="VAR"&& var_value(current_token.value)[0]!='>'){
+           result+=var_value(current_token.value).ToString();
            eat("VAR");
         }
-        if(current_token.type=="VAR"&& context[current_token.value][0]=='>'){
+        if(current_token.type=="VAR"&& var_value(current_token.value)[0]=='>'){
            result+=run_function().ToString();
         }
         return result;
     }
-    
     string str_expr(){
         string result=str_term();
         while(current_token.type!="COMA" && current_token.type!="SCOL" && current_token.type!= "RPAREN"&& current_token.type!= "LPAREN"){
@@ -150,6 +204,12 @@ class interpreter: ICloneable{
         }
         return result;
     }
+
+
+
+
+
+
 
     bool is_bool(){
         token wr=current_token;
@@ -172,7 +232,6 @@ class interpreter: ICloneable{
         lex.current_char=current_char;
         return ret;
     }
-
     bool bool_term(){
         if(current_token.type=="LPAREN" && is_bool() ){
             eat("LPAREN");
@@ -192,7 +251,6 @@ class interpreter: ICloneable{
         if(comp_type=="LET"){return a<=b;}
         return false;
     }
-
     bool bool_expr(){
         bool ret=bool_term();
         while(current_token.type!="SCOL" && current_token.type!= "RPAREN"){
@@ -211,19 +269,27 @@ class interpreter: ICloneable{
         return ret;
     }
 
+
+
+
+
+
+
     
     class function{
+        
         public interpreter interp;
         public List<string>pms;
         public string type="v";
-        public function(interpreter interp,Dictionary<string,string> cont,string obj){
+
+        public function(interpreter interp,string obj){
             this.pms=new List<string>();
             List<string>deobj=new List<string>(obj.Split('~'));
             this.type=deobj[0].Substring(1);
-            for(int i=1;i<deobj.Count-1;i++){
+            for(int i=1;i<deobj.Count-1;i++)
                 pms.Add(deobj[i]);
-            }
-            this.interp=new interpreter(interp.Client,deobj[deobj.Count-1].Substring(2),new Dictionary<string,string>(cont),interp.chat_ids);
+            
+            this.interp=(interpreter)interp.CloneC(deobj[deobj.Count-1].Substring(2));
             if(type=="i")this.interp.ret_int=true;
             this.interp.root=false;
         }
@@ -235,21 +301,12 @@ class interpreter: ICloneable{
             return this.interp.run();
         }    
     };
-
-
     string run_function(){
         string fname=current_token.value;
         eat("VAR");
         eat("LPAREN");
         
-        Dictionary<string,string>cons=new Dictionary<string, string>();
-        Dictionary<string,string>ncont=new Dictionary<string, string>(context);
-        foreach(string s in created ){
-            cons.Add(s.Substring(0),context[s].Substring(0));
-            ncont.Remove(s);
-        }
-
-        function f=new function(this,ncont,context[fname]);
+        function f=new function(this,context[fname]);
         foreach(string p in f.pms){
             string pname=p.Substring(2);
             if(p[0]=='s')
@@ -259,14 +316,18 @@ class interpreter: ICloneable{
             if(current_token.type=="COMA")eat("COMA");
         }
         eat("RPAREN"); 
-        string rett=f.run();
-        
-        context=f.interp.context;    
-        foreach(string s in created)
-            context[s]=cons[s];
-        if(root)foreach(string s in f.interp.created){context.Remove(s);}
-        return rett;
+        string ret=f.run();
+        f.interp.print_context();
+        this.context=f.interp.context;
+        print_context();
+        return ret;
     }
+
+
+
+
+
+
 
 
     void line(){
@@ -330,12 +391,12 @@ class interpreter: ICloneable{
             add_var(vname,value.ToString());
             eat("SCOL");
         }
-        if(token.type=="VAR" && context[token.value][0]!='>' ){//Integrer modification
+        if(token.type=="VAR" && var_value(token.value)[0]!='>' ){//Integrer modification
             string vname=current_token.value;
             eat("VAR");
             eat("ASG");
             int value=int_expr();
-            add_var(vname,value.ToString());
+            modify_var(vname,value.ToString());
             eat("SCOL");
         }
         if(token.type=="SLEEP"){//sleep
@@ -348,11 +409,11 @@ class interpreter: ICloneable{
         if(token.type=="ENDT"){//End turn
             eat("ENDT");
             eat("LPAREN");
-            context["G_endturn"]="1";
+            modify_var("G_endturn","1");
             eat("RPAREN");
             eat("SCOL");
         } 
-        if(token.type=="VAR" && context[token.value][0]=='>'){//Calling a void function
+        if(token.type=="VAR" && var_value(token.value)[0]=='>'){//Calling a void function
             run_function();
             eat("SCOL");
         }
@@ -366,7 +427,6 @@ class interpreter: ICloneable{
             eat("SCOL");
         }         
     }
-
     void pass(){
         int cnt=1;
         while(cnt!=0){
@@ -403,7 +463,6 @@ class interpreter: ICloneable{
                 }
                 continue;
             }
-            
             if(token.type=="WHILE"){
                 eat("WHILE");
                 eat("LPAREN");
@@ -431,8 +490,6 @@ class interpreter: ICloneable{
                 }
                 continue;
             }
-
-            
             if(token.type=="DEF"){                
                 eat("DEF");
                 string func="";
@@ -473,7 +530,6 @@ class interpreter: ICloneable{
                 }
                 continue;
             }
-
             line();
             if(to_ret!=null){
                 Console.WriteLine("RETURNING "+to_ret);
