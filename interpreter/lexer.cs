@@ -7,12 +7,15 @@ class token{
 }
 
 class lexer{
-    List<string>token_names=new List<string>(){"PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY","RKEY","SCOL","AND","OR","GT","LT","GET","LET","DIF","EQ","NOTI","IF","ELSE","WHILE","NOTIP","COMA","SLEEP","ADDP","DELP"};
-    List<string>token_string=new List<string>(){"+","-","*","/","=","(",")","{","}",";","&","|",">","<",">=","<=","!=","==","notify","if","else","while","notipic",",","sleep","add_power","del_power"};
+    List<string>token_names=new List<string>(){"PLPL","MNMN","GET","LET","DIF","EQ","PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY",
+    "RKEY","SCOL","AND","OR","GT","LT","NOTI","IF","ELSE","WHILE","NOTIP","COMA","SLEEP","ADDP","DELP","ENDT","RET","DEF","RCOR",
+    "LCOR","FOR","EXST","MOD","NOT"};
+    List<string>token_string=new List<string>(){"++","--",">=","<=","!=","==","+","-","*","/","=","(",")","{","}",";","&","|",">","<","notify",
+        "if","else","while","notipic",",","sleep","add_power","del_power","end_turn","return","def","[","]","for","exist","%","!"};
     public string text,last_token;
     public int pos;
     public char  current_char;
-    List<string>vars;
+    public List<string>vars;
     System.Random random; 
 
     public lexer(string text,List<string>vars){
@@ -32,6 +35,9 @@ class lexer{
             current_char=text[pos];
     }
     public void skip(){
+        if(same_token("/*"))
+            while(!same_token("*/"))advance();
+        
         while(current_char!='#' && (current_char==' ' || current_char=='\t' || current_char=='\n' || current_char=='\r') )
             advance();
     }
@@ -49,7 +55,10 @@ class lexer{
                 wr--;
                 pos--;
             }
-            current_char=text[pos];
+            if(pos>text.Length-1)
+                current_char='#';
+            else
+                current_char=text[pos];
         }else{ 
             last_token=s;
         }
@@ -82,6 +91,7 @@ class lexer{
             result+=current_char;
             advance();
         }
+        Console.WriteLine("lll "+result);
         advance();
         return result;
     }
@@ -99,7 +109,7 @@ class lexer{
 
     string get_var(){
         string ret="";
-        while(current_char!='#' && current_char!='=' && current_char!=' ' && current_char!='\t'  && current_char!=';' ){
+        while(current_char!='#'&&current_char!='='&&current_char!=' '&&current_char!='\t'&&current_char!=';'&& current_char!=','&& current_char!='.'&& current_char!=')'&& current_char!='('&& current_char!='='&& current_char!='{'&& current_char!='}'&& current_char!='['&& current_char!=']' ){
             ret+=current_char;
             advance();
         }
@@ -109,8 +119,9 @@ class lexer{
     public token get_next_token(){
         while(current_char!='#'){
             skip();
+            if(current_char=='#')return new token("EOF","#");
             
-            if(last_token=="int" || last_token=="str"){
+            if(last_token=="int" || last_token=="str" || last_token=="void"){
                 string vname=get_var();
                 vars.Add(vname);
                 last_token="";
@@ -135,6 +146,10 @@ class lexer{
             if(same_token("int")){
                 last_token="int";
                 return new token("INT","int");
+            }
+            if(same_token("void")){
+                last_token="void";
+                return new token("VOID","void");
             }
             if(same_token("random")){
                 return new token("RND",random.Next(50).ToString());
