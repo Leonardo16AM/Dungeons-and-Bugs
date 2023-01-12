@@ -16,10 +16,8 @@ class lexer{
     public int pos;
     public char  current_char;
     public List<string>vars;
-    System.Random random; 
 
     public lexer(string text,List<string>vars){
-        this.random = new System.Random();
         this.text=text;
         this.pos=0;
         this.current_char=text[pos];
@@ -152,7 +150,7 @@ class lexer{
                 return new token("VOID","void");
             }
             if(same_token("random")){
-                return new token("RND",random.Next(50).ToString());
+                return new token("RND","random");
             }
             if(is_varname()){
                 return new token("VAR",last_token);

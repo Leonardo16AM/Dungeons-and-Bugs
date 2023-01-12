@@ -14,6 +14,7 @@ class interpreter: ICloneable{
     string to_ret;
     public bool ret_int=false;
     public bool root =true;
+    System.Random random;
 
     public interpreter(IClient client,string code,Dictionary<string,string>context,List<int>chat_ids){
         this.Client=client;
@@ -22,6 +23,8 @@ class interpreter: ICloneable{
         this.context=new Dictionary<string, string>();
         this.inner_context=new Dictionary<string, string>();
         this.actions=new List<string>();
+        this.random = new System.Random();
+
         List<string>vars=new List<string>();
         if(context!=null){
             this.context=context;
@@ -105,7 +108,13 @@ class interpreter: ICloneable{
 
 
 
-
+    string rand(){
+        eat("RND");
+        eat("LPAREN");
+        int val=int_expr();
+        eat("RPAREN");
+        return random.Next(val).ToString();
+    }
 
     int int_factor(){
         token token = current_token;
@@ -115,8 +124,7 @@ class interpreter: ICloneable{
             return int.Parse(token.value);
         }
         if(token.type == "RND"){
-            eat("RND");
-            return int.Parse(token.value);
+            return int.Parse(rand());
         }
         if(token.type == "VAR"&& var_value(token.value)[0]!='>'){
             string vname=token.value;
@@ -186,8 +194,7 @@ class interpreter: ICloneable{
             eat("INTEGER");
         }
         if(current_token.type=="RND"){    
-            result=current_token.value.ToString();
-            eat("RND");
+            result=rand();
         }
         if(current_token.type=="VAR"&& var_value(current_token.value)[0]!='>'){
            result+=var_value(current_token.value).ToString();
