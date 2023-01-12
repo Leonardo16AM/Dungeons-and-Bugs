@@ -13,7 +13,7 @@
             "mana": 20,
             "desc": "El jugador uno (azul)",
             "img": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAHoAtwMBIgACEQEDEQH/xAAZAAEBAQEBAQAAAAAAAAAAAAABAgADBAb/xAAaEAEBAQEBAQEAAAAAAAAAAAAAARECMSES/8QAGQEBAQEBAQEAAAAAAAAAAAAAAgEAAwQG/8QAFhEBAQEAAAAAAAAAAAAAAAAAAAER/9oADAMBAAIRAxEAPwD4OQmQ4+ukfOan0yKxsORNEjLkbDkTU42KxikTU4TjYuNqWXhkXG1GNirGxcbUYF2JbFGDFMmLqLBi7BiY2udibHSxNGw5XOxlWMOFr0GQ40CRw1sMhwukianDhJolrFY2LjamRsXjSFiamQ4rGxcbU4LFMzajB+Vs2LqMFi8FjYuowVaUVAxVAlqLGXgTF13kOHGxzkctZjIcNNDYqQyGmpw4qcqwomowyLw4uDrnYLF1NjLEgspDAqiswZmRUdJqqmoUApDElmtYar1SNhjOccQWwlEZUEVDSmQxoSkBhSLVZNSbQpgNQyta2islIC1qKii1NrdBCjJtNTWIWsOmGlj3QwQhHmYsxRDDBFHEMZmIQG0WsQoZmVgWqqipXUMTWppoEgmqSyxNTV1NgnEVmrIUe8gwHlYsxRDPiokw4imrMSIoqqLGJLGwLGYFmVNibFprLE0WKqbRJNFItYoKmqTUpRzpasNN7maEI8rMCUYqiTKaVTAqjMxJE42KZlRQtNZk1FXXPqscFRabXO0XSQ6ySy4wrCoSKR0w0o9+tuieNAjzYdYMUY6qIhKIvSmEoitYMSHQzMzCsL6yo6R0vpz6anEdIVUi6QWtrVNEsOi1gyis3TJSf//Z",
-            "virtual_player":"",
+            "virtual_player":["sword","sword2"],
             "powers": [
                 {
                     "name":"sword",
@@ -35,7 +35,7 @@
             "mana": 20,
             "desc": "El jugador dos (rojo)",
             "img": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK8AAACACAMAAABKtsmkAAAAA1BMVEXjABuGu5rPAAAALUlEQVR4nO3BMQEAAADCoPVPbQlPoAAAAAAAAAAAAAAAAAAAAAAAAAAAAIC3AVgAAAGFwL/9AAAAAElFTkSuQmCC",
-            "virtual_player":"",
+            "virtual_player":["sword2","sword"],
             "powers": [
                 {
                     "name":"sword",
@@ -55,10 +55,10 @@
             "beg_code":"notify(\"Se ha iniciado el stage 1\");",
             "events" :{
                 "player1":[
-                    ""
+                    "notify(\"Some encount 1\");"
                 ],
                 "player2":[
-                    ""
+                    "notify(\"Some encount 2\");"
                 ]
             },
             "end_code":"notify(\"Se ha terminado el stage 1\");"

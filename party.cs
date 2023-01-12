@@ -21,11 +21,12 @@ class party: IAdventure {
     public int id,leader,turn=0,chosen_heroes=0,deads=0;
     public bool isStarted = false, finished =false;
     Dictionary<string,string> vars=new Dictionary<string,string>();
+    Dictionary<string,int>chosen=new Dictionary<string,int>();
     int stage=0;
     Random rnd = new Random();
 
-    //Constructor
     public party(IClient client,int id,string adv_name,int leader,string leader_name,string leader_user){
+        // Constructor
         adv=adv_name;
         file = DataAdventure.Adventures[adv_name];
         vill.c_name="Villain";
@@ -34,10 +35,7 @@ class party: IAdventure {
         members=new List<player>();
         heroSelection = new bool[utils.count_dynamic(file.heroes)];
         members.Add(new player(leader,leader_name,leader_user));
-        foreach(var h in file.heroes){
-            Console.WriteLine((string)h.hname);
-            vars.Add((string)h.name+".life","0");
-        }
+        vars.Add("G_TO","1");
         Client= client;
     }
 
@@ -47,14 +45,17 @@ class party: IAdventure {
         // Adds a member to the party
         members.Add(new player(member,name,user));
         string message=$"@{user} joined the adventure";
-        Client.notify(
-            members.map<int, player>((m)=> {return m.chat_id;}),
-            new ClientParams(message)
-        );
-        if(members.Count()==heroSelection.Length)
-            start_adventure();
+        if(member>0){
+            Client.notify(
+                members.map<int, player>((m)=> {return m.chat_id;}),
+                new ClientParams(message)
+            );
+            if(members.Count()==heroSelection.Length)
+                start_adventure();
+        }
     }
     public void chat(string message, int sender){
+        // Chat between players inside a party
         Client.notify(
           members.map<int, player>((m)=> {return m.chat_id;}),
           new ClientParams(message),
@@ -187,7 +188,7 @@ class party: IAdventure {
 
     public void choose_hero( int chat_id, int hero_id){
         // Chooses a hero for a player
-        hero_id--;
+        if(chat_id>0)hero_id--;
         if(heroSelection[hero_id]){
             Client.notify(
                 chat_id,
@@ -198,6 +199,7 @@ class party: IAdventure {
         foreach(player member in members){
             if(member.chat_id==chat_id){
                 chosen_heroes++;
+                if(chat_id>0)member.robot=false;
                 member.h_ref=file.heroes[hero_id].token;
                 member.c_name=file.heroes[hero_id].name;
                 member.h_hist=file.heroes[hero_id].desc;
@@ -206,7 +208,10 @@ class party: IAdventure {
                 member.strength=file.heroes[hero_id].strength;
                 member.agility=file.heroes[hero_id].agility;
                 member.mana=file.heroes[hero_id].mana;
-
+                foreach(var pw in file.heroes[hero_id].virtual_player){
+                    member.act_order.Add((string)pw);
+                }
+                chosen.Add((string)file.heroes[hero_id].name,1);
                 foreach(var pw in file.heroes[hero_id].powers)
                     member.powers.Add(new power((string)pw.name,(string)pw.desc,(string)pw.script));
                 
@@ -220,11 +225,12 @@ class party: IAdventure {
                 break;
             }
         }
-        if(chosen_heroes==members.Count())
+        if(chat_id>0 && chosen_heroes==members.Count())
             start_stage(true);
     }
 
     public void run_script(string script){
+        // Runs a C+- script
         interpreter interp=new interpreter(
             Client,
             script,
@@ -254,6 +260,7 @@ class party: IAdventure {
     }
 
     public void encounter(player curr){
+        // Runs a random encounter at the begining of a turn
         int enc=rnd.Next(0, utils.count_dynamic(file.story[stage].events[curr.h_ref]));
         string encount=(string)file.story[stage].events[curr.h_ref][enc];
         Thread.Sleep(300);
@@ -262,6 +269,7 @@ class party: IAdventure {
 
     
     public void do_action(int chat_id,int num){
+        // Do an action made by a player
         if(members[turn].chat_id==chat_id){
             foreach(player member in members){
                 if(member.chat_id==chat_id){
@@ -280,11 +288,11 @@ class party: IAdventure {
     }
 
     public void print_turn(){ 
+        // Print and starts a new turn
         if(!vars.ContainsKey("G_endturn"))
             vars.Add("G_endturn","0");
         else
             vars["G_endturn"]="0";
-
         if(members[turn].life>0){
             string message="Turno de: @";
             message+=members[turn].user;
@@ -301,6 +309,23 @@ class party: IAdventure {
                 );        
                 deads++;
                 end_turn();
+            }
+            if(members[turn].robot==true){
+                foreach(var v in members[turn].act_order){
+                    bool can=false;
+                    foreach(var p in members[turn].powers){
+                        if(p.name==v){
+                            Thread.Sleep(1500);
+                            run_script(p.script);
+                            Thread.Sleep(1500);
+                            if( vars["G_endturn"]!="0" )
+                                            end_turn();
+                            can=true;
+                            break;
+                        }
+                    }
+                    if(can)break;
+                }
             }
         }
         else{
@@ -326,19 +351,36 @@ class party: IAdventure {
     }
 
     public void end_turn(){
-        turn++;
-        if(turn==members.Count())
-            turn=0;
+        if(vars["G_TO"]=="1"){
+            turn++;
+            if(turn==members.Count())turn=0;
+        }else{
+            turn--;
+            if(turn==-1)turn=members.Count()-1;
+        }
         if(vill.life<=0)
             end_stage();   
         if(!finished)print_turn();
     }
 
-    public void start_stage(bool beg=false){
+    public void start_stage(bool beg=false){  
+        if(beg){
+            int wr=0;
+            int wr2=-1;
+            foreach(var h in file.heroes){
+                if(!chosen.ContainsKey((string)h.name)){
+                    add_member(wr2,"ROBOT"+Math.Abs(wr2),"ROBOT"+Math.Abs(wr2));
+                    choose_hero(wr2,wr);
+                    wr2--;
+                }
+                wr++;
+            }  
+            Console.WriteLine();
+        }
         Thread.Sleep(1000);
         vill.life=(int)file.story[stage].villain.life;
-        run_script((string)file.story[stage].beg_code);   
-        if(beg)print_turn();
+        run_script((string)file.story[stage].beg_code); 
+        if(beg)print_turn();  
     }
 
     public void end_game(){

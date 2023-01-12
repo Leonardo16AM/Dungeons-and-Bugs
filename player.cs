@@ -56,6 +56,8 @@ class player:hero{
     public int chat_id;
     public string name,user;
     public List<power>powers=new List<power>();
+    public bool robot=true;
+    public List<string>act_order=new List<string>();
     public player(int chat_id,string name,string username){
         this.chat_id=chat_id;
         this.name=name;

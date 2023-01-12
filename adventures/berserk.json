@@ -13,7 +13,7 @@
             "mana": 20,
             "desc": "Guts, el nuevo recluta extremadamente prometedor. Protegido por el líder. Posee una gran fuerza bruta y habilidad con la espada, una espada más grande que cualquier otra …",
             "img": "https://i.imgur.com/D8TIxdK.jpg",
-            "virtual_player":"",
+            "virtual_player":["team","sword","heal","bomb","punch"],
             "powers": [
                 {
                     "name":"sword",
@@ -47,7 +47,7 @@
             "mana": 40,
             "desc": "Griffith es el líder de la banda, es carismático, un gran estratega y guerrero. Daría lo que fuera por lograr su sueño, sin importar lo que se entrometa en su camino.",
             "img": "https://i.imgur.com/vLkayOk.jpg",
-            "virtual_player":"",
+            "virtual_player":["behelit","debility","sword","lead","heal"],
             "powers": [
                 {
                     "name":"sword",
@@ -75,7 +75,7 @@
             "mana": 10,
             "desc": "Casca, la única mujer de la banda, más ruda y ágil que la mayoría de los hombres al punto de llegar a ser la General de la Banda del Halcón. Su lealtad a Griffith es inimaginable.",
             "img": "https://i.imgur.com/0NOmlhY.jpg",
-            "virtual_player":"",
+            "virtual_player":["spear ","bow","sword","heal"],
             "powers":[
                 {
                     "name":"bow",
@@ -103,7 +103,7 @@
             "mana": 15,
             "desc": "Jadeau es el más confiable de todos, brinda ayuda a quien lo necesite. No solo es super ágil lanzando cuchillos, sino que también gracias al polvo de hadas que guarda en su mochila es capaz de sanar a los demás.",
             "img": "https://i.imgur.com/CCmuMoq.jpg",
-            "virtual_player":"",
+            "virtual_player":["bow","heal_friends","heal","knifes"],
             "powers": [
                 {
                     "name":"heal_friends",
@@ -187,7 +187,7 @@
                     "notify(\"Los soldados fuera del castillo se preguntan que estara pasando ahi adentro\");"
                 ],
                 "jadeau":[
-                    "notify(\"Haz encontrado una bayesta con una flecha, puedes usarla una sola vez\");add_power(\"Jadeau\",\"bow_attack\",\"Lanza una flecha al enemigo, solo podras hacer esto una sola vez\",'Villain.life=Villain.life-30;notify(\"Jaddeau le ha hecho 30 puntos de daño al enemigo con una flecha\");del_power(\"Jadeau\",\"bow_attack\");end_turn();');",
+                    "notify(\"Haz encontrado una bayesta con una flecha, puedes usarla una sola vez\");add_power(\"Jadeau\",\"bow\",\"Lanza una flecha al enemigo, solo podras hacer esto una sola vez\",'Villain.life=Villain.life-30;notify(\"Jaddeau le ha hecho 30 puntos de daño al enemigo con una flecha\");del_power(\"Jadeau\",\"bow_attack\");end_turn();');",
                     "if(Griffith.life>0){Griffith.life= Griffith.life+20;notify(\"Jadeau ha sanado a Griffith\");}",
                     "if(Guts.life>0){Guts.life=Guts.life+20;notify(\"Jadeau ha sanado a Guts\");}",
                     "notify(\"Jadeau ordena a sus hombres a retirarse, Zodd es demasiado fuerte\");"
@@ -204,7 +204,7 @@
                     "int dif=random(100);Guts.life=Guts.life-dif;notify(\"De un zarpazo Zodd le ha quitado \"+dif+\" puntos de vida a Guts\");",
                     "int dif=random(100);Villain.life=Villain.life-dif;notify(\"Las heridas de Zodd parecen sanarse!\");",
                     "notipic(\"https://imgur.com/pRO4G8Z.png\",\"La Banda del Halcon le ha disparado flechas a Zodd, pero casi no le han hecho daño\");",
-                    "notipic(\"https://imgur.com/yYLcymr.png\",\"Te has dado cuenta que la unica manera de derrotar a Zodd es juntando tu fuerzas con las de Griffith\");add_power(\"Guts\",\"team_attack\",\"Ataca simultaneamente junto a Griffith\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Guts\",\"team_attack\");del_power(\"Griffith\",\"team_attack\");');add_power(\"Griffith\",\"team_attack\",\"Ataca simultaneamente junto a Guts\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Griffith\",\"team_attack\");del_power(\"Guts\",\"team_attack\");end_turn();');"
+                    "notipic(\"https://imgur.com/yYLcymr.png\",\"Te has dado cuenta que la unica manera de derrotar a Zodd es juntando tu fuerzas con las de Griffith\");add_power(\"Guts\",\"team\",\"Ataca simultaneamente junto a Griffith\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Guts\",\"team_attack\");del_power(\"Griffith\",\"team_attack\");');add_power(\"Griffith\",\"team_attack\",\"Ataca simultaneamente junto a Guts\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Griffith\",\"team_attack\");del_power(\"Guts\",\"team_attack\");end_turn();');"
                 ],
                 "casca":[
                     "notify(\"La sangre gotea de las manos de Zodd\");",

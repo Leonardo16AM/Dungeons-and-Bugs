@@ -439,6 +439,15 @@ class interpreter: ICloneable{
             modify_var("G_endturn","1");
             eat("RPAREN");
         } 
+        if(token.type=="CTO"){//End turn
+            eat("CTO");
+            eat("LPAREN");
+            if(var_value("G_TO")=="1")
+                modify_var("G_TO","-1");
+            else
+                modify_var("G_TO","1");
+            eat("RPAREN");
+        } 
         if(token.type=="VAR" && var_value(token.value)[0]=='>'){//Calling a void function
             run_function();
         }
