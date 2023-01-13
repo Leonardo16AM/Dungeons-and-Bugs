@@ -311,8 +311,9 @@ class party: IAdventure {
                 end_turn();
             }
             if(members[turn].robot==true){
+                
+                bool can=false;
                 foreach(var v in members[turn].act_order){
-                    bool can=false;
                     foreach(var p in members[turn].powers){
                         if(p.name==v){
                             Thread.Sleep(1500);
@@ -326,6 +327,7 @@ class party: IAdventure {
                     }
                     if(can)break;
                 }
+                if(!can)end_turn();
             }
         }
         else{

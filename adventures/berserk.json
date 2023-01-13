@@ -2,7 +2,7 @@
     "name":"Berserk, la Edad Dorada",
     "token": "berserk",
     "mode": "campaign",
-    "start_code":"notify(\"La Banda del Halcón, es la banda de mercenarios más temida de todo Midland y esta es su historia. \");sleep(4000);notify(\"Todo comienza en una época que llamaremos la Edad Dorada, el caos cae sobre el mundo en forma de una gran guerra, demonios, humanos, hambre, falsos profetas y crueles dictadores. \");sleep(4000);notify(\"En medio de ello la Banda del Halcón ha ganado renombre librando batallas que los caballeros del reino de Midland consideraban perdidas, siendo así cuna de gloriosos héroes. \");sleep(4000);",
+    "start_code":"notipic(\"https://i.imgur.com/NzjIcgw.jpg\",\"La Banda del Halcón, es la banda de mercenarios más temida de todo Midland y esta es su historia. \");sleep(4000);notify(\"Todo comienza en una época que llamaremos la Edad Dorada, el caos cae sobre el mundo en forma de una gran guerra, demonios, humanos, hambre, falsos profetas y crueles dictadores. \");sleep(4000);notify(\"En medio de ello la Banda del Halcón ha ganado renombre librando batallas que los caballeros del reino de Midland consideraban perdidas, siendo así cuna de gloriosos héroes. \");sleep(4000);",
     "heroes":[
         {
             "token": "guts",
@@ -229,7 +229,29 @@
         },
         {
             "villain": {"life":100,"strength":200,"agility":30,"mana":50},
-            "beg_code":"notify(\"Después de semanas de recuperación Griffith se reúne con el rey, la banda ha escalado por sus victorias pero aun no es tiempo de celebrar. Nuestros héroes han sido enviados a la batalla interminable de los 100 años. Un puesto de avanzada en un castillo que durante un siglo ha sido vital para nuestros enemigos y nunca ha podido ser tomado. Aunque el rey no crea que podéis hacerlo, debéis acabar con el enemigo, nuestra  confianza yace en nuestro líder, y el confía a nosotros su vida. DESTROCEMOS A ESOS MALDITOS!!!\");",
+            "beg_code":"notify(\"Después de semanas de recuperación Griffith se reúne con el rey, la banda ha escalado por sus victorias pero aun no es tiempo de celebrar. Nuestros héroes han sido enviados a la batalla interminable de los 100 años. Un puesto de avanzada en un castillo que durante un siglo ha sido vital para nuestros enemigos y nunca ha podido ser tomado. Aunque el rey no crea que podéis hacerlo, debéis acabar con el enemigo, nuestra  confianza yace en nuestro líder, y el confía a nosotros su vida.\");notify(\"Guts esta a cargo de más de 500 hombres, tiene como misión estar en la vanguardia y hacer frente a casi 2000 soldados enemigos.  \");sleep(2000);notify(\"Casca dirige a 200 hombres que entrarán a la fortaleza capturando o destrozando a cualquier amenaza\");sleep(2000);notify(\"Judeau esta al frente de la caballería constituyendo una fuerza imprescindible para la victoria \");sleep(2000);notify(\"Griffith ha reservado para su escuadrón la parte más importante del plan, tiene a favor el factor sorpresa y la posición que decidirá el curso de esta pelea. \");sleep(2000);Guts.strength=150;",
+            "events" :{
+                "guts":[
+                    "",
+                    ""
+                ],
+                "casca":[
+                    "",
+                    ""],
+                "griffith":[
+                    "",
+                    ""
+                ],
+                "jadeau":[
+                    "",
+                    ""
+                ]
+            },        
+            "end_code":"notipic(\"https://i.imgur.com/Y7HJZh3.png\",\"¡¡¡LO HEMOS LOGRADO, EL CASTILLO ES NUESTRO!!!. Pero hay un problema, el general a cargo de la fortaleza no está entre los prisioneros. Griffith toma un corcel sin demora y va en su búsqueda. \");sleep(3000);notipic(\"https://i.imgur.com/lXLqwrB.png\",\"El terreno desértico permite llegar hasta el enemigo quien apenas podía mantenerse en pie. Ese viejo decrépito y débil,  esa sombra del comandante legendario que había protegido el castillo por casi un centenar de años moriría en las manos de Griffith quien victorioso regresaría ante sus soldados para reclamar su triunfo ante Midland y su rey. \");sleep(3000);notipic(\"https://i.imgur.com/QmojYzp.png\",\"Colores, música, bailarines y  flores los esperaban al llegar a la ciudad, un gran desfile en honor de esos bandidos que se había ganado su lugar junto a los caballeros del reino. Pero eso era solo el inicio de las numerosas celebraciones que estaban por venir y de ellas la más esperada, el baile el cual estaría bendecido con la presencia del rey. \");sleep(3000);notipic(\"https://i.imgur.com/YlZWcWJ.png\",\"Esta es definitivamente una noche de regocijo para nuestros héroes, loa cuáles comparten una merecida noche de fraternidad y diversión, aunque Griffith tiene otro planes. Mientras nuestros generales celebran la victoria el comandante se codea con la realeza, dirigiendo su interés no solo hacia el rey sino hacia su joven princesa. Esto atrae las miradas de la aristocracia quienes no se toman a la ligera su cercanía con la familia. \");sleep(5000);"
+        },
+        {
+            "villain": {"life":100,"strength":200,"agility":30,"mana":50},
+            "beg_code":"notify(\"Griffith ha sido capturado! \");sleep(2000);notify(\"Llega el sol y con él los soldados del rey dan a todos nuestros hombres ordenas urgentes de nuestro comandante:\");sleep(2000);notify(\"Hemos ganado esta batalla pero nuestro viaje apenas comienza, es momento de seguir entrenando. Tomen solo la utileria y diríjanse a campo \");sleep(2000);notify(\"Toda la Banda del Halcón reunida por primera vez desde la gran victoria,  armada con espadas de madera espera la aparición de Griffith para comenzar el entrenamiento.\");sleep(4000);notify(\"QUE ES ESE RUIDO??? \");sleep(2000);notipic(\"https://i.imgur.com/KCg2Fxa.png\",\"Parece el sonido de 1000 jinetes cabalgando hacia nosotros, son los caballeros del rey. \");sleep(2000);notify(\"POR QUÉ ATACAN A NUESTROS HOMBRES?, QUE ESTÁ PASANDO? DONDE ESTA GRIFFITH? No era más que una emboscada. \");sleep(2000);Griffith.life=0;del_power(\"Jadeau\",\"knifes\");del_power(\"Casca\",\"bow\");del_power(\"Casca\",\"sword\");del_power(\"Guts\",\"sword\");del_power(\"Guts\",\"bomb\");",
             "events" :{
                 "guts":[
                     "",
@@ -248,6 +270,6 @@
                 ]
             },        
             "end_code":"notify(\"Fua ganaron, que cracks jasjasjkda, luego sigo haciendo la historia.\");sleep(1000);"
-        }   
+        }      
     ]
 }
