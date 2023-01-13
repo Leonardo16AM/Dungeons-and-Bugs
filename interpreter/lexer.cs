@@ -9,17 +9,15 @@ class token{
 class lexer{
     List<string>token_names=new List<string>(){"PLPL","MNMN","GET","LET","DIF","EQ","PLUS","MINUS","MUL","DIV","ASG","LPAREN","RPAREN","LKEY",
     "RKEY","SCOL","AND","OR","GT","LT","NOTI","IF","ELSE","WHILE","NOTIP","COMA","SLEEP","ADDP","DELP","ENDT","RET","DEF","RCOR",
-    "LCOR","FOR","EXST","MOD","NOT"};
+    "LCOR","FOR","EXST","MOD","NOT","CTO"};
     List<string>token_string=new List<string>(){"++","--",">=","<=","!=","==","+","-","*","/","=","(",")","{","}",";","&","|",">","<","notify",
-        "if","else","while","notipic",",","sleep","add_power","del_power","end_turn","return","def","[","]","for","exist","%","!"};
+        "if","else","while","notipic",",","sleep","add_power","del_power","end_turn","return","def","[","]","for","exist","%","!","change_turn_order"};
     public string text,last_token;
     public int pos;
     public char  current_char;
     public List<string>vars;
-    System.Random random; 
 
     public lexer(string text,List<string>vars){
-        this.random = new System.Random();
         this.text=text;
         this.pos=0;
         this.current_char=text[pos];
@@ -152,7 +150,7 @@ class lexer{
                 return new token("VOID","void");
             }
             if(same_token("random")){
-                return new token("RND",random.Next(50).ToString());
+                return new token("RND","random");
             }
             if(is_varname()){
                 return new token("VAR",last_token);
