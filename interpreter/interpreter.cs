@@ -30,6 +30,7 @@ class interpreter: ICloneable{
             this.context=context;
             vars=new List<string>(context.Keys);
         }
+        if(code=="")code=";";
         lex=new lexer(code,vars);
         this.current_token=lex.get_next_token();
     }
@@ -49,6 +50,8 @@ class interpreter: ICloneable{
 
 
     public void add_var(string key,string value){
+        lex.Addvar(key);
+        Console.WriteLine("ADDING VAR: "+key+" "+value);
         if(root){
             if(context.ContainsKey(key))
                 context[key]=value;
@@ -99,7 +102,6 @@ class interpreter: ICloneable{
 
 
     void eat(string token_type){
-        Console.WriteLine(">>> "+current_token.type+" "+current_token.value );
         if(current_token.type==token_type)
             current_token=lex.get_next_token();
         else
@@ -342,9 +344,7 @@ class interpreter: ICloneable{
         }
         eat("RPAREN"); 
         string ret=f.run();
-        f.interp.print_context();
         this.context=f.interp.context;
-        print_context();
         return ret;
     }
 
@@ -406,6 +406,7 @@ class interpreter: ICloneable{
         if(token.type=="INT"){//Integer declaration
             eat("INT");
             string vname=current_token.value;
+            Console.WriteLine(vname+" lllllllllllll ");
             eat("VAR");
             eat("ASG");
             int value=int_expr();
@@ -602,6 +603,7 @@ class interpreter: ICloneable{
     }
 
     public string run(){
+        Console.WriteLine("RUNNING :"+ code);
         return block();
     }
 
