@@ -2,7 +2,7 @@
     "name":"Berserk, la Edad Dorada",
     "token": "berserk",
     "mode": "campaign",
-    "start_code":"notify(\"La Banda del Halcón, es la banda de mercenarios más temida de todo Midland y esta es su historia. \");sleep(4000);notify(\"Todo comienza en una época que llamaremos la Edad Dorada, el caos cae sobre el mundo en forma de una gran guerra, demonios, humanos, hambre, falsos profetas y crueles dictadores. \");sleep(4000);notify(\"En medio de ello la Banda del Halcón ha ganado renombre librando batallas que los caballeros del reino de Midland consideraban perdidas, siendo así cuna de gloriosos héroes. \");sleep(4000);",
+    "start_code":"notipic(\"https://i.imgur.com/NzjIcgw.jpg\",\"La Banda del Halcón, es la banda de mercenarios más temida de todo Midland y esta es su historia. \");sleep(4000);notify(\"Todo comienza en una época que llamaremos la Edad Dorada, el caos cae sobre el mundo en forma de una gran guerra, demonios, humanos, hambre, falsos profetas y crueles dictadores. \");sleep(4000);notify(\"En medio de ello la Banda del Halcón ha ganado renombre librando batallas que los caballeros del reino de Midland consideraban perdidas, siendo así cuna de gloriosos héroes. \");sleep(4000);",
     "heroes":[
         {
             "token": "guts",
@@ -13,7 +13,7 @@
             "mana": 20,
             "desc": "Guts, el nuevo recluta extremadamente prometedor. Protegido por el líder. Posee una gran fuerza bruta y habilidad con la espada, una espada más grande que cualquier otra …",
             "img": "https://i.imgur.com/D8TIxdK.jpg",
-            "virtual_player":["team","sword","heal","bomb","punch"],
+            "virtual_player":["run","team","sword","heal","knife","bomb","punch"],
             "powers": [
                 {
                     "name":"sword",
@@ -75,7 +75,7 @@
             "mana": 10,
             "desc": "Casca, la única mujer de la banda, más ruda y ágil que la mayoría de los hombres al punto de llegar a ser la General de la Banda del Halcón. Su lealtad a Griffith es inimaginable.",
             "img": "https://i.imgur.com/0NOmlhY.jpg",
-            "virtual_player":["spear ","bow","sword","heal"],
+            "virtual_player":["run","spear ","bow","sword","heal"],
             "powers":[
                 {
                     "name":"bow",
@@ -103,7 +103,7 @@
             "mana": 15,
             "desc": "Jadeau es el más confiable de todos, brinda ayuda a quien lo necesite. No solo es super ágil lanzando cuchillos, sino que también gracias al polvo de hadas que guarda en su mochila es capaz de sanar a los demás.",
             "img": "https://i.imgur.com/CCmuMoq.jpg",
-            "virtual_player":["bow","heal_friends","heal","knifes"],
+            "virtual_player":["run","bow","heal_friends","heal","knifes"],
             "powers": [
                 {
                     "name":"heal_friends",
@@ -137,14 +137,14 @@
                     "Villain.life=Villain.life+30;notify(\"Un refuerzo de 300 de hombres se han unido al ejercito ejercito enemigo\");"
                 ],
                 "casca":[
-                    "notify(\"Haz encontrado una lanza, puedes lanzarla una sola vez\");add_power(\"Casca\",\"spear\",\"Tira la lanza al enemigo, solo podras hacer esto una vez\",'Villain.life=Villain.life-30;notify(\"Casca le ha hecho 30 puntos de daño al enemigo con una lanza\");del_power(\"Casca\",\"spear\");');",
+                    "notify(\"Haz encontrado una lanza, puedes lanzarla una sola vez\");add_power(\"Casca\",\"spear\",\"Tira la lanza al enemigo, solo podras hacer esto una vez\",'end_turn();Villain.life=Villain.life-30;notify(\"Casca le ha hecho 30 puntos de daño al enemigo con una lanza\");del_power(\"Casca\",\"spear\");');",
                     "int dif=random(100);Casca.life=Casca.life-dif;notify(\"Tres enemigos han rodeado a Casca, le han quitdo \"+dif+\" puntos de vida, pero aun asi ella ha logrado sobrevivir\");",
                     "int dif=random(100);Casca.life=Casca.life+dif;notify(\"Casca ha encontrado un botiquin, lo ha usado y ha ganado\"+dif+\" puntos de vida\");",
                     "notify(\"Casca se ha infiltrado junto a su batallón en el ala norte del castillo\");",
                     "notify(\"Los enemigos observan con asombro la agilidad de Casca\");"
                 ],
                 "griffith":[
-                    "notify(\"Haz encontrado una debilidad en las filas enemigas, puedes aprovecharla\");add_power(\"Griffith\",\"debility\",\"Aprovecha el punto debil del enemigo\",'Villain.life=Villain.life-40;notify(\"Griffith ha aprovechado una brecha entre las lineas enemigas, le ha quitado 40 puntos al ejercito enemigo\");del_power(\"Casca\",\"debility\");');",
+                    "notify(\"Haz encontrado una debilidad en las filas enemigas, puedes aprovecharla\");add_power(\"Griffith\",\"debility\",\"Aprovecha el punto debil del enemigo\",'end_turn();Villain.life=Villain.life-40;notify(\"Griffith ha aprovechado una brecha entre las lineas enemigas, le ha quitado 40 puntos al ejercito enemigo\");del_power(\"Casca\",\"debility\");');",
                     "int dif=random(100);Griffith.life= Griffith.life-dif;notify(\"El ejercito enemigo ha lanzado flechas al cielo quitándole \"+dif+\" puntos de vida a Griffith\");",
                     "int dif=random(100); Griffith.life= Griffith.life-dif;notify(\"Un lanzero enemigo ha golpeado a Griffith, le ha quitado \"+dif+\" puntos de vida\");",
                     "int dif=random(100); Villain.life= Villain.life-dif;notify(\"Griffith ha cabalgado junto a la segunda división contra las líneas enemigas \");",
@@ -187,7 +187,7 @@
                     "notify(\"Los soldados fuera del castillo se preguntan que estara pasando ahi adentro\");"
                 ],
                 "jadeau":[
-                    "notify(\"Haz encontrado una bayesta con una flecha, puedes usarla una sola vez\");add_power(\"Jadeau\",\"bow\",\"Lanza una flecha al enemigo, solo podras hacer esto una sola vez\",'Villain.life=Villain.life-30;notify(\"Jaddeau le ha hecho 30 puntos de daño al enemigo con una flecha\");del_power(\"Jadeau\",\"bow_attack\");end_turn();');",
+                    "notify(\"Haz encontrado una bayesta con una flecha, puedes usarla una sola vez\");add_power(\"Jadeau\",\"bow\",\"Lanza una flecha al enemigo, solo podras hacer esto una sola vez\",'end_turn();Villain.life=Villain.life-50;notify(\"Jaddeau le ha hecho 30 puntos de daño al enemigo con una flecha\");del_power(\"Jadeau\",\"bow\");end_turn();');",
                     "if(Griffith.life>0){Griffith.life= Griffith.life+20;notify(\"Jadeau ha sanado a Griffith\");}",
                     "if(Guts.life>0){Guts.life=Guts.life+20;notify(\"Jadeau ha sanado a Guts\");}",
                     "notify(\"Jadeau ordena a sus hombres a retirarse, Zodd es demasiado fuerte\");"
@@ -204,7 +204,7 @@
                     "int dif=random(100);Guts.life=Guts.life-dif;notify(\"De un zarpazo Zodd le ha quitado \"+dif+\" puntos de vida a Guts\");",
                     "int dif=random(100);Villain.life=Villain.life-dif;notify(\"Las heridas de Zodd parecen sanarse!\");",
                     "notipic(\"https://imgur.com/pRO4G8Z.png\",\"La Banda del Halcon le ha disparado flechas a Zodd, pero casi no le han hecho daño\");",
-                    "notipic(\"https://imgur.com/yYLcymr.png\",\"Te has dado cuenta que la unica manera de derrotar a Zodd es juntando tu fuerzas con las de Griffith\");add_power(\"Guts\",\"team\",\"Ataca simultaneamente junto a Griffith\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Guts\",\"team_attack\");del_power(\"Griffith\",\"team_attack\");');add_power(\"Griffith\",\"team_attack\",\"Ataca simultaneamente junto a Guts\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Griffith\",\"team_attack\");del_power(\"Guts\",\"team_attack\");end_turn();');"
+                    "notipic(\"https://imgur.com/yYLcymr.png\",\"Te has dado cuenta que la unica manera de derrotar a Zodd es juntando tu fuerzas con las de Griffith\");add_power(\"Guts\",\"team\",\"Ataca simultaneamente junto a Griffith\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Guts\",\"team\");del_power(\"Griffith\",\"team\");end_turn();');add_power(\"Griffith\",\"team\",\"Ataca simultaneamente junto a Guts\",'Villain.life=Villain.life-75;notipic(\"https://i.imgur.com/tfMrFtr.png\",\"Guts y Griffith han atacado simultaneamente a Zodd, le  han quitado 75 puntos!\");del_power(\"Griffith\",\"team\");del_power(\"Guts\",\"team\");end_turn();');"
                 ],
                 "casca":[
                     "notify(\"La sangre gotea de las manos de Zodd\");",
@@ -225,11 +225,69 @@
                     "notify(\"Los hombres sudaan del terror\");"
                 ]
             },        
-            "end_code":"int Griffith.behelit=1;sleep(2000);notipic(\"https://imgur.com/VsU2OCJ.png\",\"Zodd ha estado a punto  de matar a Griffith y a Guts, ambos se encuentran gravemente heridos, pero de pronto, ha observado el raro amuleto que siempre lleva Griffith, y ha gritado ”No puede ser! Conque así debe ser!” Ha mirado a Guts y le ha dicho: “Si de verdad te consideras su amigo, prepárate para algo peor que la muerte el día que todos sus sueños se derrumben\");sleep(2000);notipic(\"https://imgur.com/SQlcxw7.png\",\"Atravesando el techo ha salido volando perdiéndose entre las nubes.\");sleep(2000);"
+            "end_code":"del_power(\"Griffith\",\"team\");del_power(\"Guts\",\"team\");int Griffith.behelit=1;sleep(2000);notipic(\"https://imgur.com/VsU2OCJ.png\",\"Zodd ha estado a punto  de matar a Griffith y a Guts, ambos se encuentran gravemente heridos, pero de pronto, ha observado el raro amuleto que siempre lleva Griffith, y ha gritado ”No puede ser! Conque así debe ser!” Ha mirado a Guts y le ha dicho: “Si de verdad te consideras su amigo, prepárate para algo peor que la muerte el día que todos sus sueños se derrumben\");sleep(2000);notipic(\"https://imgur.com/SQlcxw7.png\",\"Atravesando el techo ha salido volando perdiéndose entre las nubes.\");sleep(2000);"
         },
         {
             "villain": {"life":100,"strength":200,"agility":30,"mana":50},
-            "beg_code":"notify(\"Después de semanas de recuperación Griffith se reúne con el rey, la banda ha escalado por sus victorias pero aun no es tiempo de celebrar. Nuestros héroes han sido enviados a la batalla interminable de los 100 años. Un puesto de avanzada en un castillo que durante un siglo ha sido vital para nuestros enemigos y nunca ha podido ser tomado. Aunque el rey no crea que podéis hacerlo, debéis acabar con el enemigo, nuestra  confianza yace en nuestro líder, y el confía a nosotros su vida. DESTROCEMOS A ESOS MALDITOS!!!\");",
+            "beg_code":"notify(\"Después de semanas de recuperación Griffith se reúne con el rey, la banda ha escalado por sus victorias pero aun no es tiempo de celebrar. Nuestros héroes han sido enviados a la batalla interminable de los 100 años. Un puesto de avanzada en un castillo que durante un siglo ha sido vital para nuestros enemigos y nunca ha podido ser tomado. Aunque el rey no crea que podéis hacerlo, debéis acabar con el enemigo, nuestra  confianza yace en nuestro líder, y el confía a nosotros su vida.\");notify(\"Guts esta a cargo de más de 500 hombres, tiene como misión estar en la vanguardia y hacer frente a casi 2000 soldados enemigos.  \");sleep(2000);notify(\"Casca dirige a 200 hombres que entrarán a la fortaleza capturando o destrozando a cualquier amenaza\");sleep(2000);notify(\"Judeau esta al frente de la caballería constituyendo una fuerza imprescindible para la victoria \");sleep(2000);notify(\"Griffith ha reservado para su escuadrón la parte más importante del plan, tiene a favor el factor sorpresa y la posición que decidirá el curso de esta pelea. \");sleep(2000);Guts.strength=150;",
+            "events" :{
+                "guts":[
+                    "int dif=random(100);Guts.life=Guts.life-dif;notify(\"El ejercito enemigo ha lanzado flechas al cielo quitándole \"+dif+\" puntos de vida a Guts\");",
+                    "int dif=random(100);Guts.life=Guts.life-dif;notify(\"Un escudero enemigo ha acuchillado a Guts, le ha quitado \"+dif+\" puntos de vida\");",
+                    "int dif=random(100);Guts.life=Guts.life+dif;notify(\"Uno de los sanadores de la banda ha vendado las heridas de guts, ganando asi \"+dif+\" puntos de vida\");",
+                    "notify(\"Guts se ha lanzado el solo contra la caballería enemiga\");",
+                    "notify(\"Un grupo de hombres rodean a Guts\");",
+                    "Villain.life=Villain.life+30;notify(\"Un refuerzo de 300 de hombres se han unido al ejercito ejercito enemigo\");"
+                ],
+                "casca":[
+                    "notify(\"Haz encontrado una lanza, puedes lanzarla una sola vez\");add_power(\"Casca\",\"spear\",\"Tira la lanza al enemigo, solo podras hacer esto una vez\",'end_turn();Villain.life=Villain.life-30;notify(\"Casca le ha hecho 30 puntos de daño al enemigo con una lanza\");del_power(\"Casca\",\"spear\");');",
+                    "int dif=random(100);Casca.life=Casca.life-dif;notify(\"Tres enemigos han rodeado a Casca, le han quitdo \"+dif+\" puntos de vida, pero aun asi ella ha logrado sobrevivir\");",
+                    "int dif=random(100);Casca.life=Casca.life+dif;notify(\"Casca ha encontrado un botiquin, lo ha usado y ha ganado\"+dif+\" puntos de vida\");",
+                    "notify(\"Casca se ha infiltrado junto a su batallón en el ala norte del castillo\");",
+                    "notify(\"Los enemigos observan con asombro la agilidad de Casca\");"
+                ],
+                "griffith":[
+                    "notify(\"Haz encontrado una debilidad en las filas enemigas, puedes aprovecharla\");add_power(\"Griffith\",\"debility\",\"Aprovecha el punto debil del enemigo\",'end_turn();Villain.life=Villain.life-40;notify(\"Griffith ha aprovechado una brecha entre las lineas enemigas, le ha quitado 40 puntos al ejercito enemigo\");del_power(\"Casca\",\"debility\");');",
+                    "int dif=random(100);Griffith.life= Griffith.life-dif;notify(\"El ejercito enemigo ha lanzado flechas al cielo quitándole \"+dif+\" puntos de vida a Griffith\");",
+                    "int dif=random(100); Griffith.life= Griffith.life-dif;notify(\"Un lanzero enemigo ha golpeado a Griffith, le ha quitado \"+dif+\" puntos de vida\");",
+                    "int dif=random(100); Villain.life= Villain.life-dif;notify(\"Griffith ha cabalgado junto a la segunda división contra las líneas enemigas \");",
+                    "notify(\"Al parecer el curso de la batalla va según lo planeado\");",
+                    "notify(\"Desde una colina el Rey observa la maravillosa estrategia de los halcones\");"
+                ],
+                "jadeau":[
+                    "int dif=random(100);Jadeau.life=Jadeau.life-dif;notify(\"Un soldado mas fuerte ha golpeado a Jadueau, ha perdido \"+dif+\" puntos de vida, pero aun asi ella ha logrado sobrevivir\");",
+                    "Casca.life=Casca.life+20;notify(\"Jadeau ha sanado a Casca\");",
+                    "Griffith.life= Griffith.life+20;notify(\"Jadeau ha sanado a Griffith\");",
+                    "Guts.life=Guts.life+20;notify(\"Jadeau ha sanado a Guts\");",
+                    "notify(\"Jadeau se ha infiltrado junto a Casca en el castillo\");"
+                ]
+            },        
+            "end_code":"notipic(\"https://i.imgur.com/Y7HJZh3.png\",\"¡¡¡LO HEMOS LOGRADO, EL CASTILLO ES NUESTRO!!!. Pero hay un problema, el general a cargo de la fortaleza no está entre los prisioneros. Griffith toma un corcel sin demora y va en su búsqueda. \");sleep(3000);notipic(\"https://i.imgur.com/lXLqwrB.png\",\"El terreno desértico permite llegar hasta el enemigo quien apenas podía mantenerse en pie. Ese viejo decrépito y débil,  esa sombra del comandante legendario que había protegido el castillo por casi un centenar de años moriría en las manos de Griffith quien victorioso regresaría ante sus soldados para reclamar su triunfo ante Midland y su rey. \");sleep(3000);notipic(\"https://i.imgur.com/QmojYzp.png\",\"Colores, música, bailarines y  flores los esperaban al llegar a la ciudad, un gran desfile en honor de esos bandidos que se había ganado su lugar junto a los caballeros del reino. Pero eso era solo el inicio de las numerosas celebraciones que estaban por venir y de ellas la más esperada, el baile el cual estaría bendecido con la presencia del rey. \");sleep(3000);notipic(\"https://i.imgur.com/YlZWcWJ.png\",\"Esta es definitivamente una noche de regocijo para nuestros héroes, loa cuáles comparten una merecida noche de fraternidad y diversión, aunque Griffith tiene otro planes. Mientras nuestros generales celebran la victoria el comandante se codea con la realeza, dirigiendo su interés no solo hacia el rey sino hacia su joven princesa. Esto atrae las miradas de la aristocracia quienes no se toman a la ligera su cercanía con la familia. \");sleep(5000);"
+        },
+        {
+            "villain": {"life":300,"strength":200,"agility":30,"mana":50},
+            "beg_code":"add_power(\"Casca\",\"run\",\"🐎Cabalga para salir de la emboscada!\",'end_turn();Villain.life=Villain.life-100;del_power(\"Casca\",\"run\");');add_power(\"Guts\",\"run\",\"🐎Cabalga para salir de la emboscada y vivir un dia mas para luchar!\",'end_turn();Villain.life=Villain.life-100;del_power(\"Guts\",\"run\");');add_power(\"Jadeau\",\"run\",\"🐎Cabalga para salir de la emboscada, debes saber que le ha pasado a Griffith!\",'end_turn();Villain.life=Villain.life-100;del_power(\"Jadeau\",\"run\");');notify(\"Griffith ha sido capturado! \");sleep(2000);notify(\"Llega el sol y con él los soldados del rey dan a todos nuestros hombres ordenas urgentes de nuestro comandante:\");sleep(2000);notify(\"Hemos ganado esta batalla pero nuestro viaje apenas comienza, es momento de seguir entrenando. Tomen solo la utileria y diríjanse a campo \");sleep(2000);notify(\"Toda la Banda del Halcón reunida por primera vez desde la gran victoria,  armada con espadas de madera espera la aparición de Griffith para comenzar el entrenamiento.\");sleep(4000);notify(\"QUE ES ESE RUIDO??? \");sleep(2000);notipic(\"https://i.imgur.com/KCg2Fxa.png\",\"Parece el sonido de 1000 jinetes cabalgando hacia nosotros, son los caballeros del rey. \");sleep(2000);notify(\"POR QUÉ ATACAN A NUESTROS HOMBRES?, QUE ESTÁ PASANDO? DONDE ESTA GRIFFITH? No era más que una emboscada. \");sleep(2000);Griffith.life=0;del_power(\"Jadeau\",\"knifes\");del_power(\"Casca\",\"bow\");del_power(\"Casca\",\"sword\");del_power(\"Guts\",\"sword\");del_power(\"Guts\",\"bomb\");",
+            "events" :{
+                "guts":[
+                    "notify(\"Todo parece ser una trampa, pero por que?\");",
+                    "notify(\"Muchos soldados han muerto\");"
+                ],
+                "casca":[
+                    "notify(\"Casca es la segundo al mando, en la ausencia de Griffith ha tomado el control para salvar a la banda\");"
+                ],
+                "griffith":[
+                    ""
+                ],
+                "jadeau":[
+                    "notify(\"Algo malo esta ocurriendo\");",
+                    "notify(\"Los soldados enemigos nos tienen rodeados!\");"
+                ]
+            },        
+            "end_code":"add_power(\"Guts\",\"sword\",\"⚔️ Ataca con la espada al enemigo, si tu fortaleza es mayor que la suya le quitas la diferencia entre su fortaleza y la tuya.\",'if(Villain.strength<Guts.strength){int dif=Guts.strength-Villain.strength;Villain.life=Villain.life-dif;notify(\"⚔️ Guts ha atacado con su espada matando a varios hombre y le ha hecho \"+dif+\" puntos de daño al ejercito enemigo\");}else{notify(\"⚔️ Guts ha atacado con su espada pero ha fallado\");}end_turn();');add_power(\"Guts\",\"bomb\",\"💣 Lanzale una bomba, el daño dependerá de que tan cerca caiga la bomba de algun enemigo\",'int dif=random(100);if(dif<50){notify(\"💣 Guts ha tirado una bomba pero ha caido lejos, le ha hecho solo \"+dif+\" puntos de daño al enemigo\");}else{notify(\"💣 Guts ha tirado una bomba y ha caido cerca de algunos soldados, le ha hecho \"+dif+\" puntos de daño al ejercito\");}end_turn();');add_power(\"Guts\",\"knife\",\"🗡️Lánzale cuchillos al enemigo tal y como te enseño Jadeau\",'Villain.life=Villain.life-30;notify(\"🗡️ Guts ha  tirado sus cuchillos tirandole 30 puntos al enemigo\");end_turn();');add_power(\"Jadeau\",\"knife\",\"🗡️Lánzale cuchillos a los enemigos y hazle 40 puntos de daño\",'Villain.life=Villain.life-30;notify(\"🗡️ Jadeau le ha  tirado sus cuchillos tirandole 30 puntos al enemigo\");end_turn();');add_power(\"Casca\",\"sword\",\"⚔️ Ataca con tu espada al enemigo, si eres mas agil que el, lo heriras\",'if(Villain.agility<Casca.agility){int dif=random(100);Villain.life=Villain.life-(dif);notify(\"⚔️ Casca ha atacado con su espada y le ha quitado \"+dif+\" puntos de vida.\");}else{notify(\"⚔️ Casca ha intentado atacar con su espada, pero el enemigo es demasiado agil.\");}end_turn();');add_power(\"Casca\",\"bow\",\"🏹 Ataca con flechas al enemigo, le quitarás la cantidad de puntos de fortaleza que tenga dividido entre 5\",'int dif=Villain.agility/5;Villain.life=Villain.life-dif;if(dif>0){notify(\"🏹 Casca le ha disparado flechas, algunas le han dado y le han quitado \"+dif+\" puntos de vida.\");}else{notify(\"🏹 Las flechas de Casca no le han hecho daño!\");}end_turn();');notify(\"Nuestros hermanos han caído a manos de los que decían ser nuestros aliados, solo unos pocos logran escapar. No son nada más que un vestigio de la Banda del Halcón. \");sleep(3000);"
+        },
+        {
+            "villain": {"life":100,"strength":200,"agility":30,"mana":50},
+            "beg_code":"notify(\"Han pasado 3 meses, y los pocos sobrevivientes de la trampa tendida hacia nuestros hermanos han recuperado fuerzas. Ha llegado información acerca del paradero del comandante y asi después de mucho tiempo el resto de  hombres encabezados por Guts deciden hacer lo impesable. Entrar a una ciudad repleta de caballeros enemigos para infiltrarse en el su torre más oscura. Con la esperanza de que siga vivo. ES HORA DE RESCATAR A GRIFFITH!!!! \");sleep(4000);notipic(\"https://i.imgur.com/1QWDRPw.png\",\"Es una suerte que los contrabandistas nos hayan vendido la posición de su entrada a los túneles que rodean la ciudad por las pocas monedas que nos quedaban. El reino parece desierto,  dándonos la posibilidad de llegar al sitio donde está encarcelado. \");sleep(4000);notipic(\"https://i.imgur.com/Gjt4LgE.png\",\"Que es este lugar?. Es una torre subterránea enorme, parece un portal al infierno, la insoportable temperatura y olor a carne podrida lo hacen así. Son varios kilómetros hasta el fondo. \");sleep(4000);notipic(\"https://i.imgur.com/n8Erad0.png\",\"Al fin una luz viene de una de las celdas. ES GRIFFITH !!! O eso parece, solo se observa a un hombre extraño, lleva casi toda la cara tapada pero esos ojos son indistinguibles. A pesar de vernos no hace un sonido, carece de ka mayoría de su piel y no puede ponerse en pie. QUE LE HA PASADO A NUESTRO LIDER???. \");sleep(4000);notify(\"Han sido meses de tortura pero al fin eso ha terminado, es hora de llevarlo con su familia, es hora de llevarlo con la banda. \");sleep(4000);notipic(\"https://i.imgur.com/fuH5SM1.png\",\"Llevándolo en brazos logramos llegar a la salida de ese infierno, pero hay unos hombres esperándonos, son apenas una docena , parecen monstruos, criaturas de al menos dos metros con extremidades y facciones extrañas. ES HORA DE ESCAPAR \");sleep(4000);",
             "events" :{
                 "guts":[
                     "",
@@ -247,7 +305,29 @@
                     ""
                 ]
             },        
-            "end_code":"notify(\"Fua ganaron, que cracks jasjasjkda, luego sigo haciendo la historia.\");sleep(1000);"
+            "end_code":"notify(\"Al fin logramos evadirlos y salir de la ciudad, perdimos varios de nuestros soldados en la pelea, pero todo ha valido la pena porque la misión ha sido un éxito. \");sleep(4000);"
+        },
+        {
+            "villain": {"life":100,"strength":200,"agility":30,"mana":50},
+            "beg_code":"Griffith.life=0;notify(\"GRIFFITH ESTA AQUI, ESTA DE VUELTA!!! \");sleep(4000);notipic(\"https://i.imgur.com/jxVJXnw.png\",\"Hemos llegado con la banda y por fin después de meses se siente la esperanza en los hombres.  A pesar de la acalorada bienvenida la estancia del comandante con sus hombres es corta, su estado de salud apenas le permite permanecer sentado por unos minutos. \");sleep(4000);notipic(\"https://i.imgur.com/TWoreLI.png\",\"Una vez en la tienda Griffith tiene su primer momento de tranquilidad en meses, y logra escuchar las voces de sus antiguos soldados susurrado en las cercanías, hablan de sus días de gloria,  de cómo él los llevaría de vuelta a ellos, solo había que esperar a su recuperación. \");sleep(4000);notify(\"Así Griffith se recuesta para alcanzar la espada honrando las palabras de sus hermanos. Su cuerpo colapsa ante el peso de la misma trayendo así la aplastante verdad. ¿ Cómo lograría un hombre que no puede caminar conquistar todo un reino, como podrían un líder sin voz dirigir a los hombres? Era este el final? \");sleep(4000);notipic(\"https://imgur.com/JqIGtK3.png\",\"De pronto, como si de el destino se tratase, los caballos de la carrosa en la que se encontraba Griffith se echan a correr, la carrosa avanza a toda velocidad hacia lo que parece ser un gran estanque.  Una piedra choca contra esta y hace que Griffith salga disparado hacia el estanque. \");sleep(4000);notipic(\"https://imgur.com/GfDRxqa.png\",\"Para su suerte cae en una zona de baja profundidad, pero se  ha roto el brazo. Como podía en este estado volver a ser quien era antes? La vida no tiene sentido sin un sueño y el nunca podrá cumplir el suyo. \");sleep(4000);notify(\"Todo ha terminado para nuestro halcón que yace ensangrentado en el rio. \");sleep(4000);notipic(\"https://imgur.com/NuAM1Bi.png\",\"Mientras Griffith se arrodilla observa fijamente su amuleto que cuelga de su mano extendida. Recuerda la profecía de Zodd concluyendo que ese día ha llegado. De repente notan que ocurre un fenómeno extraño en el cielo; un círculo negro invadiendo lentamente el sol: un eclipse solar. La sangre del cuello de Griffith ha corrido lentamente por su brazo y ha entrado en contacto con su amuleto, que comienza a abrir los ojos. \");sleep(4000);notipic(\"https://imgur.com/xJm134O.png\",\"En ese momento, Guts nota, detrás de Griffith, muchas siluetas de hombres y mujeres desnudos a lo largo del río. Casca sospecha que son del ejército de Midland , pero todos tienen una cualidad inhumana en su constitución y características. \");sleep(4000);notipic(\"https://imgur.com/dYDaD2f.png\",\"Apareció otra dimensión y, con ella, todo el lo conocido perdió sentido! El amuleto que volvió a las manos de Griffith y este vibra a raíz de su elección y, arrastrándolo a ese paisaje extraño junto con sus compañeros. \");sleep(4000);notipic(\"https://imgur.com/9OO8KtV.png\",\"Cuatro grotescos dioses se anunciaron como La mano de Dios. Ellos predijeron que Griffith se volvería su aliado y decretaron que la Banda del Halcón sería el precio a pagar, su familia tendría que ser el SACRIFICIO. Presionaron a Griffith, le preguntaron si sería capaz de abandonar su sueño y le ordenaron cumplir sus ambiciones y entregar a toda la Banda del Halcón. ¡Griffith toma una decisión y da inicio un festín de demonios! \");sleep(4000);",
+            "events" :{
+                "guts":[
+                    "",
+                    ""
+                ],
+                "casca":[
+                    "",
+                    ""],
+                "griffith":[
+                    "",
+                    ""
+                ],
+                "jadeau":[
+                    "",
+                    ""
+                ]
+            },        
+            "end_code":"notify(\"Se murieron todos, el fin ajsdjashdjasd \");sleep(3000);"
         }   
     ]
 }

@@ -25,7 +25,7 @@ public abstract class character{
         ret.Add($"{c_name}.agility",agility);
         ret.Add($"{c_name}.mana",mana);
         foreach(var prop in others){
-            ret.Add($"{c_name}.{prop.Key}",prop.Value);
+            if(!ret.ContainsKey($"{c_name}.{prop.Key}"))ret.Add($"{c_name}.{prop.Key}",prop.Value);
         }
         return ret;
     }
@@ -35,6 +35,8 @@ public abstract class character{
         if(s=="strength")strength=val;
         if(s=="agility")agility=val;
         if(s=="mana")mana=val;
+        if(others.ContainsKey(s))others[s]=val;
+        else others.Add(s,val);
     }
 }
 

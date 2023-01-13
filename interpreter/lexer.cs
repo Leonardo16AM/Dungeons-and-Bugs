@@ -24,6 +24,8 @@ class lexer{
         this.vars=vars;
         this.last_token="";
     }
+    public void Addvar(string s){vars.Add(s);}
+
     public void error(string e){throw new Exception(e);}
     public void advance(){
         pos++;
@@ -65,9 +67,11 @@ class lexer{
 
 
     bool is_varname(){
-        for(int i=0;i<vars.Count();i++)
+        for(int i=0;i<vars.Count();i++){
+            Console.WriteLine(vars[i]);
             if(same_token(vars[i]) )
                 return true;
+        }
         return false;
     }
 
@@ -107,7 +111,7 @@ class lexer{
 
     string get_var(){
         string ret="";
-        while(current_char!='#'&&current_char!='='&&current_char!=' '&&current_char!='\t'&&current_char!=';'&& current_char!=','&& current_char!='.'&& current_char!=')'&& current_char!='('&& current_char!='='&& current_char!='{'&& current_char!='}'&& current_char!='['&& current_char!=']' ){
+        while(current_char!='#'&&current_char!='='&&current_char!=' '&&current_char!='\t'&&current_char!=';'&& current_char!=',' && current_char!=')'&& current_char!='('&& current_char!='='&& current_char!='{'&& current_char!='}'&& current_char!='['&& current_char!=']' ){
             ret+=current_char;
             advance();
         }
