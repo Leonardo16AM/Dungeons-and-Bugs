@@ -133,6 +133,11 @@ Declaración de numeros enteros:
     sleep(1000);
  ```
 
+  Terminar turno luego de que se corra el codigo:
+ ```c++
+    end_turn();
+ ```
+
  Añadir nuevos poderes a los jugadores  o quitárselos
 
  ```c++
